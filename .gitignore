@@ -364,3 +364,5 @@ FodyWeavers.xsd
 /Books.API/.config/dotnet-tools.json
 /Books.API/Properties/ServiceDependencies/bookprod - Web Deploy/profile.arm.json
 /Books.API/Properties/serviceDependencies.json
+/Books.API/images/
+

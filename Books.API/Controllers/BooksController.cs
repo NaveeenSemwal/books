@@ -1,10 +1,15 @@
-﻿using Books.API.Models;
+﻿using Azure.Identity;
+using Azure.Storage.Blobs;
+using Books.API.Models;
 using Books.API.Services;
+using Books.Core;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web.Resource;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Books.API.Controllers
@@ -23,7 +28,7 @@ namespace Books.API.Controllers
         private readonly IBooksServive _booksServive;
         private readonly ILogger<BooksController> _logger;
 
-        public BooksController(IBooksServive booksServive,ILogger<BooksController> logger)
+        public BooksController(IBooksServive booksServive, ILogger<BooksController> logger)
         {
             _booksServive = booksServive ??
                 throw new ArgumentNullException(nameof(booksServive));
@@ -67,8 +72,22 @@ namespace Books.API.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.Create")]
-        public async Task<IActionResult> CreateBook(BookForCreation bookForCreation)
+        public async Task<IActionResult> CreateBook([FromForm] BookForCreation bookForCreation)  /*[FromForm] - fix-415-unsupported-media-type-on-file-upload*/
         {
+            BookMessageProducer messageProducer = new BookMessageProducer();
+
+            // Store first in local drive and then in BLOB
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "images", bookForCreation.FormFile.FileName);
+
+            using (Stream stream = new FileStream(path, FileMode.Create))
+            {
+                bookForCreation.FormFile.CopyTo(stream);
+
+                // Invoking an event
+                messageProducer.AddBookToQueue(new BookEventArgs { AuthorId = bookForCreation.AuthorId, Description = bookForCreation.Description, Title = bookForCreation.Title, File = stream });
+                stream.Flush();
+            }
+
             var bookId = await _booksServive.AddBook(bookForCreation);
 
             Book bookEntity = await _booksServive.GetBookAsync(bookId);
@@ -76,5 +95,15 @@ namespace Books.API.Controllers
             // To return 201 status and "GetBook" is name of route defined above.
             return CreatedAtRoute("GetBook", new { id = bookId }, bookEntity);
         }
+
+        [HttpPost(nameof(UploadFile))]
+        public IActionResult UploadFile(IFormFile files)
+        {
+            string systemFileName = files.FileName;
+
+            return Ok(files);
+        }
+
+
     }
 }
