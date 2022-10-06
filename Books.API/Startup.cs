@@ -37,7 +37,8 @@ namespace Books.API
                                   });
             });
 
-            services.AddControllers();
+            // Added AddNewtonsoftJson() for HTTPPUT verb
+            services.AddControllers().AddNewtonsoftJson();
 
             var connectionString = Configuration["ConnectionStrings:BooksDBConnectionString"];
             services.AddDbContext<BookContext>(o => o.UseSqlServer(connectionString));

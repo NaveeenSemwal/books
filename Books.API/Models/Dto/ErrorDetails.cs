@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Books.API.Models
+namespace Books.API.Models.Dto
 {
     public class ErrorDetails
     {

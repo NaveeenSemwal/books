@@ -1,14 +1,14 @@
-﻿using Azure.Identity;
-using Azure.Storage.Blobs;
-using Books.API.Models;
+﻿using Books.API.Models.Dto;
 using Books.API.Services;
 using Books.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Web.Resource;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -37,6 +37,7 @@ namespace Books.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Book>))]
         [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.ReadAll")]
         public async Task<IActionResult> GetBooks()
         {
@@ -44,15 +45,22 @@ namespace Books.API.Controllers
             return Ok(bookEntities);
         }
 
-
-
         [HttpGet]
-        [Route("{id}", Name = "GetBook")]
+        [Route("{id:guid}", Name = "GetBook")]
         [Authorize(Roles = "Agent")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Book))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.Read")]
         public async Task<IActionResult> GetBook(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
             var bookEntity = await _booksServive.GetBookAsync(id);
+
             if (bookEntity == null)
             {
                 return NotFound();
@@ -71,8 +79,76 @@ namespace Books.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Book))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.Create")]
         public async Task<IActionResult> CreateBook([FromForm] BookForCreation bookForCreation)  /*[FromForm] - fix-415-unsupported-media-type-on-file-upload*/
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(bookForCreation);
+            }
+
+            var existingBook = await _booksServive.GetBookAsync(bookForCreation.AuthorId);
+
+            if (existingBook != null)
+            {
+                ModelState.AddModelError("BookExistsError", "Book already exists !");
+                return BadRequest(bookForCreation);
+            }
+            else
+            {
+                await Task.Run(() => UploadBook(bookForCreation));
+
+                var bookId = await Task.Run(() => _booksServive.AddBook(bookForCreation));
+                Book bookEntity = await _booksServive.GetBookAsync(bookId);
+
+                // To return 201 status and "GetBook" is name of route defined above. = Status 200 + URL (see location parameter in response)
+                return CreatedAtRoute("GetBook", new { id = bookId }, bookEntity);
+            }
+        }
+
+
+        [Route("{id:guid}", Name = "DeleteBook")]
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult DeleteBook(Guid id)
+        {
+            //When we delete, we donot return anything
+            return NoContent();
+        }
+
+        [Route("{id:guid}")]
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdateBook([FromRoute] Guid id,[FromBody]BookForCreation bookForUpdate)
+        {
+            if (bookForUpdate == null || id != bookForUpdate.AuthorId)
+            {
+                return BadRequest();
+            }
+
+            return NoContent();
+        }
+
+        [Route("{id:guid}")]
+        [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult UpdateBookPatch(Guid id, JsonPatchDocument<BookForCreation> bookForUpdate)
+        {
+            if (bookForUpdate == null || id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+
+            _booksServive.UpdateBookPatchAsync(id, bookForUpdate);
+
+            return NoContent();
+        }
+
+        private static void UploadBook(BookForCreation bookForCreation)
         {
             BookMessageProducer messageProducer = new BookMessageProducer();
 
@@ -87,13 +163,6 @@ namespace Books.API.Controllers
                 messageProducer.AddBookToQueue(new BookEventArgs { AuthorId = bookForCreation.AuthorId, Description = bookForCreation.Description, Title = bookForCreation.Title, File = stream });
                 stream.Flush();
             }
-
-            var bookId = await _booksServive.AddBook(bookForCreation);
-
-            Book bookEntity = await _booksServive.GetBookAsync(bookId);
-
-            // To return 201 status and "GetBook" is name of route defined above.
-            return CreatedAtRoute("GetBook", new { id = bookId }, bookEntity);
         }
 
         [HttpPost(nameof(UploadFile))]
@@ -103,7 +172,5 @@ namespace Books.API.Controllers
 
             return Ok(files);
         }
-
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,5 +20,7 @@ namespace Books.API.Services
         void AddBook(Entities.Book bookToAdd);
 
         Task<bool> SaveChangesAsync();
+
+        Task UpdateBookPatch(Guid bookId, JsonPatchDocument<Entities.Book> model);
     }
 }

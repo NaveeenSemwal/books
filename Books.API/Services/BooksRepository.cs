@@ -1,5 +1,6 @@
 ﻿using Books.API.Contexts;
 using Books.API.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -79,6 +80,18 @@ namespace Books.API.Services
         public async Task<bool> SaveChangesAsync()
         {
             return (await _context.SaveChangesAsync() > 0);
+        }
+
+        public async Task UpdateBookPatch(Guid bookId, JsonPatchDocument<Entities.Book> bookModel)
+        {
+            var book = await _context.Books.FindAsync(bookId);
+
+            if (book != null)
+            {
+                bookModel.ApplyTo(book);
+
+                _context.Books.Update(book);
+            }
         }
     }
 }

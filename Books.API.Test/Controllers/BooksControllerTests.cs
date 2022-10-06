@@ -1,5 +1,5 @@
 ﻿using Books.API.Controllers;
-using Books.API.Models;
+using Books.API.Models.Dto;
 using Books.API.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +21,7 @@ namespace Books.API.Test.Controllers
 
         private Mock<IBooksServive> mockBooksServive;
 
-        private IEnumerable<Models.Book> books;
+        private IEnumerable<Models.Dto.Book> books;
 
         private Mock<ILogger<BooksController>> mockLoggerServive;
 
