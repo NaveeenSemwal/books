@@ -1,4 +1,5 @@
-﻿using Books.API.Models.Dto;
+﻿using Books.API.Models;
+using Books.API.Models.Dto;
 using Books.API.Services;
 using Books.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -27,22 +28,30 @@ namespace Books.API.Controllers
     {
         private readonly IBooksServive _booksServive;
         private readonly ILogger<BooksController> _logger;
+        protected APIResponse _aPIResponse;
+        
 
         public BooksController(IBooksServive booksServive, ILogger<BooksController> logger)
         {
             _booksServive = booksServive ??
                 throw new ArgumentNullException(nameof(booksServive));
             _logger = logger;
+
+            _aPIResponse = new APIResponse();
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Book>))]
         [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.ReadAll")]
-        public async Task<IActionResult> GetBooks()
+        public async Task<ActionResult<APIResponse>> GetBooks()
         {
             var bookEntities = await _booksServive.GetBooksAsync();
-            return Ok(bookEntities);
+
+            _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
+            _aPIResponse.Data = bookEntities;
+
+            return Ok(_aPIResponse);
         }
 
         [HttpGet]
