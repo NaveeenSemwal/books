@@ -89,23 +89,24 @@ namespace Books.API.Controllers
                 return BadRequest(bookForCreation);
             }
 
-            var existingBook = await _booksServive.GetBookAsync(bookForCreation.AuthorId);
+            //var existingBook = await _booksServive.GetBookAsync(bookForCreation.AuthorId);
 
-            if (existingBook != null)
-            {
-                ModelState.AddModelError("BookExistsError", "Book already exists !");
-                return BadRequest(bookForCreation);
-            }
-            else
-            {
-                await Task.Run(() => UploadBook(bookForCreation));
+            //if (existingBook != null)
+            //{
+            //    ModelState.AddModelError("BookExistsError", "Book already exists !");
+            //    return BadRequest(bookForCreation);
+            //}
+            //else
+            //{
 
-                var bookId = await Task.Run(() => _booksServive.AddBook(bookForCreation));
-                Book bookEntity = await _booksServive.GetBookAsync(bookId);
+            await Task.Run(() => UploadBook(bookForCreation));
 
-                // To return 201 status and "GetBook" is name of route defined above. = Status 200 + URL (see location parameter in response)
-                return CreatedAtRoute("GetBook", new { id = bookId }, bookEntity);
-            }
+            var bookId = await Task.Run(() => _booksServive.AddBook(bookForCreation));
+            Book bookEntity = await _booksServive.GetBookAsync(bookId);
+
+            // To return 201 status and "GetBook" is name of route defined above. = Status 200 + URL (see location parameter in response)
+            return CreatedAtRoute("GetBook", new { id = bookId }, bookEntity);
+            //}
         }
 
 
@@ -122,7 +123,7 @@ namespace Books.API.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult UpdateBook([FromRoute] Guid id,[FromBody]BookForCreation bookForUpdate)
+        public IActionResult UpdateBook([FromRoute] Guid id, [FromBody] BookForCreation bookForUpdate)
         {
             if (bookForUpdate == null || id != bookForUpdate.AuthorId)
             {
@@ -160,7 +161,7 @@ namespace Books.API.Controllers
                 bookForCreation.FormFile.CopyTo(stream);
 
                 // Invoking an event
-                messageProducer.AddBookToQueue(new BookEventArgs { AuthorId = bookForCreation.AuthorId, Description = bookForCreation.Description, Title = bookForCreation.Title, File = stream });
+               messageProducer.AddBookToQueue(new BookEventArgs { AuthorId = bookForCreation.AuthorId, Description = bookForCreation.Description, Title = bookForCreation.Title, File = stream });
                 stream.Flush();
             }
         }

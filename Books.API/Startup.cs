@@ -44,6 +44,7 @@ namespace Books.API
             services.AddDbContext<BookContext>(o => o.UseSqlServer(connectionString));
 
             // Repo should be AddScoped
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBooksRepository, BooksRepository>();
             services.AddTransient<IBooksServive, BooksServive>();
 

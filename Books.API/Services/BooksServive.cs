@@ -20,27 +20,30 @@ namespace Books.API.Services
                 throw new ArgumentNullException(nameof(mapper));
         }
 
+        /// <summary>
+        /// Primary key which is GUID is auto generated. See migration classes - ValueGeneratedOnAdd()
+        /// </summary>
+        /// <param name="bookForCreation"></param>
+        /// <returns></returns>
         public async Task<Guid> AddBook(BookForCreation bookForCreation)
         {
             var bookEntity = _mapper.Map<Entities.Book>(bookForCreation);
 
-            _booksRepository.AddBook(bookEntity);
-
-            await _booksRepository.SaveChangesAsync();
+            await _booksRepository.AddAsync(bookEntity);
 
             return bookEntity.Id;
         }
 
         public async Task<Book> GetBookAsync(Guid id)
         {
-            var bookEntity = await _booksRepository.GetBookAsync(id);
+            var bookEntity = await _booksRepository.GetAsync(x => x.Id == id, traked: false);
 
             return _mapper.Map<Book>(bookEntity);
         }
 
         public async Task<IEnumerable<Book>> GetBooksAsync()
         {
-            var booksEntity = await _booksRepository.GetBooksAsync();
+            var booksEntity = await _booksRepository.GetAllAsync();
 
             return _mapper.Map<IEnumerable<Book>>(booksEntity);
         }
@@ -51,7 +54,7 @@ namespace Books.API.Services
 
             await _booksRepository.UpdateBookPatch(bookId, bookEntity);
 
-            await _booksRepository.SaveChangesAsync();
+            await _booksRepository.SaveAsync();
         }
     }
 }

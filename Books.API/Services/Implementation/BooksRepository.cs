@@ -2,39 +2,51 @@
 using Books.API.Entities;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Books.API.Services
 {
-    public class BooksRepository : IBooksRepository, IDisposable
+    public class BooksRepository : Repository<Book>, IBooksRepository, IDisposable
     {
         private BookContext _context;
 
-        public BooksRepository(BookContext context)
+        public BooksRepository(BookContext context, ILogger<BooksRepository> logger) :base(context, logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-
-        public async Task<Book> GetBookAsync(Guid id)
+        public override async Task<IEnumerable<Book>> GetAllAsync(Expression<Func<Book, bool>> filter = null)
         {
-            return await _context.Books
-                .Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id);
+            IQueryable<Book> query = _dbContext.Set<Book>().Include(b => b.Author);
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            return await query.ToListAsync();
         }
 
-        public IEnumerable<Book> GetBooks()
+        public override async Task<Book> GetAsync(Expression<Func<Book, bool>> filter, bool traked)
         {
-            //_context.Database.ExecuteSqlRaw("WAITFOR DELAY '00:00:02';");
-            return _context.Books.Include(b => b.Author).ToList();
-        }
+            IQueryable<Book> query = _dbContext.Set<Book>().Include(b => b.Author);
 
-        public async Task<IEnumerable<Book>> GetBooksAsync()
-        {
-            //await _context.Database.ExecuteSqlRawAsync("WAITFOR DELAY '00:00:02';");
-            return await _context.Books.Include(b => b.Author).ToListAsync();
+            if (!traked)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            return await query.SingleOrDefaultAsync();
         }
 
         public void Dispose()
@@ -77,11 +89,7 @@ namespace Books.API.Services
             _context.Books.Add(bookToAdd);
         }
 
-        public async Task<bool> SaveChangesAsync()
-        {
-            return (await _context.SaveChangesAsync() > 0);
-        }
-
+       
         public async Task UpdateBookPatch(Guid bookId, JsonPatchDocument<Entities.Book> bookModel)
         {
             var book = await _context.Books.FindAsync(bookId);
