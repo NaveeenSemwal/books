@@ -1,5 +1,6 @@
 ﻿using Books.API.Contexts;
 using Books.API.Entities;
+using Books.API.Services;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -9,13 +10,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Books.API.Services
+namespace Books.Core.Repositories.Implementation.EntityFramework
 {
     public class BooksRepository : Repository<Book>, IBooksRepository, IDisposable
     {
         private BookContext _context;
 
-        public BooksRepository(BookContext context, ILogger<BooksRepository> logger) :base(context, logger)
+        public BooksRepository(BookContext context, ILogger<BooksRepository> logger) : base(context, logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -89,8 +90,8 @@ namespace Books.API.Services
             _context.Books.Add(bookToAdd);
         }
 
-       
-        public async Task UpdateBookPatch(Guid bookId, JsonPatchDocument<Entities.Book> bookModel)
+
+        public async Task UpdateBookPatch(Guid bookId, JsonPatchDocument<Book> bookModel)
         {
             var book = await _context.Books.FindAsync(bookId);
 

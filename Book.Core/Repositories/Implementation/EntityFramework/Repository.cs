@@ -1,4 +1,5 @@
 ﻿using Books.API.Contexts;
+using Books.API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Books.API.Services
+namespace Books.Core.Repositories.Implementation.EntityFramework
 {
     /// <summary>
     /// https://elegantcode.com/2009/12/15/entity-framework-ef4-generic-repository-and-unit-of-work-prototype/
@@ -24,7 +25,7 @@ namespace Books.API.Services
             _dbContext = dbContext;
             this.logger = logger;
 
-            logger.LogInformation($"This is from Repository { nameof(logger)}");
+            logger.LogInformation($"This is from Repository {nameof(logger)}");
         }
         public virtual async Task AddAsync(TEntity entity)
         {
@@ -96,7 +97,7 @@ namespace Books.API.Services
             }
 
             _dbContext.Set<TEntity>().Remove(entity);
-             await SaveAsync();
+            await SaveAsync();
         }
 
         public virtual async Task UpdateAsync(TEntity entity)

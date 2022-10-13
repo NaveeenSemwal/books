@@ -11,8 +11,8 @@ using Serilog;
 using System;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Books.API.Services.Implementation;
 using Books.API.Services.Abstract;
+using Books.Core.Repositories.Implementation.EntityFramework;
 
 namespace Books.API
 {

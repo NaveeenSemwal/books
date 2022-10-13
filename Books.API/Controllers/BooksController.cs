@@ -41,9 +41,9 @@ namespace Books.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Book>))]
-        [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.ReadAll")]
+        //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.ReadAll")]
         public async Task<ActionResult<APIResponse>> GetBooks()
         {
             var bookEntities = await _booksServive.GetBooksAsync();

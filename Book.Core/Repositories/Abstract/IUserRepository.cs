@@ -1,10 +1,6 @@
-﻿using Books.API.Entities;
-using Books.API.Models.Dto;
-using System.Threading.Tasks;
-
-namespace Books.API.Services
+﻿namespace Books.API.Services.Abstract
 {
-    public interface IUsersService
+    public interface IUserRepository
     {
         bool IsUniqueUser(string userName);
 
