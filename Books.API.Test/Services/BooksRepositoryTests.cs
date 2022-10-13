@@ -122,7 +122,7 @@ namespace Books.API.Test.Services
             var booksRepository = this.CreateBooksRepository();
 
             // Act
-            var result = await booksRepository.GetBooksAsync();
+            var result = await booksRepository.GetAsync();
 
             // Assert
             Assert.IsTrue(result != null);

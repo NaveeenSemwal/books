@@ -11,6 +11,8 @@ using Serilog;
 using System;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Books.API.Services.Implementation;
+using Books.API.Services.Abstract;
 
 namespace Books.API
 {
@@ -46,7 +48,11 @@ namespace Books.API
             // Repo should be AddScoped
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBooksRepository, BooksRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
             services.AddTransient<IBooksServive, BooksServive>();
+            services.AddTransient<IUsersService, UsersService>();
+
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -60,8 +66,18 @@ namespace Books.API
                 });
             });
 
+            /*
+             * 
+             * 
+             *------------ Protect the WebAPI using Microsoft Identity (Azure AD). This code itself will do token validation.
+             * 
+             * 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddMicrosoftIdentityWebApi(Configuration);
+            */
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
