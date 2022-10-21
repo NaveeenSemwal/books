@@ -24,6 +24,7 @@ namespace Books.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/books")]
+
     public class BooksController : ControllerBase
     {
         private readonly IBooksServive _booksServive;
@@ -41,7 +42,7 @@ namespace Books.API.Controllers
         }
 
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Book>))]
         //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.ReadAll")]
         public async Task<ActionResult<APIResponse>> GetBooks()

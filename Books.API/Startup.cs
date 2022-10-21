@@ -13,6 +13,10 @@ using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Books.API.Services.Abstract;
 using Books.Core.Repositories.Implementation.EntityFramework;
+using Newtonsoft.Json.Linq;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace Books.API
 {
@@ -65,6 +69,29 @@ namespace Books.API
                     Description = "Sample service for Books",
                 });
             });
+
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(o =>
+                {
+                    o.RequireHttpsMetadata = false;
+                    o.SaveToken = true;
+
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("[SECRET USED TO SIGN AND VERIFY JWT TOKENS, IT CAN BE ANY STRING]")),
+
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = false,
+                        ValidateIssuerSigningKey = true
+                    };
+                });
+
+            /* .AddMicrosoftIdentityWebApi(Configuration); Add this line to Protect the WebAPI using Microsoft Identity (Azure AD). This code itself will do token validation.*/
 
             /*
              * 
