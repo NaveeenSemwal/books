@@ -27,37 +27,37 @@ namespace Books.API.Controllers
             _aPIResponse = new APIResponse();
         }
 
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
-        //{
-        //    var loginResponse = await _usersService.Login(loginRequest);
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequest)
+        {
+            var loginResponse = await _usersService.Login(loginRequest);
 
-        //    if (loginResponse.User == null || string.IsNullOrEmpty(loginResponse.Token))
-        //    {
-        //        _aPIResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
-        //        _aPIResponse.IsSuccess = false;
-        //        _aPIResponse.ErrorMessages.Add("Username and Password is incorrect.");
+            if (loginResponse == null || loginResponse.User == null || string.IsNullOrEmpty(loginResponse.Token))
+            {
+                _aPIResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                _aPIResponse.IsSuccess = false;
+                _aPIResponse.ErrorMessages.Add("Username and Password is incorrect.");
 
-        //        return BadRequest(_aPIResponse);
-        //    }
+                return BadRequest(_aPIResponse);
+            }
 
-        //    _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
-        //    _aPIResponse.IsSuccess = true;
-        //    _aPIResponse.Data = loginResponse;
+            _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
+            _aPIResponse.IsSuccess = true;
+            _aPIResponse.Data = loginResponse;
 
-        //    return Ok(_aPIResponse);
-        //}
+            return Ok(_aPIResponse);
+        }
 
-        //[HttpPost("register")]
-        //public async Task<IActionResult> Register([FromBody] RegisterationRequestDto registerationRequest)
-        //{
-        //    var registerationResponse = await _usersService.Register(registerationRequest);
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterationRequestDto registerationRequest)
+        {
+            var registerationResponse = await _usersService.Register(registerationRequest);
 
-        //    _aPIResponse.IsSuccess = true;
-        //    _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
-        //    _aPIResponse.Data = registerationResponse;
+            _aPIResponse.IsSuccess = true;
+            _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
+            _aPIResponse.Data = registerationResponse;
 
-        //    return Ok(_aPIResponse);
-        //}
+            return Ok(_aPIResponse);
+        }
     }
 }

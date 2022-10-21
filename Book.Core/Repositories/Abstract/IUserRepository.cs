@@ -1,11 +1,15 @@
-﻿namespace Books.API.Services.Abstract
+﻿using Books.API.Entities;
+using System;
+using System.Threading.Tasks;
+
+namespace Books.API.Services.Abstract
 {
     public interface IUserRepository
     {
         bool IsUniqueUser(string userName);
 
-        //Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
+        Task<(LocalUser LocalUser, string Token)> Login(LocalUser localUser);
 
-        //Task<LocalUser> Register(RegisterationRequestDto registerationRequestDto);
+        Task<LocalUser> Register(LocalUser localUser);
     }
 }

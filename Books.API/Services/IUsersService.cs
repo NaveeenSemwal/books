@@ -8,8 +8,8 @@ namespace Books.API.Services
     {
         bool IsUniqueUser(string userName);
 
-        //Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
+        Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
 
-        //Task<LocalUser> Register(RegisterationRequestDto registerationRequestDto);
+        Task<RegisterationResponsetDto> Register(RegisterationRequestDto registerationRequestDto);
     }
 }

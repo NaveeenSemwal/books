@@ -1,14 +1,17 @@
 ﻿using Books.API.Contexts;
 using Books.API.Entities;
 using Books.API.Services.Abstract;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Books.Core.Repositories.Implementation.EntityFramework
 {
@@ -36,35 +39,33 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return false;
         }
 
-        //public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
-        //{
-        //    var user = await _context.LocalUsers.FirstOrDefaultAsync(x => x.UserName == loginRequestDto.UserName && x.Password == loginRequestDto.Password);
+        public async Task<(LocalUser LocalUser, string Token)> Login(LocalUser loginRequestDto)
+        {
+            var user = await _context.LocalUsers.FirstOrDefaultAsync(x => x.UserName == loginRequestDto.UserName && x.Password == loginRequestDto.Password);
 
-        //    if (user == null)
-        //    {
-        //        return null;
-        //    }
+            if (user == null)
+            {
+                return (null, string.Empty);
+            }
 
-        //    LoginResponseDto loginResponseDto = new() { User = user, Token = GenerateJwtToken(user) };
+            return (user, GenerateJwtToken(user)); 
+        }
 
-        //    return loginResponseDto;
-        //}
+        public async Task<LocalUser> Register(LocalUser registerationRequestDto)
+        {
+            LocalUser localUser = new()
+            {
+                Name = registerationRequestDto.Name,
+                UserName = registerationRequestDto.UserName,
+                Password = registerationRequestDto.Password,
+                Role = registerationRequestDto.Role
+            };
 
-        //public async Task<LocalUser> Register(RegisterationRequestDto registerationRequestDto)
-        //{
-        //    LocalUser localUser = new()
-        //    {
-        //        Name = registerationRequestDto.Name,
-        //        UserName = registerationRequestDto.UserName,
-        //        Password = registerationRequestDto.Password,
-        //        Role = registerationRequestDto.Role
-        //    };
+            _context.LocalUsers.Add(localUser);
+            await _context.SaveChangesAsync();
 
-        //    _context.LocalUsers.Add(localUser);
-        //    await _context.SaveChangesAsync();
-
-        //    return localUser;
-        //}
+            return localUser;
+        }
 
         public string GenerateJwtToken(LocalUser user)
         {
