@@ -1,14 +1,17 @@
 ﻿using Books.API.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Books.API.Contexts
 {
-    public class BookContext : DbContext
+    public class BookContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Entities.Book> Books { get; set; }
 
         public DbSet<Entities.LocalUser> LocalUsers { get; set; }
+
+        public DbSet<Entities.ApplicationUser> ApplicationUsers { get; set; }
 
         public BookContext(DbContextOptions<BookContext> options)
             : base(options) { }

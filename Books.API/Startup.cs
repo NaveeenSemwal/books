@@ -17,6 +17,8 @@ using Newtonsoft.Json.Linq;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Identity;
+using Books.API.Entities;
 
 namespace Books.API
 {
@@ -104,7 +106,8 @@ namespace Books.API
             */
 
 
-
+            // Adding Identity
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BookContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
