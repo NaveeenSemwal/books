@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.API.Test", "Books.API
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.WebUI", "Books.WebUI\Books.WebUI.csproj", "{9C88FE71-0345-49E7-9B91-5FBA79AAA02B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Core", "Book.Core\Books.Core.csproj", "{E1C4F37C-5040-4CC9-B0EB-50FD7AA67FFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Core", "Book.Core\Books.Core.csproj", "{E1C4F37C-5040-4CC9-B0EB-50FD7AA67FFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Mvc", "Books.Mvc\Books.Mvc.csproj", "{26F02321-5A05-4E92-8E87-577CE52B0C0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E1C4F37C-5040-4CC9-B0EB-50FD7AA67FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1C4F37C-5040-4CC9-B0EB-50FD7AA67FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1C4F37C-5040-4CC9-B0EB-50FD7AA67FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26F02321-5A05-4E92-8E87-577CE52B0C0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26F02321-5A05-4E92-8E87-577CE52B0C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26F02321-5A05-4E92-8E87-577CE52B0C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26F02321-5A05-4E92-8E87-577CE52B0C0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
