@@ -1,12 +1,13 @@
 ﻿using Books.API.Contexts;
 using Books.API.Entities;
 using Books.API.Services.Abstract;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -15,21 +16,22 @@ using System.Threading.Tasks;
 
 namespace Books.Core.Repositories.Implementation.EntityFramework
 {
-    public class UserRepository : Repository<LocalUser>, IUserRepository
+    public class UserRepository : Repository<ApplicationUser>, IUserRepository
     {
         private BookContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly string secretkey;
 
-        public UserRepository(BookContext context, ILogger<UserRepository> logger, IConfiguration configuration) : base(context, logger)
+        public UserRepository(BookContext context, ILogger<UserRepository> logger, IConfiguration configuration, UserManager<ApplicationUser> userManager) : base(context, logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-
+            _userManager = userManager;
             secretkey = configuration.GetValue<string>("ApiSettings:Secret");
         }
 
         public bool IsUniqueUser(string userName)
         {
-            var user = _context.LocalUsers.FirstOrDefault(x => x.UserName.Equals(userName));
+            var user = _context.ApplicationUsers.FirstOrDefault(x => x.UserName.Equals(userName));
 
             if (user == null)
             {
@@ -39,46 +41,33 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return false;
         }
 
-        public async Task<(LocalUser LocalUser, string Token)> Login(LocalUser loginRequestDto)
+        public async Task<(ApplicationUser LocalUser, string Token)> Login(ApplicationUser loginRequestDto, string password)
         {
-            var user = await _context.LocalUsers.FirstOrDefaultAsync(x => x.UserName == loginRequestDto.UserName && x.Password == loginRequestDto.Password);
+            var user = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.UserName.ToLower() == loginRequestDto.UserName.ToLower());
 
-            if (user == null)
+            bool isValidPassword = await _userManager.CheckPasswordAsync(user, password);
+
+            if (user == null || isValidPassword == false)
             {
-                return (null, string.Empty);
+                return (new ApplicationUser(), string.Empty);
             }
 
-            return (user, GenerateJwtToken(user)); 
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return (user, GenerateJwtToken(user, roles));
         }
 
-        public async Task<LocalUser> Register(LocalUser registerationRequestDto)
+
+        private string GenerateJwtToken(ApplicationUser user, IList<string> roles)
         {
-            LocalUser localUser = new()
-            {
-                Name = registerationRequestDto.Name,
-                UserName = registerationRequestDto.UserName,
-                Password = registerationRequestDto.Password,
-                Role = registerationRequestDto.Role
-            };
 
-            _context.LocalUsers.Add(localUser);
-            await _context.SaveChangesAsync();
 
-            return localUser;
-        }
-
-        public string GenerateJwtToken(LocalUser user)
-        {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("[SECRET USED TO SIGN AND VERIFY JWT TOKENS, IT CAN BE ANY STRING]");
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim("id", user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role.ToString())
-                }),
+                Subject = GetClaimsIdentity(user, roles),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -88,6 +77,18 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return tokenHandler.WriteToken(token);
         }
 
-       
+        private ClaimsIdentity GetClaimsIdentity(ApplicationUser user, IList<string> roles)
+        {
+            var claims = new ClaimsIdentity();
+
+            claims.AddClaim(new Claim("id", user.Id.ToString()));
+
+            foreach (var item in roles)
+            {
+                claims.AddClaim(new Claim(ClaimTypes.Role, item));
+            }
+
+            return new ClaimsIdentity(claims);
+        }
     }
 }

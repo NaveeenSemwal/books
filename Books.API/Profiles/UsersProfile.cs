@@ -11,15 +11,15 @@ namespace Books.API.Profiles
         {
             CreateMap<LoginRequestDto, LocalUser>();
 
-            CreateMap<(LocalUser LocalUser, string Token), LoginResponseDto>()
+            CreateMap<(ApplicationUser LocalUser, string Token), LoginResponseDto>()
                   .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.LocalUser))
                   .ForMember(dest => dest.Token, opt => opt.MapFrom(src => src.Token));
 
-            CreateMap<LoginRequestDto, LocalUser>();
+            CreateMap<LoginRequestDto, ApplicationUser>();
 
-            CreateMap<RegisterationRequestDto, LocalUser>();
+            CreateMap<RegisterationRequestDto, ApplicationUser>();
 
-            CreateMap<LocalUser, RegisterationResponsetDto>();
+            CreateMap<ApplicationUser, RegisterationResponsetDto>();
         } 
     }
 }

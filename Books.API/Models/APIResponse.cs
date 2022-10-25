@@ -7,7 +7,7 @@ namespace Books.API.Models
     {
         public bool IsSuccess { get; set; }
 
-        public List<string> ErrorMessages { get; set; }
+        public List<string> ErrorMessages { get; set; } = new List<string>();
 
         public object Data { get; set; }
 
