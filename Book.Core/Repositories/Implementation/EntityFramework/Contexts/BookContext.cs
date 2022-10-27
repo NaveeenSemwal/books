@@ -6,7 +6,7 @@ using System;
 
 namespace Books.API.Contexts
 {
-    public class BookContext : IdentityDbContext<ApplicationUser>
+    public class BookContext : IdentityDbContext<ApplicationUser, ApplicationRole,string>
     {
         public DbSet<Entities.Book> Books { get; set; }
 

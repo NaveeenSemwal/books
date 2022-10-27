@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.7.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.13.1" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.25" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="3.1.29" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.29" />
@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\Implementation\Dapper\" />
     <Folder Include="Repositories\Implementation\CosmosDB\" />
+    <Folder Include="Repositories\Implementation\Dapper\IdentityStores\" />
   </ItemGroup>
 
 </Project>

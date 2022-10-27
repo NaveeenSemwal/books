@@ -1,4 +1,4 @@
-﻿using Azure.Identity;
+﻿//using Azure.Identity;
 using Azure.Storage.Blobs;
 using System;
 using System.IO;
@@ -22,13 +22,13 @@ namespace Books.Core
             string clientId = "e867ced8-0812-4ec3-ac00-beb40122ee3b";
             string clientSecret = "fAQ8Q~VOoGcgEy_5UV2~Q0HlO2_hYekafze2IbYi";
 
-            ClientSecretCredential secretCredential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+            //ClientSecretCredential secretCredential = new ClientSecretCredential(tenantId, clientId, clientSecret);
 
             FileStream fs = e.File as FileStream;
             string fileName = Path.GetFileName(fs.Name);
             
             string blobUri = $"https://{"bookblob"}.blob.core.windows.net/{"bookcontainer"}/"+ fileName;
-            BlobClient blobClient = new BlobClient(new Uri(blobUri), secretCredential);
+            BlobClient blobClient = new BlobClient(new Uri(blobUri));
 
             await blobClient.UploadAsync(e.File, true);
         }

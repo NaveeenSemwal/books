@@ -20,6 +20,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using Books.API.Entities;
 using Books.Core.Entities;
+using Books.Core.Repositories.Implementation.Dapper;
 
 namespace Books.API
 {
@@ -108,7 +109,9 @@ namespace Books.API
 
 
             // Adding Identity
-            services.AddIdentity<ApplicationUser, ApplicationRole>().AddEntityFrameworkStores<BookContext>();
+            services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.User.RequireUniqueEmail = true).AddEntityFrameworkStores<BookContext>();
+
+            services.AddSingleton<DapperContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
