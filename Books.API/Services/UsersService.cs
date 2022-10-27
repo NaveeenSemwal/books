@@ -44,7 +44,9 @@ namespace Books.API.Services
 
         public async Task<RegisterationResponsetDto> Register(RegisterationRequestDto registerationRequestDto)
         {
-           ApplicationUser localUser = _mapper.Map<ApplicationUser>(registerationRequestDto);
+            ApplicationUser localUser = _mapper.Map<ApplicationUser>(registerationRequestDto);
+
+            var response = new RegisterationResponsetDto();
 
             var result = await _userManager.CreateAsync(localUser, registerationRequestDto.Password);
 
@@ -61,12 +63,19 @@ namespace Books.API.Services
 
                 }
 
-                var userToReturn = await _userRepository.GetAsync(x => x.UserName.ToLower() == registerationRequestDto.UserName.ToLower(), false);
+                var userToReturn = await _userRepository.GetAsync(x => x.UserName.ToLower() == registerationRequestDto.Email.ToLower(), false);
 
                 return _mapper.Map<RegisterationResponsetDto>(userToReturn);
             }
+            else
+            {
+                foreach (var item in result.Errors)
+                {
+                    response.ErrorMessages.Add(item.Description);
+                }
+            }
 
-            return new RegisterationResponsetDto();
+            return response;
         }
     }
 }

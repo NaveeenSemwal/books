@@ -53,8 +53,19 @@ namespace Books.API.Controllers
         {
             var registerationResponse = await _usersService.Register(registerationRequest);
 
-            _aPIResponse.IsSuccess = true;
-            _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
+            if (registerationResponse.ErrorMessages.Count == 0)
+            {
+                _aPIResponse.IsSuccess = true;
+                _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
+               
+            }
+            else
+            {
+                _aPIResponse.IsSuccess = false;
+                _aPIResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                _aPIResponse.ErrorMessages = registerationResponse.ErrorMessages;
+            }
+
             _aPIResponse.Data = registerationResponse;
 
             return Ok(_aPIResponse);

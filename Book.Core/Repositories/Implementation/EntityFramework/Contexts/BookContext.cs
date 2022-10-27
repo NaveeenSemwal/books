@@ -1,4 +1,5 @@
 ﻿using Books.API.Entities;
+using Books.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,6 +13,8 @@ namespace Books.API.Contexts
         public DbSet<Entities.LocalUser> LocalUsers { get; set; }
 
         public DbSet<Entities.ApplicationUser> ApplicationUsers { get; set; }
+
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
 
         public BookContext(DbContextOptions<BookContext> options)
             : base(options) { }
