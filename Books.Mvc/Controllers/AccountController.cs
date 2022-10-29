@@ -10,6 +10,8 @@ using System.Text;
 using Books.API.Models.Dto;
 using Microsoft.AspNetCore.Identity;
 using Books.Mvc.Dto;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 
 namespace Books.Mvc.Controllers
 {
@@ -25,9 +27,7 @@ namespace Books.Mvc.Controllers
         public IActionResult Register(string returnurl = null)
         {
             ViewData["ReturnUrl"] = returnurl;
-            RegisterViewModel registerViewModel = new RegisterViewModel();
-
-            return View(registerViewModel);
+            return View();
         }
 
         [HttpPost]
@@ -74,6 +74,63 @@ namespace Books.Mvc.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Login(string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginRequestViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var person = new LoginRequestDto { UserName = model.Email, Password = model.Password};
+
+                var json = JsonConvert.SerializeObject(person);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                string apiURL = "https://localhost:5001/";
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(apiURL);
+
+                    //GET Method
+                    HttpResponseMessage response = await client.PostAsync("api/users/login", data);
+                    if (response.IsSuccessStatusCode)
+                    {
+
+                        var result = JsonConvert.DeserializeObject<APIResponse>(await response.Content.ReadAsStringAsync());
+
+                        if (result.IsSuccess == true && result.ErrorMessages.Count == 0)
+                        {
+                            var jsono = (JObject)JsonConvert.DeserializeObject(result.Data.ToString());
+                            string token = jsono["token"].Value<string>();
+
+                            HttpContext.Session.SetString("JWToken", token);
+
+                            return RedirectToAction("Index","Home");
+                        }
+                        else
+                        {
+                            AddError(result);
+                        }
+
+
+
+
+                        return View();
+                    }
+                }
+            }
+            return View();
         }
 
         private void AddError(APIResponse result)

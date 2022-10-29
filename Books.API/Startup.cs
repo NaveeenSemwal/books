@@ -90,8 +90,9 @@ namespace Books.API
 
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        ValidateLifetime = false,
-                        ValidateIssuerSigningKey = true
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 

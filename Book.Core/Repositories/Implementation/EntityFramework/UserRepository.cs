@@ -82,6 +82,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             var claims = new ClaimsIdentity();
 
             claims.AddClaim(new Claim("id", user.Id.ToString()));
+            claims.AddClaim(new Claim(ClaimTypes.Name, user.NormalizedUserName));
 
             foreach (var item in roles)
             {
