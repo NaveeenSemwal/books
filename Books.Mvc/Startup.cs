@@ -1,3 +1,4 @@
+using Books.Mvc.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +33,7 @@ namespace Books.Mvc
             services.AddSession();
 
             //Configure JWT Token Authentication
+
             services.AddAuthentication(auth =>
             {
                 auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -86,12 +88,17 @@ namespace Books.Mvc
                 }
                 await next();
             });
+
+          
+
             //Add JWToken Authentication service
             app.UseAuthentication();
 
+            app.UseMiddleware<JwtTokenValidator>();
+
             app.UseAuthorization();
 
-          
+           
 
             app.UseEndpoints(endpoints =>
             {
