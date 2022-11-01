@@ -1,3 +1,4 @@
+using Books.API.BackgroundJob;
 using Books.API.Configure;
 using Books.API.Contexts;
 using Books.API.Entities;
@@ -54,6 +55,7 @@ namespace Books.API
                 .AddMicrosoftIdentityWebApi(Configuration);
             */
 
+            services.AddHostedService<BookBackgroundService>();
 
             // Adding Identity
             services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.User.RequireUniqueEmail = true).AddEntityFrameworkStores<BookContext>();

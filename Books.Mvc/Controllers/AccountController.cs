@@ -15,6 +15,12 @@ using Newtonsoft.Json.Linq;
 
 namespace Books.Mvc.Controllers
 {
+    /// <summary>
+    /// TODO :  IHttpClientFactory
+    /// 
+    /// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/http-requests?view=aspnetcore-6.0
+    /// https://learn.microsoft.com/en-us/dotnet/architecture/microservices/implement-resilient-applications/use-httpclientfactory-to-implement-resilient-http-requests
+    /// </summary>
     public class AccountController : Controller
     {
         public IActionResult Index()
