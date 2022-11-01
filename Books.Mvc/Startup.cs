@@ -1,3 +1,4 @@
+using Books.Mvc.Configure;
 using Books.Mvc.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,28 +34,7 @@ namespace Books.Mvc
             services.AddSession();
 
             //Configure JWT Token Authentication
-
-            services.AddAuthentication(auth =>
-            {
-                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(token =>
-            {
-                token.RequireHttpsMetadata = false;
-                token.SaveToken = true;
-
-                token.TokenValidationParameters = new TokenValidationParameters
-                {
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("[SECRET USED TO SIGN AND VERIFY JWT TOKENS, IT CAN BE ANY STRING]")),
-
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ClockSkew = TimeSpan.Zero
-                };
-            });
+            services.ConfigureJwtAuthentication(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,17 +59,7 @@ namespace Books.Mvc
             app.UseSession();
 
             //Add JWToken to all incoming HTTP Request Header
-            app.Use(async (context, next) =>
-            {
-                var JWToken = context.Session.GetString("JWToken");
-                if (!string.IsNullOrEmpty(JWToken))
-                {
-                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
-                }
-                await next();
-            });
-
-          
+            app.UseHttpRequestInterceptor();
 
             //Add JWToken Authentication service
             app.UseAuthentication();
@@ -99,7 +69,6 @@ namespace Books.Mvc
             app.UseAuthorization();
 
            
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
