@@ -52,16 +52,7 @@ namespace Books.API.Services
 
             if (result.Succeeded)
             {
-                if (await _roleManager.RoleExistsAsync(registerationRequestDto.Role))
-                {
-                    await _userManager.AddToRoleAsync(localUser, registerationRequestDto.Role);
-                }
-                else
-                {
-                    await _roleManager.CreateAsync(new ApplicationRole { Id = Guid.NewGuid().ToString(), Name = "Admin", NormalizedName = "ADMIN" });
-                    await _roleManager.CreateAsync(new ApplicationRole { Id = Guid.NewGuid().ToString(), Name = "User", NormalizedName = "USER" });
-
-                }
+                await _userManager.AddToRoleAsync(localUser, registerationRequestDto.Role);
 
                 var userToReturn = await _userRepository.GetAsync(x => x.UserName.ToLower() == registerationRequestDto.Email.ToLower(), false);
 

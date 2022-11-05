@@ -25,6 +25,8 @@ namespace Books.API.Configure
             services.AddTransient<IBooksServive, BooksServive>();
             services.AddTransient<IUsersService, UsersService>();
 
+            services.AddTransient<IRolesService, RolesService>();
+
         }
 
 

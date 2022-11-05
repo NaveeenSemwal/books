@@ -1,6 +1,7 @@
 ﻿using Books.API.Contexts;
 using Books.API.Services;
 using Books.API.Services.Abstract;
+using Books.Core.Repositories.Abstract;
 using Books.Core.Repositories.Implementation.Dapper;
 using Books.Core.Repositories.Implementation.EntityFramework;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,8 @@ namespace Books.Core.Configure
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBooksRepository, BooksRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IRolesRepository, RolesRepository>();
 
             var connectionString = configuration["ConnectionStrings:BooksDBConnectionString"];
             services.AddDbContext<BookContext>(o => o.UseSqlServer(connectionString));

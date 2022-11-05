@@ -1,8 +1,14 @@
+using Books.API.Entities;
+using Books.Core.Entities;
+using Books.Core.Seeds;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
+using System.Threading.Tasks;
 
 namespace Books.API
 {
@@ -14,7 +20,7 @@ namespace Books.API
         /// https://www.youtube.com/watch?v=a68X_9CuUkw
         /// </summary>
         /// <param name="args"></param>
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
 
             //Read Configuration from appSettings    
@@ -24,9 +30,21 @@ namespace Books.API
 
             try
             {
-                Log.Information("Application Starting.");
+                var host = CreateHostBuilder(args).Build();
 
-                CreateHostBuilder(args).Build().Run();
+                using (var scope = host.Services.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
+
+                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
+
+                    await DefaultRoles.SeedAsync(userManager, roleManager);
+                }
+
+                    Log.Information("Application Starting.");
+
+                host.Run();
             }
             catch (Exception ex)
             {
