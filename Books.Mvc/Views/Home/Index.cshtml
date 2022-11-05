@@ -3,6 +3,19 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome Naveen</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+   
+
+
+    @{
+        if (@User.IsInRole("Admin"))
+        {
+            <h1 class="display-4">You have Admin Role </h1>
+        }
+        else
+        {
+            <h1 class="display-4">You have User Role </h1>
+        }
+    }
+
+
 </div>

@@ -24,7 +24,7 @@ namespace Books.API.Controllers
     /// </summary>
     [ApiController]
     [Route("api/books")]
-
+    [Authorize(Roles = "Admin")]
     public class BooksController : ControllerBase
     {
         private readonly IBooksServive _booksServive;
@@ -42,7 +42,6 @@ namespace Books.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Book>))]
         //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.ReadAll")]
         public async Task<ActionResult<APIResponse>> GetBooks()
@@ -57,7 +56,6 @@ namespace Books.API.Controllers
 
         [HttpGet]
         [Route("{id:guid}", Name = "GetBook")]
-        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Book))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -88,7 +86,6 @@ namespace Books.API.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Book))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.Create")]
@@ -122,7 +119,6 @@ namespace Books.API.Controllers
 
         [Route("{id:guid}", Name = "DeleteBook")]
         [HttpDelete]
-        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult DeleteBook(Guid id)
         {
@@ -132,7 +128,6 @@ namespace Books.API.Controllers
 
         [Route("{id:guid}")]
         [HttpPut]
-        [Authorize(Roles = "Admin")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult UpdateBook([FromRoute] Guid id, [FromBody] BookForCreation bookForUpdate)

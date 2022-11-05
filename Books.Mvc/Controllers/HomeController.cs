@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Books.Mvc.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "SuperAdmin,Admin,User")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -29,6 +29,8 @@ namespace Books.Mvc.Controllers
         {
             return View();
         }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

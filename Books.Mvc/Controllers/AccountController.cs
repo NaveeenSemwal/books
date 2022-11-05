@@ -63,7 +63,7 @@ namespace Books.Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                var person = new RegisterationRequestDto { Name = model.Name, Email = model.Email, Password = model.Password, Role = "Admin" };
+                var person = new RegisterationRequestDto { Name = model.Name, Email = model.Email, Password = model.Password, Role =  model.RoleSelected };
 
                 var json = JsonConvert.SerializeObject(person);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -166,6 +166,12 @@ namespace Books.Mvc.Controllers
                 ModelState.AddModelError(string.Empty, item);
 
             }
+        }
+
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

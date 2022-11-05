@@ -1,5 +1,6 @@
 ﻿using Books.API.Models;
 using Books.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +14,7 @@ namespace Books.API.Controllers
     /// </summary>
     [Route("api/roles")]
     [ApiController]
+    [Authorize(Roles = "SuperAdmin")]
     public class RolesController : ControllerBase
     {
         private readonly IRolesService _rolesService;

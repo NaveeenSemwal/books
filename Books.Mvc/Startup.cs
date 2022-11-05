@@ -35,6 +35,11 @@ namespace Books.Mvc
 
             //Configure JWT Token Authentication
             services.ConfigureJwtAuthentication(Configuration);
+
+            services.ConfigureApplicationCookie(opt =>
+            {
+                opt.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Accessdenied");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
