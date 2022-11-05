@@ -54,7 +54,7 @@ namespace Books.API.Services
             {
                 await _userManager.AddToRoleAsync(localUser, registerationRequestDto.Role);
 
-                var userToReturn = await _userRepository.GetAsync(x => x.UserName.ToLower() == registerationRequestDto.Email.ToLower(), false);
+                var userToReturn = await _userRepository.GetAsync(x => x.Email.ToLower() == registerationRequestDto.Email.ToLower(), false);
 
                 return _mapper.Map<RegisterationResponsetDto>(userToReturn);
             }

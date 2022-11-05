@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using Books.Mvc.Dto;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Books.Mvc.Controllers
 {
@@ -33,7 +35,25 @@ namespace Books.Mvc.Controllers
         public IActionResult Register(string returnurl = null)
         {
             ViewData["ReturnUrl"] = returnurl;
-            return View();
+
+            List<SelectListItem> listItems = new List<SelectListItem>();
+            listItems.Add(new SelectListItem()
+            {
+                Value = "Admin",
+                Text = "Admin"
+            });
+            listItems.Add(new SelectListItem()
+            {
+                Value = "User",
+                Text = "User"
+            });
+
+            RegisterViewModel registerViewModel = new RegisterViewModel()
+            {
+                RoleList = listItems
+            };
+
+            return View(registerViewModel);
         }
 
         [HttpPost]
@@ -64,7 +84,7 @@ namespace Books.Mvc.Controllers
 
                         if (result.IsSuccess == true && result.ErrorMessages.Count == 0)
                         {
-                            ViewBag.Message = "User Registered sucessfully";
+                            return RedirectToAction("Login");
                         }
                         else
                         {
