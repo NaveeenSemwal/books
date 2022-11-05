@@ -33,7 +33,33 @@ namespace Books.Mvc.Controllers
                 }
             }
 
+            return View();
+        }
 
+        [HttpGet]
+        public IActionResult Upsert(string id)
+        {
+            if (String.IsNullOrEmpty(id))
+            {
+                return View();
+            }
+            else
+            {
+                //update
+                return View();
+            }
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Upsert(IdentityRole roleObj)
+        {
+            if (string.IsNullOrEmpty(roleObj.Id))
+            {
+                //create
+                TempData[SD.Success] = "Role created successfully";
+            }
 
             return View();
         }

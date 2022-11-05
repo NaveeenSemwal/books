@@ -84,6 +84,8 @@ namespace Books.Mvc.Controllers
 
                         if (result.IsSuccess == true && result.ErrorMessages.Count == 0)
                         {
+                            TempData[SD.Success] = "User created successfully";
+
                             return RedirectToAction("Login");
                         }
                         else
