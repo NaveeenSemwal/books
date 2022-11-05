@@ -28,7 +28,7 @@ namespace Books.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<APIResponse>> GetAll()
+        public async Task<ActionResult<APIResponse>> Get()
         {
             var roles = await _rolesService.GetRolesAsync();
 
