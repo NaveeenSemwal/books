@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Books.API.Entities;
-using Books.API.Migrations;
-using Books.API.Models;
 using Books.API.Models.Dto;
 using Books.API.Services.Abstract;
 using Books.Core.Entities;
