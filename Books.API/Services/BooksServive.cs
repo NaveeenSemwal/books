@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Books.API.Models.Dto;
+using Books.Core.Repositories.Abstract;
 using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,12 @@ namespace Books.API.Services
 {
     public class BooksServive : IBooksServive
     {
-        private readonly IBooksRepository _booksRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public BooksServive(IBooksRepository booksRepository, IMapper mapper)
+        public BooksServive(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _booksRepository = booksRepository;
-
+            _unitOfWork = unitOfWork;
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
         }
@@ -29,21 +29,22 @@ namespace Books.API.Services
         {
             var bookEntity = _mapper.Map<Entities.Book>(bookForCreation);
 
-            await _booksRepository.AddAsync(bookEntity);
+            _unitOfWork.BooksRepository.AddAsync(bookEntity);
+            await _unitOfWork.Complete();
 
             return bookEntity.Id;
         }
 
         public async Task<Book> GetBookAsync(Guid id)
         {
-            var bookEntity = await _booksRepository.GetAsync(x => x.Id == id, traked: false);
+            var bookEntity = await _unitOfWork.BooksRepository.GetAsync(x => x.Id == id, traked: false);
 
             return _mapper.Map<Book>(bookEntity);
         }
 
         public async Task<IEnumerable<Book>> GetBooksAsync()
         {
-            var booksEntity = await _booksRepository.GetAllAsync();
+            var booksEntity = await _unitOfWork.BooksRepository.GetAllAsync();
 
             return _mapper.Map<IEnumerable<Book>>(booksEntity);
         }
@@ -52,9 +53,9 @@ namespace Books.API.Services
         {
             var bookEntity = _mapper.Map<JsonPatchDocument<Entities.Book>>(model);
 
-            await _booksRepository.UpdateBookPatch(bookId, bookEntity);
+            await _unitOfWork.BooksRepository.UpdateBookPatch(bookId, bookEntity);
 
-            await _booksRepository.SaveAsync();
+            await _unitOfWork.Complete();
         }
     }
 }

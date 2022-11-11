@@ -16,7 +16,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
     {
         private BookContext _context;
 
-        public BooksRepository(BookContext context, ILogger<BooksRepository> logger) : base(context, logger)
+        public BooksRepository(BookContext context, ILoggerFactory logger) : base(context, logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

@@ -21,14 +21,7 @@ namespace Books.Core.Configure
         /// <param name="configuration">Application configuration</param>
         public static void ConfigureAppRepositories(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            // Repo should be AddScoped
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped<IBooksRepository, BooksRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-
-            services.AddScoped<IRolesRepository, RolesRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var connectionString = configuration["ConnectionStrings:BooksDBConnectionString"];
             services.AddDbContext<BookContext>(o => o.UseSqlServer(connectionString));

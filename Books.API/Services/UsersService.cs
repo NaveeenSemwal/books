@@ -3,6 +3,7 @@ using Books.API.Entities;
 using Books.API.Models.Dto;
 using Books.API.Services.Abstract;
 using Books.Core.Entities;
+using Books.Core.Repositories.Abstract;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
@@ -11,14 +12,14 @@ namespace Books.API.Services
 {
     public class UsersService : IUsersService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public UsersService(IUserRepository userRepository, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public UsersService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
-            _userRepository = userRepository;
+            _unitOfWork = unitOfWork;
 
             _mapper = mapper ??
                 throw new ArgumentNullException(nameof(mapper));
@@ -28,14 +29,14 @@ namespace Books.API.Services
 
         public bool IsUniqueUser(string userName)
         {
-            return _userRepository.IsUniqueUser(userName);
+            return _unitOfWork.UserRepository.IsUniqueUser(userName);
         }
 
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
             var user = _mapper.Map<Entities.ApplicationUser>(loginRequestDto);
 
-            var localuser = await _userRepository.Login(user, loginRequestDto.Password);
+            var localuser = await _unitOfWork.UserRepository.Login(user, loginRequestDto.Password);
 
             return _mapper.Map<LoginResponseDto>(localuser);
         }
@@ -52,7 +53,7 @@ namespace Books.API.Services
             {
                 await _userManager.AddToRoleAsync(localUser, registerationRequestDto.Role);
 
-                var userToReturn = await _userRepository.GetAsync(x => x.Email.ToLower() == registerationRequestDto.Email.ToLower(), false);
+                var userToReturn = await _unitOfWork.UserRepository.GetAsync(x => x.Email.ToLower() == registerationRequestDto.Email.ToLower(), false);
 
                 return _mapper.Map<RegisterationResponsetDto>(userToReturn);
             }

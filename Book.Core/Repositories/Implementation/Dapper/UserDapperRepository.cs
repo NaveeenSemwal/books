@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Books.Core.Repositories.Implementation.Dapper
 {
-    public class UserDapperRepository : IUserRepository
+    public class UserDapperRepository 
     {
         private readonly DapperContext _context;
         public UserDapperRepository(DapperContext context)
@@ -20,31 +20,7 @@ namespace Books.Core.Repositories.Implementation.Dapper
             _context = context;
         }
 
-        public Task AddAsync(ApplicationUser entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<ApplicationUser>> ExecWithStoreProcedureAsync(string query, params object[] parameters)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<ApplicationUser>> GetAllAsync(Expression<Func<ApplicationUser, bool>> filter = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApplicationUser> GetAsync(Expression<Func<ApplicationUser, bool>> filter, bool traked)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool IsUniqueUser(string userName)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public  Task<(ApplicationUser LocalUser, string Token)> Login(ApplicationUser localUser, string password)
         {
 

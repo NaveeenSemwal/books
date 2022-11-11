@@ -11,12 +11,10 @@ namespace Books.API.Services
     {
         Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter ,bool traked);
-        Task AddAsync(TEntity entity);
-        Task UpdateAsync(TEntity entity);
-        Task RemoveAsync(TEntity entity);
-        Task RemoveAsync(object Id);
+        void AddAsync(TEntity entity);
+        void UpdateAsync(TEntity entity);
+        void RemoveAsync(TEntity entity);
+        void RemoveAsync(object Id);
         Task<IEnumerable<TEntity>> ExecWithStoreProcedureAsync(string query, params object[] parameters);
-
-        Task SaveAsync();
     }
 }

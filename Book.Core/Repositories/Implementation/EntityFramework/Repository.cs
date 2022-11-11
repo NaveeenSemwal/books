@@ -18,16 +18,16 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected BookContext _dbContext;
-        protected internal ILogger logger;
+        private readonly ILogger _logger;
 
-        public Repository(BookContext dbContext, ILogger logger)
+        public Repository(BookContext dbContext, ILoggerFactory logger)
         {
             _dbContext = dbContext;
-            this.logger = logger;
+            _logger = logger.CreateLogger("Base Repository"); ;
 
-            logger.LogInformation($"This is from Repository {nameof(logger)}");
+            _logger.LogInformation($"This is from Repository {nameof(logger)}");
         }
-        public virtual async Task AddAsync(TEntity entity)
+        public virtual void AddAsync(TEntity entity)
         {
             if (entity == null)
             {
@@ -36,8 +36,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
 
             try
             {
-                await _dbContext.Set<TEntity>().AddAsync(entity);
-                await SaveAsync();
+                _dbContext.Set<TEntity>().Add(entity);
             }
             catch (Exception ex)
             {
@@ -45,14 +44,12 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             }
         }
 
-        public virtual async Task RemoveAsync(object Id)
+        public virtual void RemoveAsync(object Id)
         {
             TEntity entity = _dbContext.Set<TEntity>().Find(Id);
 
             if (entity != null)
                 _dbContext.Set<TEntity>().Remove(entity);
-
-            await SaveAsync();
         }
 
         public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool traked)
@@ -89,7 +86,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return await query.ToListAsync();
         }
 
-        public virtual async Task RemoveAsync(TEntity entity)
+        public virtual void RemoveAsync(TEntity entity)
         {
             if (entity == null)
             {
@@ -97,10 +94,9 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             }
 
             _dbContext.Set<TEntity>().Remove(entity);
-            await SaveAsync();
         }
 
-        public virtual async Task UpdateAsync(TEntity entity)
+        public virtual void UpdateAsync(TEntity entity)
         {
             if (entity == null)
             {
@@ -108,7 +104,6 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             }
 
             _dbContext.Set<TEntity>().Update(entity);
-            await SaveAsync();
         }
 
         public virtual async Task<IEnumerable<TEntity>> ExecWithStoreProcedureAsync(string query, params object[] parameters)
@@ -116,10 +111,6 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return await _dbContext.Set<TEntity>().FromSqlRaw(query, parameters).ToListAsync();
         }
 
-        public async Task SaveAsync()
-        {
-            await _dbContext.SaveChangesAsync();
-        }
 
     }
 }

@@ -12,7 +12,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
 {
     public class RolesRepository : Repository<ApplicationRole>, IRolesRepository
     {
-        public RolesRepository(BookContext dbContext, ILogger<BooksRepository> logger) : base(dbContext, logger)
+        public RolesRepository(BookContext dbContext, ILoggerFactory logger) : base(dbContext, logger)
         {
         }
     }

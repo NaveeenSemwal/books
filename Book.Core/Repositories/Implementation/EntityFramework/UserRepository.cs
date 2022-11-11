@@ -22,7 +22,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly string secretkey;
 
-        public UserRepository(BookContext context, ILogger<UserRepository> logger, IConfiguration configuration, UserManager<ApplicationUser> userManager) : base(context, logger)
+        public UserRepository(BookContext context, ILoggerFactory logger, IConfiguration configuration, UserManager<ApplicationUser> userManager) : base(context, logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userManager = userManager;
