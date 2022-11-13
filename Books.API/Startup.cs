@@ -71,6 +71,8 @@ namespace Books.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("CORS");
+
             app.UseHttpsRedirection();
 
             app.UseSerilogRequestLogging();

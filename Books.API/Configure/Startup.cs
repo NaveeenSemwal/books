@@ -74,7 +74,7 @@ namespace Books.API.Configure
 
         public static void ConfigureCores(this IServiceCollection services, IConfiguration configuration)
         {
-            string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            string MyAllowSpecificOrigins = "CORS";
 
             services.AddCors(options =>
             {
