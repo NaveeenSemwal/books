@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.WebUI", "Books.WebUI\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Core", "Book.Core\Books.Core.csproj", "{E1C4F37C-5040-4CC9-B0EB-50FD7AA67FFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Mvc", "Books.Mvc\Books.Mvc.csproj", "{26F02321-5A05-4E92-8E87-577CE52B0C0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Mvc", "Books.Mvc\Books.Mvc.csproj", "{26F02321-5A05-4E92-8E87-577CE52B0C0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

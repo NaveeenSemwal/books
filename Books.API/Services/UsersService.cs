@@ -6,6 +6,8 @@ using Books.Core.Entities;
 using Books.Core.Repositories.Abstract;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Books.API.Services
@@ -25,6 +27,16 @@ namespace Books.API.Services
                 throw new ArgumentNullException(nameof(mapper));
             _userManager = userManager;
             _roleManager = roleManager;
+        }
+
+        public Task<ApplicationUser> Get(string id)
+        {
+            return _unitOfWork.UserRepository.GetAsync(x => x.Id == id, false);
+        }
+
+        public Task<IEnumerable<ApplicationUser>> GetAll()
+        {
+            return _unitOfWork.UserRepository.GetAllAsync();
         }
 
         public bool IsUniqueUser(string userName)

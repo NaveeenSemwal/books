@@ -1,10 +1,12 @@
-﻿using Books.API.Models;
+﻿using Books.API.Entities;
+using Books.API.Models;
 using Books.API.Models.Dto;
 using Books.API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Books.API.Controllers
@@ -57,7 +59,7 @@ namespace Books.API.Controllers
             {
                 _aPIResponse.IsSuccess = true;
                 _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
-               
+
             }
             else
             {
@@ -69,6 +71,12 @@ namespace Books.API.Controllers
             _aPIResponse.Data = registerationResponse;
 
             return Ok(_aPIResponse);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<ApplicationUser>> GetAll()
+        {
+            return await _usersService.GetAll();       
         }
     }
 }
