@@ -22,10 +22,10 @@ namespace Books.API.Controllers
     /// 
     /// https://www.youtube.com/watch?v=xEvSFyXBX58&list=PLUGuCqrhcwZzht4r2sbByidApmrvEjL9m
     /// </summary>
-    [ApiController]
+
     [Route("api/books")]
     [Authorize(Roles = "Admin")]
-    public class BooksController : ControllerBase
+    public class BooksController : BaseApiController
     {
         private readonly IBooksServive _booksServive;
         private readonly ILogger<BooksController> _logger;

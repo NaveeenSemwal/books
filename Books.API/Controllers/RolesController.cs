@@ -12,10 +12,10 @@ namespace Books.API.Controllers
     /// <summary>
     /// https://codewithmukesh.com/blog/permission-based-authorization-in-aspnet-core/
     /// </summary>
+    
     [Route("api/roles")]
-    [ApiController]
     [Authorize(Roles = "SuperAdmin")]
-    public class RolesController : ControllerBase
+    public class RolesController : BaseApiController
     {
         private readonly IRolesService _rolesService;
         protected APIResponse _aPIResponse;

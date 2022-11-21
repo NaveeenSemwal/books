@@ -22,10 +22,14 @@ namespace Books.API.Configure
         /// <param name="configuration">Application configuration</param>
         public static void ConfigureAppServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IBooksServive, BooksServive>();
-            services.AddTransient<IUsersService, UsersService>();
+            // http request should be AddScoped
+            
+            services.AddScoped<IBooksServive, BooksServive>();
+            services.AddScoped<IUsersService, UsersService>();
 
-            services.AddTransient<IRolesService, RolesService>();
+            services.AddScoped<IRolesService, RolesService>();
+
+            services.AddScoped<ITokenService, TokenService>();
 
         }
 
