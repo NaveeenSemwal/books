@@ -14,7 +14,8 @@
 
         <div class="row justify-content-center">
             <div class="col-4">
-            <app-register [inputUsersFromHomeComponent]="users" ></app-register>
+                <app-register [inputUsersFromHomeComponent]="users"
+                    (cancelRegisterUser)="cancelRegisterUserMode($event)"></app-register>
             </div>
         </div>
     </div>

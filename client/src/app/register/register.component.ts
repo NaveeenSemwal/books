@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
@@ -11,6 +11,8 @@ export class RegisterComponent implements OnInit {
   model: any = {};
 
   @Input() inputUsersFromHomeComponent :any;
+
+  @Output() cancelRegisterUser = new EventEmitter<false>();
 
   registerForm = new FormGroup({
 
@@ -31,6 +33,9 @@ export class RegisterComponent implements OnInit {
   cancel() {
     console.log("cancelled")
     this.model = {};
+
+    this.cancelRegisterUser.emit(false);
+
   }
 
   get userValidation() {
