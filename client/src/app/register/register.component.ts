@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { RegisterUser } from '../_models/register';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-register',
@@ -14,20 +16,40 @@ export class RegisterComponent implements OnInit {
 
   @Output() cancelRegisterUser = new EventEmitter<false>();
 
+  // public means it can be accessed in Template also.
+  constructor(private accountService: AccountService) { }
+
   registerForm = new FormGroup({
 
     username: new FormControl("", [Validators.required, Validators.email, Validators.pattern('')]),
-    password: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(6)])
+    password: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10)])
 
   });
 
-  constructor() { }
+
 
   ngOnInit(): void {
   }
 
   regsiter() {
     console.log(this.registerForm.value);
+    let data = this.registerForm.value;
+
+    let user: RegisterUser = {
+      name: data.username,
+      email: data.username,
+      password: data.password,
+      role: "Admin"
+    };
+
+    this.accountService.register(user).subscribe({
+
+      next: response => {console.log(response);
+         this.cancel();
+      } ,
+      error: error => console.log(error)
+    });
+
   }
 
   cancel() {

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Console } from 'console';
 import { userInfo } from 'os';
 import { map, Observable, ReplaySubject } from 'rxjs';
+import { RegisterUser } from '../_models/register';
 import { User } from '../_models/user';
 
 
@@ -43,6 +44,11 @@ export class AccountService {
           return data;
         })
       )
+  }
+
+  register(model: RegisterUser): Observable<any> {
+
+    return this.http.post(this.baseUrl + "register", model);
   }
 
   setCurrentUser(res: any) {
