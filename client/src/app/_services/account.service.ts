@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Console } from 'console';
 import { userInfo } from 'os';
-import { map, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { RegisterUser } from '../_models/register';
 import { User } from '../_models/user';
 
@@ -15,7 +15,7 @@ export class AccountService {
 
   baseUrl = "https://localhost:5001/api/account/";
 
-  private currentUserSource = new ReplaySubject<User>(1);
+  private currentUserSource = new BehaviorSubject<User | null>(null);
 
   currentUser$ = this.currentUserSource.asObservable();
 
