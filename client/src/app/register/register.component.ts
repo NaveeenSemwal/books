@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ToastrService } from 'ngx-toastr';
 import { RegisterUser } from '../_models/register';
 import { AccountService } from '../_services/account.service';
 
@@ -12,12 +13,12 @@ export class RegisterComponent implements OnInit {
 
   model: any = {};
 
-  @Input() inputUsersFromHomeComponent :any;
+  @Input() inputUsersFromHomeComponent: any;
 
   @Output() cancelRegisterUser = new EventEmitter<false>();
 
   // public means it can be accessed in Template also.
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, private toastr: ToastrService) { }
 
   registerForm = new FormGroup({
 
@@ -25,7 +26,6 @@ export class RegisterComponent implements OnInit {
     password: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10)])
 
   });
-
 
 
   ngOnInit(): void {
@@ -44,12 +44,12 @@ export class RegisterComponent implements OnInit {
 
     this.accountService.register(user).subscribe({
 
-      next: response => {console.log(response);
-         this.cancel();
-      } ,
-      error: error => console.log(error)
+      next: response => {
+        console.log(response);
+        this.cancel();
+      },
+      error: error => this.toastr.error(error.error)
     });
-
   }
 
   cancel() {

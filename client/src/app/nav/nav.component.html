@@ -2,7 +2,7 @@
 
   <div class="container">
     <!-- Content here -->
-    <a class="navbar-brand" href="#">eMatrimony</a>
+    <a class="navbar-brand" routerLinkActive="active" routerLink="/">eMatrimony</a>
     <div class="container-fluid">
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
@@ -12,13 +12,13 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="accountService.currentUser$ | async">
           <li class=" nav-item">
-            <a class="nav-link" aria-current="page" href="#">Matches</a>
+            <a class="nav-link" aria-current="page" routerLinkActive="active" routerLink="/members">Matches</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Lists</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="/lists">Lists</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Messages</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="/messages">Messages</a>
           </li>
         </ul>
         <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
