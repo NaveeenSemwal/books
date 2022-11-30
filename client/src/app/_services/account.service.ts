@@ -29,13 +29,13 @@ export class AccountService {
 
           const userentity = res.data.user;
 
-          var data = new User(
-            userentity.name,
-            userentity.userName,
-            userentity.email,
-            userentity.emailConfirmed,
-            res.data.token
-          );
+          var data: User = {
+            name: userentity.name,
+            userName: userentity.userName,
+            email: userentity.email,
+            emailConfirmed: userentity.emailConfirmed,
+            token: res.data.token
+          }
 
           localStorage.setItem("user", JSON.stringify(data));
 

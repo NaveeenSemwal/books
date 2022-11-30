@@ -26,7 +26,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _userManager = userManager;
-            secretkey = configuration.GetValue<string>("ApiSettings:Secret");
+            secretkey = configuration.GetSection("ApiSettings:Secret").ToString();
         }
 
         public bool IsUniqueUser(string userName)
