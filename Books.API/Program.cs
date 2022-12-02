@@ -1,8 +1,10 @@
+using Books.API.Contexts;
 using Books.API.Entities;
 using Books.Core.Entities;
 using Books.Core.Seeds;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -36,10 +38,15 @@ namespace Books.API
                 {
                     var services = scope.ServiceProvider;
 
+                    var bookContext = services.GetRequiredService<BookContext>();
+                    await bookContext.Database.MigrateAsync(); // Apply pending migration or create DB.
+                    await Seed.SeedBooks(bookContext);
+
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
 
                     await DefaultRoles.SeedAsync(userManager, roleManager);
+                    
                 }
 
                     Log.Information("Application Starting.");

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "string",
+    "UserName": "string",
+    "NormalizedUserName": "string",
+    "Email": "string",
+    "NormalizedEmail": "string",
+    "EmailConfirmed": true,
+    "PasswordHash": "string",
+    "PhoneNumber": "string",
+    "phoneNumberConfirmed": true,
+    "Name": "string",
+    "DateOfBirth": "1989-12-02T11:15:22.871Z",
+    "KnownAs": "string",
+    "Gender": "string",
+    "Introducation": "string",
+    "LookingFor": "string",
+    "Interests": "string",
+    "City": "string",
+    "Country": "string",
+    "Photos": [
+      {
+        "Id": "",
+        "Url": "string",
+        "IsMain": true,
+        "PublicId": "string"
+      }
+    ]
+  }
+]
