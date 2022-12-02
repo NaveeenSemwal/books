@@ -9,6 +9,12 @@ namespace Books.API.Entities
     [Table("ApplicationUser")]
     public class ApplicationUser : IdentityUser
     {
+        public ApplicationUser()
+        {
+            Id = Guid.NewGuid().ToString();
+            SecurityStamp = Guid.NewGuid().ToString();
+        }
+
         public string Name { get; set; }
 
         public DateTime DateOfBirth { get; set; }

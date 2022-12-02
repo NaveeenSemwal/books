@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Books.Core.Migrations
 {
     [DbContext(typeof(BookContext))]
-    [Migration("20221202113453_Photo-Key")]
-    partial class PhotoKey
+    [Migration("20221202161007_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
