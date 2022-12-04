@@ -11,6 +11,8 @@ namespace Books.API.Models.Dto
 
         public int Age { get; set; }
 
+        public string PhotoUrl { get; set; }
+
         public string KnownAs { get; set; }
 
         public DateTime Created { get; set; }
