@@ -21,6 +21,8 @@ namespace Books.API.Profiles
                  .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<ApplicationUser, RegisterationResponsetDto>();
+
+            CreateMap<ApplicationUser, MemberDto>().ReverseMap();
         } 
     }
 }

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +58,12 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return (user, GenerateJwtToken(user, roles));
         }
 
+        public override async Task<IEnumerable<ApplicationUser>> GetAllAsync(Expression<Func<ApplicationUser, bool>> filter = null)
+        {
+            var data = await _context.ApplicationUsers.Include("Photos").ToListAsync();
+
+            return data;
+        }
 
         private string GenerateJwtToken(ApplicationUser user, IList<string> roles)
         {

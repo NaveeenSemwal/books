@@ -34,9 +34,13 @@ namespace Books.API.Services
             return _unitOfWork.UserRepository.GetAsync(x => x.Id == id, false);
         }
 
-        public Task<IEnumerable<ApplicationUser>> GetAll()
+        public async Task<IEnumerable<MemberDto>> GetAll()
         {
-            return _unitOfWork.UserRepository.GetAllAsync();
+            var users = await _unitOfWork.UserRepository.GetAllAsync();
+
+            var members = _mapper.Map<List<MemberDto>>(users);
+
+            return members;
         }
 
         public bool IsUniqueUser(string userName)

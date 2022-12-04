@@ -16,7 +16,7 @@ namespace Books.API.Services
 
         Task<RegisterationResponsetDto> Register(RegisterationRequestDto registerationRequestDto);
 
-        Task<IEnumerable<ApplicationUser>> GetAll();
+        Task<IEnumerable<MemberDto>> GetAll();
 
         Task<ApplicationUser> Get(string id);
     }

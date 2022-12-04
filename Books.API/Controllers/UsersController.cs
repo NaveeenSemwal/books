@@ -1,8 +1,6 @@
-﻿using Books.API.Entities;
-using Books.API.Models;
+﻿using Books.API.Models;
 using Books.API.Models.Dto;
 using Books.API.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -29,7 +27,7 @@ namespace Books.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ApplicationUser>> GetAll()
+        public async Task<IEnumerable<MemberDto>> GetAll()
         {
             return await _usersService.GetAll();       
         }
