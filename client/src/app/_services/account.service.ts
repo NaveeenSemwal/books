@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Console } from 'console';
-import { userInfo } from 'os';
 import { BehaviorSubject, map, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { RegisterUser } from '../_models/register';
 import { User } from '../_models/user';
 
@@ -13,7 +12,7 @@ import { User } from '../_models/user';
 })
 export class AccountService {
 
-  baseUrl = "https://localhost:5001/api/account/";
+  baseUrl =  environment.baseUrl;
 
   private currentUserSource = new BehaviorSubject<User | null>(null);
 
@@ -23,7 +22,7 @@ export class AccountService {
 
   login(model: any): Observable<User> {
 
-    return this.http.post(this.baseUrl + "login", model)
+    return this.http.post(this.baseUrl + "account/login", model)
       .pipe(
         map((res: any) => {
 
@@ -48,7 +47,7 @@ export class AccountService {
 
   register(model: RegisterUser): Observable<any> {
 
-    return this.http.post(this.baseUrl + "register", model);
+    return this.http.post(this.baseUrl + "account/register", model);
   }
 
   setCurrentUser(res: any) {

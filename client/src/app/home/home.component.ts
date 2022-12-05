@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.getUsers();
+   // this.getUsers();
 
   }
 
@@ -23,13 +23,13 @@ export class HomeComponent implements OnInit {
     this.registerMode = !this.registerMode;
   }
 
-  getUsers() {
-    this.http.get("https://localhost:5001/api/users").subscribe({
-      complete: () => { }, // completeHandler
-      next: response => this.users = response,
-      error: error => console.log(error)
-    });
-  }
+  // getUsers() {
+  //   this.http.get("https://localhost:5001/api/users").subscribe({
+  //     complete: () => { }, // completeHandler
+  //     next: response => this.users = response,
+  //     error: error => console.log(error)
+  //   });
+  // }
 
   cancelRegisterUserMode(event: any) {
 
