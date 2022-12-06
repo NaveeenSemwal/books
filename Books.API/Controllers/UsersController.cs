@@ -29,7 +29,19 @@ namespace Books.API.Controllers
         [HttpGet]
         public async Task<IEnumerable<MemberDto>> GetAll()
         {
-            return await _usersService.GetAll();       
+            return await _usersService.GetAll();
+        }
+
+        /// <summary>
+        /// The Route data by default is string. So no need of {username : string}
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{username}")]
+        public async Task<MemberDto> GetbyUserName(string username)
+        {
+            return await _usersService.Get(username);
         }
     }
 }

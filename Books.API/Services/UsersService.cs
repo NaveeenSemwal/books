@@ -29,9 +29,11 @@ namespace Books.API.Services
             _roleManager = roleManager;
         }
 
-        public Task<ApplicationUser> Get(string id)
+        public async Task<MemberDto> Get(string username)
         {
-            return _unitOfWork.UserRepository.GetAsync(x => x.Id == id, false);
+            var user = await _unitOfWork.UserRepository.GetAsync(x => x.UserName == username, false);
+
+            return _mapper.Map<MemberDto>(user);
         }
 
         public async Task<IEnumerable<MemberDto>> GetAll()

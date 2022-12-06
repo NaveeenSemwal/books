@@ -65,6 +65,11 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return data;
         }
 
+        public override async Task<ApplicationUser> GetAsync(Expression<Func<ApplicationUser, bool>> filter, bool traked)
+        {
+            return await _context.ApplicationUsers.Include("Photos").FirstOrDefaultAsync(filter);
+        }
+
         private string GenerateJwtToken(ApplicationUser user, IList<string> roles)
         {
 

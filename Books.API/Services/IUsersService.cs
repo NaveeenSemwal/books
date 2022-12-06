@@ -18,6 +18,6 @@ namespace Books.API.Services
 
         Task<IEnumerable<MemberDto>> GetAll();
 
-        Task<ApplicationUser> Get(string id);
+        Task<MemberDto> Get(string username);
     }
 }
