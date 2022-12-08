@@ -60,6 +60,14 @@ namespace Books.API
             // Adding Identity
             services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.User.RequireUniqueEmail = true).AddEntityFrameworkStores<BookContext>();
 
+            // Add API versioning
+            services.AddApiVersioning(option => {
+
+                option.AssumeDefaultVersionWhenUnspecified = true;
+                option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            
+            });
+
 
         }
 
