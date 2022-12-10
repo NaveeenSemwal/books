@@ -31,14 +31,14 @@ namespace Books.API.Services
 
         public async Task<MemberDto> Get(string username)
         {
-            var user = await _unitOfWork.UserRepository.GetAsync(x => x.UserName == username, false);
+            var user = await _unitOfWork.UserRepository.GetAsync(x => x.UserName == username, false, includeProperties: "Photos");
 
             return _mapper.Map<MemberDto>(user);
         }
 
         public async Task<IEnumerable<MemberDto>> GetAll()
         {
-            var users = await _unitOfWork.UserRepository.GetAllAsync();
+            var users = await _unitOfWork.UserRepository.GetAllAsync(includeProperties: "Photos");
 
             var members = _mapper.Map<List<MemberDto>>(users);
 

@@ -37,14 +37,14 @@ namespace Books.API.Services
 
         public async Task<Book> GetBookAsync(Guid id)
         {
-            var bookEntity = await _unitOfWork.BooksRepository.GetAsync(x => x.Id == id, traked: false);
+            var bookEntity = await _unitOfWork.BooksRepository.GetAsync(x => x.Id == id, traked: false, includeProperties: "Author");
 
             return _mapper.Map<Book>(bookEntity);
         }
 
         public async Task<IEnumerable<Book>> GetBooksAsync()
         {
-            var booksEntity = await _unitOfWork.BooksRepository.GetAllAsync();
+            var booksEntity = await _unitOfWork.BooksRepository.GetAllAsync(includeProperties: "Author");
 
             return _mapper.Map<IEnumerable<Book>>(booksEntity);
         }

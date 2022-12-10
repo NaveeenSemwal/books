@@ -52,7 +52,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
                 _dbContext.Set<TEntity>().Remove(entity);
         }
 
-        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool traked)
+        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool traked, string includeProperties = null)
         {
             if (filter == null)
             {
@@ -71,16 +71,32 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
                 query = query.Where(filter);
             }
 
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
             return await query.SingleOrDefaultAsync();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, string includeProperties = null)
         {
             IQueryable<TEntity> query = _dbContext.Set<TEntity>();
 
             if (filter != null)
             {
                 query = query.Where(filter);
+            }
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
             }
 
             return await query.ToListAsync();

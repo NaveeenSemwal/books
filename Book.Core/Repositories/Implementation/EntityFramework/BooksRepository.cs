@@ -21,35 +21,6 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public override async Task<IEnumerable<Book>> GetAllAsync(Expression<Func<Book, bool>> filter = null)
-        {
-            IQueryable<Book> query = _dbContext.Set<Book>().Include(b => b.Author);
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            return await query.ToListAsync();
-        }
-
-        public override async Task<Book> GetAsync(Expression<Func<Book, bool>> filter, bool traked)
-        {
-            IQueryable<Book> query = _dbContext.Set<Book>().Include(b => b.Author);
-
-            if (!traked)
-            {
-                query = query.AsNoTracking();
-            }
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            return await query.SingleOrDefaultAsync();
-        }
-
         public void Dispose()
         {
             Dispose(true);

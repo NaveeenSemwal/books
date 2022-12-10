@@ -9,8 +9,8 @@ namespace Books.API.Services
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null);
-        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter ,bool traked);
+        Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null,string includeProperties = null);
+        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter ,bool traked, string includeProperties = null);
         void AddAsync(TEntity entity);
         void UpdateAsync(TEntity entity);
         void RemoveAsync(TEntity entity);

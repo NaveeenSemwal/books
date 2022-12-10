@@ -58,18 +58,6 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return (user, GenerateJwtToken(user, roles));
         }
 
-        public override async Task<IEnumerable<ApplicationUser>> GetAllAsync(Expression<Func<ApplicationUser, bool>> filter = null)
-        {
-            var data = await _context.ApplicationUsers.Include("Photos").ToListAsync();
-
-            return data;
-        }
-
-        public override async Task<ApplicationUser> GetAsync(Expression<Func<ApplicationUser, bool>> filter, bool traked)
-        {
-            return await _context.ApplicationUsers.Include("Photos").FirstOrDefaultAsync(filter);
-        }
-
         private string GenerateJwtToken(ApplicationUser user, IList<string> roles)
         {
 
