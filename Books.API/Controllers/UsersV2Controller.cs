@@ -1,24 +1,26 @@
 ﻿using Books.API.Models;
 using Books.API.Models.Dto;
 using Books.API.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Books.API.Controllers
 {
     [Route("api/v{version:apiVersion}/users")]
-    [ApiVersion("1.0")]
-    public class UsersController : BaseApiController
+    [ApiController]
+    [ApiVersion("2.0")]
+    public class UsersV2Controller : BaseApiController
     {
+
         private readonly IUsersService _usersService;
         private readonly ILogger<UsersController> _logger;
         protected APIResponse _aPIResponse;
 
 
-        public UsersController(IUsersService usersService, ILogger<UsersController> logger)
+        public UsersV2Controller(IUsersService usersService, ILogger<UsersController> logger)
         {
             _usersService = usersService ??
                 throw new ArgumentNullException(nameof(usersService));
@@ -27,17 +29,6 @@ namespace Books.API.Controllers
             _aPIResponse = new APIResponse();
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<MemberDto>> GetAll()
-        {
-            return await _usersService.GetAll();
-        }
-
-        /// <summary>
-        /// The Route data by default is string. So no need of {username : string}
-        /// </summary>
-        /// <param name="username"></param>
-        /// <returns></returns>
         [HttpGet]
         [Route("{username}")]
         public async Task<MemberDto> GetbyUserName(string username)

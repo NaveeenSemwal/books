@@ -61,13 +61,18 @@ namespace Books.API
             services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.User.RequireUniqueEmail = true).AddEntityFrameworkStores<BookContext>();
 
             // Add API versioning
-            services.AddApiVersioning(option => {
-
+            services.AddApiVersioning(option =>
+            {
                 option.AssumeDefaultVersionWhenUnspecified = true;
                 option.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
-            
             });
 
+
+            services.AddVersionedApiExplorer(option =>
+            {
+                option.GroupNameFormat = "'v'VVV";
+                option.SubstituteApiVersionInUrl = true; // This will show the version in URL
+            });
 
         }
 
@@ -99,7 +104,13 @@ namespace Books.API
             });
 
             app.UseSwagger();
-            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Books Services"));
+            app.UseSwaggerUI(options => {
+
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Books Services  V1");
+                options.SwaggerEndpoint("/swagger/v2/swagger.json", "Books Services  V2");
+
+
+            } );
         }
     }
 }

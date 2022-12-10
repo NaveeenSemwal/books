@@ -23,7 +23,7 @@ namespace Books.API.Configure
         public static void ConfigureAppServices(this IServiceCollection services, IConfiguration configuration)
         {
             // http request should be AddScoped
-            
+
             services.AddScoped<IBooksServive, BooksServive>();
             services.AddScoped<IUsersService, UsersService>();
 
@@ -60,15 +60,29 @@ namespace Books.API.Configure
 
         }
 
-
+        /// <summary>
+        /// SwaggerDoc("v1", options.SwaggerDoc("v2"   must match with value in {{}}
+        /// 
+        ///   options.SwaggerEndpoint("/swagger/ {{v1}}/swagger.json", "Books Services  V1");
+        ///   options.SwaggerEndpoint("/swagger/{{v2}}/swagger.json", "Books Services  V2");
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
         public static void ConfigureSwagger(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title = "Books Info Service API",
-                    Version = "v1",
+                    Title = "Books Info Service API v1",
+                    Version = "v1.0",
+                    Description = "Sample service for Books",
+                });
+
+                options.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Books Info Service API v2",
+                    Version = "v2.0",
                     Description = "Sample service for Books",
                 });
             });
