@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
@@ -18,7 +18,15 @@ export class MemberEditComponent implements OnInit {
   user: User | null = null;
 
   // Need to use FormId for reset. editForm is the child template of current Component. In order to access editForm we have used that.
-  @ViewChild('editForm') editForm : NgForm | undefined;
+  @ViewChild('editForm') editForm: NgForm | undefined;
+
+  @HostListener('window:beforeunload', ['$event']) handleBrowserButton(event: any) {
+
+    if (this.editForm?.dirty) {
+
+      event.returnValue = true;
+    }
+  }
 
   constructor(private membersService: MembersService, private accountService: AccountService, private toastr: ToastrService) {
 
