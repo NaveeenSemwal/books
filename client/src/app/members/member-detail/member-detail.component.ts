@@ -1,5 +1,7 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { Member } from 'src/app/_models/member';
 import { MembersService } from 'src/app/_services/members.service';
 
@@ -12,11 +14,44 @@ export class MemberDetailComponent implements OnInit {
 
   member: Member | undefined;
 
+  galleryOptions: NgxGalleryOptions[] = [];
+  galleryImages: NgxGalleryImage[] = [];
+
   constructor(private membersService: MembersService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
 
     this.loadMember();
+
+    this.galleryOptions = [
+
+      {
+        width: '500px',
+        height: '500px',
+        thumbnailsColumns: 4,
+        imageAnimation: NgxGalleryAnimation.Slide,
+        imagePercent: 100,
+        preview: false
+      }
+    ];
+
+   
+  }
+
+  getImages() {
+
+    if (!this.member) return [];
+
+    for (const photo of this.member.photos) {
+      this.galleryImages.push({
+
+        small: photo.url,
+        medium: photo.url,
+        big: photo.url,
+      });
+    }
+    return this.galleryImages;
+
   }
 
   loadMember() {
@@ -28,7 +63,7 @@ export class MemberDetailComponent implements OnInit {
       next: member => {
         this.member = member;
 
-        console.log(member);
+        this.getImages();
       },
       error: (error: any) => { console.log(error); }
     })
