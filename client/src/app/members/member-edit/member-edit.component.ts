@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs';
 import { Member } from 'src/app/_models/member';
 import { User } from 'src/app/_models/user';
@@ -15,10 +17,12 @@ export class MemberEditComponent implements OnInit {
   member: Member | undefined;
   user: User | null = null;
 
-  constructor(private membersService: MembersService, private accountService: AccountService) {
+  // Need to use FormId for reset. editForm is the child template of current Component. In order to access editForm we have used that.
+  @ViewChild('editForm') editForm : NgForm | undefined;
+
+  constructor(private membersService: MembersService, private accountService: AccountService, private toastr: ToastrService) {
 
     this.accountService.currentUser$.pipe(take(1)).subscribe({
-
       next: (user) => {
         this.user = user;
       },
@@ -40,9 +44,16 @@ export class MemberEditComponent implements OnInit {
         this.member = member;
       },
       error(err) {
-          console.error(err);
+        console.error(err);
       },
     })
+  }
+
+  updateMember() {
+    console.log(this.member);
+    this.toastr.success("Profile updated sucessfully");
+
+    this.editForm?.reset(this.member);
   }
 
 }
