@@ -5,11 +5,14 @@ using Books.API.Entities;
 using Books.API.Middlewares;
 using Books.Core.Configure;
 using Books.Core.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 
@@ -36,7 +39,19 @@ namespace Books.API
 
             services.ConfigureAppServices(Configuration);
 
+            // Adding Identity
+
+            /* Note : This line should always be above of -- services.AddAuthentication() otherwise JwtBearerDefaults.AuthenticationScheme will be ignored.
+             *        AddIdentity() uses cookie based Authentication as default scheme. Otherwise your web-api-core-returns-404-when-adding-authorize-attribute.
+             *        
+             *        For validating JWT,JwtBearerDefaults.AuthenticationScheme is required.
+             *        https://stackoverflow.com/questions/52038054/web-api-core-returns-404-when-adding-authorize-attribute
+             */
+            services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.User.RequireUniqueEmail = true).AddEntityFrameworkStores<BookContext>();
+
             services.ConfigureJwtAuthentication(Configuration);
+
+            services.AddHttpContextAccessor();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -57,8 +72,6 @@ namespace Books.API
 
             services.AddHostedService<BookBackgroundService>();
 
-            // Adding Identity
-            services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.User.RequireUniqueEmail = true).AddEntityFrameworkStores<BookContext>();
 
             // Add API versioning
             services.AddApiVersioning(option =>
@@ -104,13 +117,14 @@ namespace Books.API
             });
 
             app.UseSwagger();
-            app.UseSwaggerUI(options => {
+            app.UseSwaggerUI(options =>
+            {
 
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Books Services  V1");
                 options.SwaggerEndpoint("/swagger/v2/swagger.json", "Books Services  V2");
 
 
-            } );
+            });
         }
     }
 }

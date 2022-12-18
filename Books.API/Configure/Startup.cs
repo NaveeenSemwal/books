@@ -36,15 +36,17 @@ namespace Books.API.Configure
 
         public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAuthentication(option =>
+            services.AddAuthentication(cfg =>
             {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(o =>
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
                 {
                     o.RequireHttpsMetadata = false;
                     o.SaveToken = true;
+
+                    o.IncludeErrorDetails = true;
 
                     o.TokenValidationParameters = new TokenValidationParameters
                     {

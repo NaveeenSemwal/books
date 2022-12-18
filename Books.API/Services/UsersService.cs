@@ -4,10 +4,14 @@ using Books.API.Models.Dto;
 using Books.API.Services.Abstract;
 using Books.Core.Entities;
 using Books.Core.Repositories.Abstract;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Books.API.Services
@@ -18,8 +22,13 @@ namespace Books.API.Services
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        /// <summary>
+        /// Get the user from HTTpContext
+        /// </summary>
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public UsersService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public UsersService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager, IHttpContextAccessor httpContextAccessor)
         {
             _unitOfWork = unitOfWork;
 
@@ -27,6 +36,7 @@ namespace Books.API.Services
                 throw new ArgumentNullException(nameof(mapper));
             _userManager = userManager;
             _roleManager = roleManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<MemberDto> Get(string username)
@@ -84,6 +94,21 @@ namespace Books.API.Services
             }
 
             return response;
+        }
+
+        public async Task<bool> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            var userName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+
+            var user = await _unitOfWork.UserRepository.GetAsync(x => x.UserName == userName, true);
+
+            if (user == null) return false;
+
+            // No Need to call the Update function of EF. AutoTracking & mapper works for you.
+            _mapper.Map(memberUpdateDto, user);
+
+            return await _unitOfWork.Complete();
+
         }
     }
 }

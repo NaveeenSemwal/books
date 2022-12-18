@@ -22,4 +22,9 @@ export class MembersService {
     return this.http.get<Member>(this.baseUrl + "v1/users/" + username)
   }
 
+  updateMember(model: Member) {
+
+    return this.http.put(this.baseUrl + "v1/users", model);
+  }
+
 }

@@ -19,5 +19,7 @@ namespace Books.API.Services
         Task<IEnumerable<MemberDto>> GetAll();
 
         Task<MemberDto> Get(string username);
+
+        Task<bool> UpdateUser(MemberUpdateDto memberUpdateDto);
     }
 }

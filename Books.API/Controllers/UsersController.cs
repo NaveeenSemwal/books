@@ -1,6 +1,7 @@
 ﻿using Books.API.Models;
 using Books.API.Models.Dto;
 using Books.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,6 +12,7 @@ namespace Books.API.Controllers
 {
     [Route("api/v{version:apiVersion}/users")]
     [ApiVersion("1.0")]
+    [Authorize(Roles = "Admin")]
     public class UsersController : BaseApiController
     {
         private readonly IUsersService _usersService;
@@ -43,6 +45,22 @@ namespace Books.API.Controllers
         public async Task<MemberDto> GetbyUserName(string username)
         {
             return await _usersService.Get(username);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<APIResponse>> UpdateUser(MemberUpdateDto memberUpdateDto)
+        {
+            var isUpdated = await _usersService.UpdateUser(memberUpdateDto);
+
+            if (isUpdated)
+            {
+                _aPIResponse.StatusCode = System.Net.HttpStatusCode.NoContent;
+                _aPIResponse.IsSuccess = true;
+            }
+
+            _aPIResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
+
+            return Ok(_aPIResponse);
         }
     }
 }

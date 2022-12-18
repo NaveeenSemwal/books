@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Books.API.Entities;
 using Books.API.Models.Dto;
-using System;
 using System.Linq;
 
 namespace Books.API.Profiles
@@ -25,6 +24,8 @@ namespace Books.API.Profiles
 
             CreateMap<ApplicationUser, MemberDto>()
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain == true).Url));
+
+            CreateMap<MemberUpdateDto, ApplicationUser>();
         }
     }
 }
