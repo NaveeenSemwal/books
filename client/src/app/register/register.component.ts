@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ToastrService } from 'ngx-toastr';
 import { RegisterUser } from '../_models/register';
 import { AccountService } from '../_services/account.service';
@@ -20,10 +20,10 @@ export class RegisterComponent implements OnInit {
   // public means it can be accessed in Template also.
   constructor(private accountService: AccountService, private toastr: ToastrService) { }
 
-  registerForm = new FormGroup({
+  registerForm = new UntypedFormGroup({
 
-    username: new FormControl("", [Validators.required, Validators.email, Validators.pattern('')]),
-    password: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10)])
+    username: new UntypedFormControl("", [Validators.required, Validators.email, Validators.pattern('')]),
+    password: new UntypedFormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10)])
 
   });
 
