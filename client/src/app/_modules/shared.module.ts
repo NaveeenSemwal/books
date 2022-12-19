@@ -18,7 +18,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     }),
     TabsModule.forRoot(),
     NgxGalleryModule,
-    NgxSpinnerModule.forRoot({ type: "line-scale-party" }),
+    NgxSpinnerModule.forRoot({ type: 'line-scale-party' }),
   ],
   exports: [
 

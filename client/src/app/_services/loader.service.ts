@@ -13,10 +13,10 @@ export class LoaderService {
   loadSpinner() {
     this.requestCount++;
     
-    this.spinner.show("mySpinner", {
-      type: "line-scale-party",
-      bdColor: "rgba(255, 255, 255, 0)",
-      color: "#333333"
+    this.spinner.show(undefined, {
+      type: 'line-scale-party',
+      bdColor: 'rgba(255, 255, 255, 0)',
+      color: '#333333'
     });
   }
 
