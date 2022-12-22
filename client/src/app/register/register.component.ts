@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { ToastrService } from 'ngx-toastr';
 import { RegisterUser } from '../_models/register';
 import { AccountService } from '../_services/account.service';
+import { passwordMatch } from '../_validators/passwordMatch';
 
 @Component({
   selector: 'app-register',
@@ -20,12 +21,16 @@ export class RegisterComponent implements OnInit {
   // public means it can be accessed in Template also.
   constructor(private accountService: AccountService, private toastr: ToastrService) { }
 
-  registerForm = new UntypedFormGroup({
+  // If we want to pass default value then mention that in "" below
+  registerForm = new FormGroup({
 
-    username: new UntypedFormControl("", [Validators.required, Validators.email, Validators.pattern('')]),
-    password: new UntypedFormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10)])
+    // username: new FormControl("", [Validators.required, Validators.email, Validators.pattern('')]),
+    username: new FormControl("", [Validators.required]),
+    password: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10)]),
+    confirmpassword: new FormControl("", [Validators.required])
 
-  });
+  },[passwordMatch('password','confirmpassword')]);
+
 
 
   ngOnInit(): void {
@@ -33,13 +38,15 @@ export class RegisterComponent implements OnInit {
 
   regsiter() {
     console.log(this.registerForm.value);
-    let data = this.registerForm.value;
 
-    let user: RegisterUser = {
-      name: data.username,
-      email: data.username,
-      password: data.password,
-      role: "Admin"
+    // Told the compiler that below properties will not be null as we are using strict mode of Angular14
+    const user: RegisterUser = {
+
+      name: this.registerForm.value.username!,
+      password: this.registerForm.value.password!,
+      confirmpassword: this.registerForm.value.confirmpassword!,
+      role: 'Admin'
+
     };
 
     this.accountService.register(user).subscribe({
@@ -59,13 +66,4 @@ export class RegisterComponent implements OnInit {
     this.cancelRegisterUser.emit(false);
 
   }
-
-  get userValidation() {
-    return this.registerForm.get("username");
-  }
-
-  get passwordValidation() {
-    return this.registerForm.get("password");
-  }
-
 }

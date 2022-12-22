@@ -2,32 +2,53 @@
 
     <h2 class="text-center text-primary">Sign up</h2>
     <hr>
-    <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" name="username" class="form-control" formControlName="username" placeholder="Username" />
-        <span style="color: red" *ngIf="userValidation && userValidation.invalid && userValidation.touched">This field
-            is invalid</span>
+    <div class="mb-3">
+        <!-- <label for="username">Username</label> -->
+        <input type="text" class="form-control"
+            [class.is-invalid]="registerForm.get('username')?.errors && registerForm.get('username')?.touched"
+            formControlName="username" placeholder="Username" />
 
+        <div class="invalid-feedback">
+            Please enter a username
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" name="password" class="form-control" formControlName="password" placeholder="Password" />
-        <span style="color: red"
-            *ngIf="passwordValidation && passwordValidation.invalid && passwordValidation.touched">This field
-            is invalid</span>
+    <div class="mb-3">
+        <!-- <label for="password">Password</label> -->
+        <input type="password" 
+            [class.is-invalid]="registerForm.get('password')?.errors && registerForm.get('password')?.touched"
+            class="form-control" formControlName="password" placeholder="Password" />
 
+        <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('required')">
+            Please enter a password
+        </div>
+        <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('minlength')">
+            Password must be at least 3 characters
+        </div>
+        <div class="invalid-feedback" *ngIf="registerForm.get('password')?.hasError('maxlength')">
+            Password must be at most 10 characters
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Who is your favourite user </label>
 
-        <select class="form-select">
-            <option *ngFor="let user of inputUsersFromHomeComponent" [ngValue]="user.userName">{{user.userName}}
-            </option>
-        </select>
+    <div class="mb-3">
+        <!-- Note : invalid-feedback css will only work if [class.is-invalid]= true, otherwise it will not show the error text.  -->
+        <input type="password" 
+            [class.is-invalid]="registerForm.get('confirmpassword')?.errors 
+            && registerForm.get('confirmpassword')?.touched || registerForm.errors?.['passwordMisMatchError']"
+
+            class="form-control" formControlName="confirmpassword" placeholder="Confirm Password" />
+
+        <div class="invalid-feedback" *ngIf="registerForm.get('confirmpassword')?.hasError('required')">
+            Please enter a confirm password
+        </div>
+
+        <div class="invalid-feedback"  *ngIf="registerForm.errors?.['passwordMisMatchError'] && !registerForm.get('confirmpassword')?.hasError('required')">
+            Confirm Password & Password is not matching
+        </div>
+
     </div>
-
+    
     <hr>
 
     <div class="form-group text-center">
