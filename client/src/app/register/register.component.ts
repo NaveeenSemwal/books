@@ -27,13 +27,19 @@ export class RegisterComponent implements OnInit {
     // username: new FormControl("", [Validators.required, Validators.email, Validators.pattern('')]),
     username: new FormControl("", [Validators.required]),
     password: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10)]),
-    confirmpassword: new FormControl("", [Validators.required])
+    confirmpassword: new FormControl("", [Validators.required, passwordMatch('password')])
 
-  },[passwordMatch('password','confirmpassword')]);
-
-
+  });
 
   ngOnInit(): void {
+
+    // Password :ConfirmPassword validation. check if value of password changes.  valueChanges returns Observable.
+    // updateValueAndValidity : Recalculates the value and validation status of control.
+    this.registerForm.controls['password'].valueChanges.subscribe({
+
+      next: () => this.registerForm.controls['confirmpassword'].updateValueAndValidity()
+
+    });
   }
 
   regsiter() {

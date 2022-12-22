@@ -1,12 +1,10 @@
-import { AbstractControl } from "@angular/forms";
+import { AbstractControl, ValidatorFn } from "@angular/forms";
 
- export function passwordMatch(password: string, confirmpassword: string) {
+// Here control variable refered to the control who declared that like confirmpassword here. 
+//  Parent control is above of AbstractControl in HTML structure (confirmpassword)
+export function passwordMatch(matchTo: string) : ValidatorFn {
 
-    return (form: AbstractControl) => {
-
-        const passwordValue = form.get(password)?.value;
-        const confirmpasswordValue = form.get(confirmpassword)?.value;
-
-        return passwordValue === confirmpasswordValue ? null : { passwordMisMatchError: true }
+    return (control: AbstractControl) => {
+        return control.value === control.parent?.get(matchTo)?.value ? null : { passwordMisMatchError: true };
     }
 }

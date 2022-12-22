@@ -15,7 +15,7 @@
 
     <div class="mb-3">
         <!-- <label for="password">Password</label> -->
-        <input type="password" 
+        <input type="password"
             [class.is-invalid]="registerForm.get('password')?.errors && registerForm.get('password')?.touched"
             class="form-control" formControlName="password" placeholder="Password" />
 
@@ -33,22 +33,21 @@
 
     <div class="mb-3">
         <!-- Note : invalid-feedback css will only work if [class.is-invalid]= true, otherwise it will not show the error text.  -->
-        <input type="password" 
-            [class.is-invalid]="registerForm.get('confirmpassword')?.errors 
+        <input type="password" [class.is-invalid]="registerForm.get('confirmpassword')?.errors 
             && registerForm.get('confirmpassword')?.touched || registerForm.errors?.['passwordMisMatchError']"
-
             class="form-control" formControlName="confirmpassword" placeholder="Confirm Password" />
 
         <div class="invalid-feedback" *ngIf="registerForm.get('confirmpassword')?.hasError('required')">
             Please enter a confirm password
         </div>
 
-        <div class="invalid-feedback"  *ngIf="registerForm.errors?.['passwordMisMatchError'] && !registerForm.get('confirmpassword')?.hasError('required')">
+        <div class="invalid-feedback"
+            *ngIf="registerForm.get('confirmpassword')?.hasError('passwordMisMatchError') && !registerForm.get('confirmpassword')?.hasError('required')">
             Confirm Password & Password is not matching
         </div>
 
     </div>
-    
+
     <hr>
 
     <div class="form-group text-center">
@@ -57,5 +56,10 @@
         <button class="btn btn-default mr-2" (click)="cancel()" type="button">Cancel</button>
 
         <!-- <a routerLink="../register" class="btn btn-link">Register</a> -->
+    </div>
+
+    <div>
+        <p> Form value : {{ registerForm.value | json}}</p>
+        <p>Form Status : {{registerForm.status | json}}</p>
     </div>
 </form>
