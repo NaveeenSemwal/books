@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { ListsComponent } from './lists/lists.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
@@ -22,14 +23,11 @@ const routes: Routes = [
         { path: 'members/:username', component: MemberDetailComponent },
         { path: 'member/edit', component: MemberEditComponent, canDeactivate: [PreventUnsavedChangesGuard] },
         { path: 'lists', component: ListsComponent },
-        { path: 'messages', component: MessagesComponent }
+        { path: 'messages', component: MessagesComponent },
+        { path: 'admin/dashboard', component: DashboardComponent }
 
       ]
   },
-  { path: 'members', component: MemberListComponent, canActivate: [AuthGuard] },
-  { path: 'members/:id', component: MemberDetailComponent, canActivate: [AuthGuard] },
-  { path: 'lists', component: ListsComponent },
-  { path: 'messages', component: MessagesComponent },
   { path: '**', component: HomeComponent, pathMatch: 'full' },
 
 ];

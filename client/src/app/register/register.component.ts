@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 import { ToastrService } from 'ngx-toastr';
 import { RegisterUser } from '../_models/register';
 import { AccountService } from '../_services/account.service';
@@ -19,15 +19,20 @@ export class RegisterComponent implements OnInit {
   @Output() cancelRegisterUser = new EventEmitter<false>();
 
   // public means it can be accessed in Template also.
-  constructor(private accountService: AccountService, private toastr: ToastrService) { }
+  constructor(private accountService: AccountService, private toastr: ToastrService, private fb: FormBuilder) { }
 
   // If we want to pass default value then mention that in "" below
-  registerForm = new FormGroup({
+  registerForm = this.fb.group({
 
     // username: new FormControl("", [Validators.required, Validators.email, Validators.pattern('')]),
-    username: new FormControl("", [Validators.required]),
-    password: new FormControl("", [Validators.required, Validators.minLength(3), Validators.maxLength(10)]),
-    confirmpassword: new FormControl("", [Validators.required, passwordMatch('password')])
+    gender: ["male"],
+    username: ["", [Validators.required]],
+    knownAs: ["", [Validators.required]],
+    dateOfBirth: ["", [Validators.required]],
+    city: ["", [Validators.required]],
+    country: ["", [Validators.required]],
+    password: ["", [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
+    confirmpassword: ["", [Validators.required, passwordMatch('password')]]
 
   });
 
@@ -41,7 +46,7 @@ export class RegisterComponent implements OnInit {
 
     });
   }
-
+  
   regsiter() {
     console.log(this.registerForm.value);
 

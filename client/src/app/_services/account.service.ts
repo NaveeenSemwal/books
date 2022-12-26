@@ -5,18 +5,18 @@ import { environment } from 'src/environments/environment';
 import { RegisterUser } from '../_models/register';
 import { User } from '../_models/user';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
-  baseUrl =  environment.baseUrl;
-
+  baseUrl = environment.baseUrl;
+     
   private currentUserSource = new BehaviorSubject<User | null>(null);
 
   currentUser$ = this.currentUserSource.asObservable();
+
+  tokenResponse : any;
 
   constructor(private http: HttpClient) { }
 
@@ -36,7 +36,7 @@ export class AccountService {
             token: res.data.token
           }
 
-          localStorage.setItem("user", JSON.stringify(data));
+          localStorage.setItem("token", JSON.stringify(data.token));
 
           this.currentUserSource.next(data);
 
@@ -52,11 +52,21 @@ export class AccountService {
 
   setCurrentUser(res: any) {
     this.currentUserSource.next(res);
-  }
+  }    
 
 
   logout() {
     localStorage.removeItem("user");
     this.currentUserSource.next(null!);
   }
+
+  getUserByToken(token: any) {
+      
+    let _token = token.split('.')[1];
+
+     this.tokenResponse = JSON.parse(atob(_token));
+     return this.tokenResponse;
+
+  }
+
 }

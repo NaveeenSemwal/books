@@ -22,6 +22,7 @@ import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { TextInputComponent } from './_customcontrols/text-input/text-input.component';
+import { DashboardComponent } from './admin/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { TextInputComponent } from './_customcontrols/text-input/text-input.comp
     MessagesComponent,
     MemberCardComponent,
     MemberEditComponent,
-    TextInputComponent
+    TextInputComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

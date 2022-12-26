@@ -13,9 +13,10 @@ import { AccountService } from '../_services/account.service';
 export class NavComponent implements OnInit {
 
   model: any = {};
+  isAdmin : boolean = false;
 
- // public means it can be accessed in Template also.
-  constructor(public accountService: AccountService,private router : Router, private toastr: ToastrService) { }
+  // public means it can be accessed in Template also.
+  constructor(public accountService: AccountService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
@@ -25,10 +26,24 @@ export class NavComponent implements OnInit {
 
     this.accountService.login(this.model).subscribe({
 
-      next: () => this.router.navigateByUrl('/members'),
+      next: (user) => {
+
+        let loggedInuser = this.accountService.getUserByToken(user.token);
+
+        console.log(loggedInuser);
+
+        if (loggedInuser.role === 'Admin') {
+
+          this.isAdmin = true;
+          this.router.navigateByUrl('/admin/dashboard')
+
+        } else {
+          this.router.navigateByUrl('/members')
+        }
+      },
       error: issue => {
-       this.toastr.error(issue.error.errorMessages[0])
-      } 
+        this.toastr.error(issue.error.errorMessages[0])
+      }
     });
   }
 

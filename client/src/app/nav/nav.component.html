@@ -10,15 +10,18 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="accountService.currentUser$ | async">
-          <li class=" nav-item">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="(accountService.currentUser$ | async)">
+          <li class=" nav-item" *ngIf="!isAdmin">
             <a class="nav-link" aria-current="page" routerLinkActive="active" routerLink="/members">Matches</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!isAdmin">
             <a class="nav-link" routerLinkActive="active" routerLink="/lists">Lists</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" *ngIf="!isAdmin">
             <a class="nav-link" routerLinkActive="active" routerLink="/messages">Messages</a>
+          </li>
+          <li class="nav-item" *ngIf="isAdmin">
+            <a class="nav-link" routerLinkActive="active" routerLink="/admin/dashboard">Members</a>
           </li>
         </ul>
         <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
