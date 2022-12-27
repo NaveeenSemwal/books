@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import { RegisterComponent } from '../register/register.component';
 
 @Component({
   selector: 'app-home',
@@ -11,30 +13,26 @@ export class HomeComponent implements OnInit {
   registerMode = false;
   users: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
-   // this.getUsers();
-
   }
 
-  registerToggle() {
-    this.registerMode = !this.registerMode;
+  openDialog() {
+    this.dialog.open(RegisterComponent, {
+     width: '30%',
+    });
   }
 
-  // getUsers() {
-  //   this.http.get("https://localhost:5001/api/users").subscribe({
-  //     complete: () => { }, // completeHandler
-  //     next: response => this.users = response,
-  //     error: error => console.log(error)
-  //   });
+  // registerToggle() {
+  //   this.registerMode = !this.registerMode;
   // }
 
-  cancelRegisterUserMode(event: any) {
+  // cancelRegisterUserMode(event: any) {
 
-    this.registerMode = event;
+  //   this.registerMode = event;
 
-  }
+  // }
 
 }

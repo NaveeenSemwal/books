@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from "@angular/forms";
 import { ToastrService } from 'ngx-toastr';
 import { RegisterUser } from '../_models/register';
 import { AccountService } from '../_services/account.service';
 import { passwordMatch } from '../_validators/passwordMatch';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -16,15 +17,15 @@ export class RegisterComponent implements OnInit {
 
   @Input() inputUsersFromHomeComponent: any;
 
-  @Output() cancelRegisterUser = new EventEmitter<false>();
+// @Output() cancelRegisterUser = new EventEmitter<false>();
 
   // public means it can be accessed in Template also.
-  constructor(private accountService: AccountService, private toastr: ToastrService, private fb: FormBuilder) { }
+  constructor(private accountService: AccountService, private toastr: ToastrService, private fb: FormBuilder,
+    private dialogRef : MatDialogRef<RegisterComponent>) { }
 
   // If we want to pass default value then mention that in "" below
   registerForm = this.fb.group({
-
-    // username: new FormControl("", [Validators.required, Validators.email, Validators.pattern('')]),
+    
     gender: ["male"],
     username: ["", [Validators.required]],
     knownAs: ["", [Validators.required]],
@@ -64,17 +65,17 @@ export class RegisterComponent implements OnInit {
 
       next: response => {
         console.log(response);
-        this.cancel();
+        // this.cancel();
+        this.dialogRef.close();
       },
       error: error => this.toastr.error(error.error)
     });
   }
 
   cancel() {
-    console.log("cancelled")
     this.model = {};
 
-    this.cancelRegisterUser.emit(false);
-
+    this.dialogRef.close();
+    // this.cancelRegisterUser.emit(false);
   }
 }
