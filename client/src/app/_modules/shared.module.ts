@@ -6,7 +6,12 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import {MatDialogModule} from '@angular/material/dialog';
-
+import {MatTableModule} from '@angular/material/table';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
 
 
 @NgModule({
@@ -20,7 +25,13 @@ import {MatDialogModule} from '@angular/material/dialog';
     TabsModule.forRoot(),
     NgxGalleryModule,
     NgxSpinnerModule.forRoot({ type: 'line-scale-party' }),
-    MatDialogModule
+    MatDialogModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatPaginatorModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
     
   ],
   exports: [
@@ -30,7 +41,13 @@ import {MatDialogModule} from '@angular/material/dialog';
     TabsModule,
     NgxGalleryModule,
     NgxSpinnerModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatPaginatorModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
 
   ]
 })
