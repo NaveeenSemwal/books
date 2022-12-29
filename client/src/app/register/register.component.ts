@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from "@angular/forms";
 import { ToastrService } from 'ngx-toastr';
 import { RegisterUser } from '../_models/register';
 import { AccountService } from '../_services/account.service';
 import { passwordMatch } from '../_validators/passwordMatch';
-import {MatDialogRef} from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -14,18 +14,21 @@ import {MatDialogRef} from '@angular/material/dialog';
 export class RegisterComponent implements OnInit {
 
   model: any = {};
+  actionBtn: string = "Register";
 
   @Input() inputUsersFromHomeComponent: any;
 
-// @Output() cancelRegisterUser = new EventEmitter<false>();
+  // @Output() cancelRegisterUser = new EventEmitter<false>();
 
   // public means it can be accessed in Template also.
-  constructor(private accountService: AccountService, private toastr: ToastrService, private fb: FormBuilder,
-    private dialogRef : MatDialogRef<RegisterComponent>) { }
+  constructor(private accountService: AccountService,
+    private toastr: ToastrService, private fb: FormBuilder,
+    @Inject(MAT_DIALOG_DATA) public editData: any,
+    private dialogRef: MatDialogRef<RegisterComponent>) { }
 
   // If we want to pass default value then mention that in "" below
   registerForm = this.fb.group({
-    
+
     gender: ["male"],
     username: ["", [Validators.required]],
     knownAs: ["", [Validators.required]],
@@ -46,8 +49,25 @@ export class RegisterComponent implements OnInit {
       next: () => this.registerForm.controls['confirmpassword'].updateValueAndValidity()
 
     });
+
+    if (this.editData) {
+
+      console.log(this.editData);
+
+      this.registerForm.controls['gender'].setValue(this.editData.gender),
+        this.registerForm.controls['username'].setValue(this.editData.name),
+        this.registerForm.controls['knownAs'].setValue(this.editData.knownAs),
+        this.registerForm.controls['dateOfBirth'].setValue(this.editData.dateOfBirth),
+        this.registerForm.controls['city'].setValue(this.editData.city),
+        this.registerForm.controls['country'].setValue(this.editData.country),
+        this.registerForm.controls['password'].setValue(this.editData.password)
+      this.registerForm.controls['confirmpassword'].setValue(this.editData.password)
+
+      this.actionBtn = "Update";
+
+    }
   }
-  
+
   regsiter() {
     console.log(this.registerForm.value);
 
@@ -61,15 +81,23 @@ export class RegisterComponent implements OnInit {
 
     };
 
-    this.accountService.register(user).subscribe({
+    if (this.editData) {
 
-      next: response => {
-        console.log(response);
-        // this.cancel();
-        this.dialogRef.close();
-      },
-      error: error => this.toastr.error(error.error)
-    });
+      // Update code
+
+    } else {
+
+      this.accountService.register(user).subscribe({
+
+        next: response => {
+          console.log(response);
+          // this.cancel();
+          this.dialogRef.close();
+        },
+        error: error => this.toastr.error(error.error)
+      });
+
+    }
   }
 
   cancel() {

@@ -1,8 +1,10 @@
 
 import { Component, OnInit, ViewChild, } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { RegisterComponent } from 'src/app/register/register.component';
 import { MembersService } from 'src/app/_services/members.service';
 
 @Component({
@@ -19,7 +21,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  constructor(private membersService: MembersService) {}
+  constructor(private membersService: MembersService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
 
@@ -38,6 +40,16 @@ export class DashboardComponent implements OnInit {
       },
       error: (error: any) => { console.log(error); }
     })
+  }
+
+  editMember(row: any) {
+
+      this.dialog.open(RegisterComponent, {
+       width: '30%',
+       data: row
+      });
+  
+
   }
 
   applyFilter(event: Event) {
