@@ -1,0 +1,11 @@
+<div class="mb-3">
+    <!-- Note : invalid-feedback css will only work if [class.is-invalid]= true, otherwise it will not show the error text.  -->
+
+    <input type="text" [class.is-invalid]="control.invalid &&  control.touched" class="form-control"
+        [formControl]="control" placeholder={{label}} bsDatepicker [bsConfig]="bsConfig" [maxDate]="maxDate" />
+
+    <div class="invalid-feedback" *ngIf="control.errors?.['required']">
+        {{label}} is required
+    </div>
+
+</div>

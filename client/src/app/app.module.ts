@@ -23,6 +23,7 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { TextInputComponent } from './_customcontrols/text-input/text-input.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { DatePickerComponent } from './_customcontrols/date-picker/date-picker.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { DashboardComponent } from './admin/dashboard/dashboard.component';
     MemberCardComponent,
     MemberEditComponent,
     TextInputComponent,
-    DashboardComponent
+    DashboardComponent,
+    DatePickerComponent
   ],
   imports: [
     BrowserModule,

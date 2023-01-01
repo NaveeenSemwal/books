@@ -21,7 +21,7 @@
 
         <app-text-input [label]="'Username'" [formControl]="registerForm.controls['username']"></app-text-input>
         <app-text-input [label]="'known As'" [formControl]="registerForm.controls['knownAs']"></app-text-input>
-        <app-text-input [label]="'Date of Birth'" [formControl]="registerForm.controls['dateOfBirth']"></app-text-input>
+        <app-date-picker [label]="'Date of Birth'" [maxDate]="maxDate" [formControl]="registerForm.controls['dateOfBirth']"></app-date-picker>
 
         <app-text-input [label]="'City'" [formControl]="registerForm.controls['city']"></app-text-input>
 

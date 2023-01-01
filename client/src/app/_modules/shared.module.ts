@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSortModule} from '@angular/material/sort';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {MatSortModule} from '@angular/material/sort';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatSortModule
+    MatSortModule,
+    BsDatepickerModule.forRoot(),
     
   ],
   exports: [
@@ -50,7 +52,8 @@ import {MatSortModule} from '@angular/material/sort';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatSortModule 
+    MatSortModule,
+    BsDatepickerModule
 
   ]
 })

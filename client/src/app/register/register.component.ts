@@ -20,6 +20,8 @@ export class RegisterComponent implements OnInit {
 
   // @Output() cancelRegisterUser = new EventEmitter<false>();
 
+  maxDate : Date= new Date();
+
   // public means it can be accessed in Template also.
   constructor(private accountService: AccountService,
     private toastr: ToastrService, private fb: FormBuilder,
@@ -41,6 +43,8 @@ export class RegisterComponent implements OnInit {
   });
 
   ngOnInit(): void {
+
+    this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
 
     // Password :ConfirmPassword validation. check if value of password changes.  valueChanges returns Observable.
     // updateValueAndValidity : Recalculates the value and validation status of control.
