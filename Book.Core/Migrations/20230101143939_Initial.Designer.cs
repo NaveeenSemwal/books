@@ -12,14 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Books.Core.Migrations
 {
     [DbContext(typeof(BookContext))]
-    [Migration("20221202161007_Initial")]
+    [Migration("20230101143939_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("Identity")
                 .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -141,7 +140,7 @@ namespace Books.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors", "Identity");
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("Books.API.Entities.Book", b =>
@@ -166,7 +165,7 @@ namespace Books.Core.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Books", "Identity");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Books.API.Entities.LocalUser", b =>
@@ -191,7 +190,7 @@ namespace Books.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LocalUsers", "Identity");
+                    b.ToTable("LocalUsers");
                 });
 
             modelBuilder.Entity("Books.API.Entities.Photo", b =>
@@ -216,7 +215,7 @@ namespace Books.Core.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Photos", "Identity");
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Books.Core.Entities.ApplicationRole", b =>

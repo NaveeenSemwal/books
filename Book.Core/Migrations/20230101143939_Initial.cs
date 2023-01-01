@@ -14,7 +14,6 @@ namespace Books.Core.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Authors",
-                schema: "Identity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -28,7 +27,6 @@ namespace Books.Core.Migrations
 
             migrationBuilder.CreateTable(
                 name: "LocalUsers",
-                schema: "Identity",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -97,7 +95,6 @@ namespace Books.Core.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Books",
-                schema: "Identity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -111,7 +108,6 @@ namespace Books.Core.Migrations
                     table.ForeignKey(
                         name: "FK_Books_Authors_AuthorId",
                         column: x => x.AuthorId,
-                        principalSchema: "Identity",
                         principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -142,14 +138,13 @@ namespace Books.Core.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Photos",
-                schema: "Identity",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsMain = table.Column<bool>(type: "bit", nullable: false),
                     PublicId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -258,13 +253,11 @@ namespace Books.Core.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_AuthorId",
-                schema: "Identity",
                 table: "Books",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_ApplicationUserId",
-                schema: "Identity",
                 table: "Photos",
                 column: "ApplicationUserId");
 
@@ -318,16 +311,13 @@ namespace Books.Core.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Books",
-                schema: "Identity");
+                name: "Books");
 
             migrationBuilder.DropTable(
-                name: "LocalUsers",
-                schema: "Identity");
+                name: "LocalUsers");
 
             migrationBuilder.DropTable(
-                name: "Photos",
-                schema: "Identity");
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "RoleClaims",
@@ -350,8 +340,7 @@ namespace Books.Core.Migrations
                 schema: "Identity");
 
             migrationBuilder.DropTable(
-                name: "Authors",
-                schema: "Identity");
+                name: "Authors");
 
             migrationBuilder.DropTable(
                 name: "Role",

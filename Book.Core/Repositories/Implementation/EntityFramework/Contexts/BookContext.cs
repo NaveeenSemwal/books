@@ -30,34 +30,34 @@ namespace Books.API.Contexts
 
         private static void AlterIdentityTables(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("Identity");
+            //modelBuilder.HasDefaultSchema("Identity");
             modelBuilder.Entity<ApplicationUser>(entity =>
             {
-                entity.ToTable(name: "User");
+                entity.ToTable(name: "User", schema: "Identity");
             });
             modelBuilder.Entity<ApplicationRole>(entity =>
             {
-                entity.ToTable(name: "Role");
+                entity.ToTable(name: "Role",schema: "Identity");
             });
             modelBuilder.Entity<IdentityUserRole<string>>(entity =>
             {
-                entity.ToTable("UserRoles");
+                entity.ToTable("UserRoles", schema: "Identity");
             });
             modelBuilder.Entity<IdentityUserClaim<string>>(entity =>
             {
-                entity.ToTable("UserClaims");
+                entity.ToTable("UserClaims", schema: "Identity");
             });
             modelBuilder.Entity<IdentityUserLogin<string>>(entity =>
             {
-                entity.ToTable("UserLogins");
+                entity.ToTable("UserLogins", schema: "Identity");
             });
             modelBuilder.Entity<IdentityRoleClaim<string>>(entity =>
             {
-                entity.ToTable("RoleClaims");
+                entity.ToTable("RoleClaims", schema: "Identity");
             });
             modelBuilder.Entity<IdentityUserToken<string>>(entity =>
             {
-                entity.ToTable("UserTokens");
+                entity.ToTable("UserTokens", schema: "Identity");
             });
         }
     }
