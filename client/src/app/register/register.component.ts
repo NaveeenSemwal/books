@@ -81,7 +81,8 @@ export class RegisterComponent implements OnInit {
       name: this.registerForm.value.username!,
       password: this.registerForm.value.password!,
       confirmpassword: this.registerForm.value.confirmpassword!,
-      role: 'Admin'
+      role: 'Admin',
+      
 
     };
 

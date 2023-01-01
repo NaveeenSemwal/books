@@ -44,7 +44,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
 
         public async Task<(ApplicationUser LocalUser, string Token)> Login(ApplicationUser loginRequestDto, string password)
         {
-            var user = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.Email.ToLower() == loginRequestDto.UserName.ToLower());
+            var user = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.UserName.ToLower() == loginRequestDto.UserName.ToLower());
 
             bool isValidPassword = await _userManager.CheckPasswordAsync(user, password);
 

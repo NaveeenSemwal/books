@@ -7,12 +7,14 @@ using Books.Core.Repositories.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Books.API.Services
 {
@@ -75,22 +77,36 @@ namespace Books.API.Services
 
             var response = new RegisterationResponsetDto();
 
-            var result = await _userManager.CreateAsync(localUser, registerationRequestDto.Password);
-
-            if (result.Succeeded)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _userManager.AddToRoleAsync(localUser, registerationRequestDto.Role);
-
-                var userToReturn = await _unitOfWork.UserRepository.GetAsync(x => x.Email.ToLower() == registerationRequestDto.Email.ToLower(), false);
-
-                return _mapper.Map<RegisterationResponsetDto>(userToReturn);
-            }
-            else
-            {
-                foreach (var item in result.Errors)
+                try
                 {
-                    response.ErrorMessages.Add(item.Description);
+                    var result = await _userManager.CreateAsync(localUser, registerationRequestDto.Password);
+
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(localUser, registerationRequestDto.Role);
+
+                        var userToReturn = await _unitOfWork.UserRepository.GetAsync(x => x.UserName.ToLower() == registerationRequestDto.Name.ToLower(), false);
+
+                        return _mapper.Map<RegisterationResponsetDto>(userToReturn);
+                    }
+                    else
+                    {
+                        foreach (var item in result.Errors)
+                        {
+                            response.ErrorMessages.Add(item.Description);
+                        }
+                    }
+
+                    scope.Complete();
                 }
+                catch (Exception)
+                {
+
+                    scope.Dispose();
+                    throw;
+                } 
             }
 
             return response;

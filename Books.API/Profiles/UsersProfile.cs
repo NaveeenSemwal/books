@@ -18,7 +18,8 @@ namespace Books.API.Profiles
             CreateMap<LoginRequestDto, ApplicationUser>();
 
             CreateMap<RegisterationRequestDto, ApplicationUser>()
-                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Name));
+                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Name))
+                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Name + "@gmail.com"));
 
             CreateMap<ApplicationUser, RegisterationResponsetDto>();
 

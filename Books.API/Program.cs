@@ -42,10 +42,13 @@ namespace Books.API
                     await bookContext.Database.MigrateAsync(); // Apply pending migration or create DB.
                     await Seed.SeedBooks(bookContext);
 
-                    await Seed.SeedUsers(bookContext);
+                
 
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
                     var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
+
+                    await Seed.SeedUsers(bookContext,userManager);
 
                     await DefaultRoles.SeedAsync(userManager, roleManager);
                     

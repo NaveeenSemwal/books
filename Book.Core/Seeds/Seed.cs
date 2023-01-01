@@ -1,5 +1,6 @@
 ﻿using Books.API.Contexts;
 using Books.API.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,19 +34,20 @@ namespace Books.Core.Seeds
         }
 
 
-        public static async Task SeedUsers(BookContext context)
+        public static async Task SeedUsers(BookContext context, UserManager<ApplicationUser> userManager)
         {
             if (!await context.ApplicationUsers.AnyAsync())
             {
-                var bookData = await File.ReadAllTextAsync("Configure/UserSeedData.json");
+                var userData = await File.ReadAllTextAsync("Configure/UserSeedData.json");
 
                 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-                var books = JsonSerializer.Deserialize<List<ApplicationUser>>(bookData);
+                var users = JsonSerializer.Deserialize<List<ApplicationUser>>(userData);
 
-                foreach (var book in books)
+                foreach (var user in users)
                 {
-                    context.ApplicationUsers.Add(book);
+                    user.PasswordHash = userManager.PasswordHasher.HashPassword(user, user.PasswordHash);
+                    context.ApplicationUsers.Add(user);
                 }
 
                 await context.SaveChangesAsync();
