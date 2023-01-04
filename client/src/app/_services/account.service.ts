@@ -45,7 +45,7 @@ export class AccountService {
       )
   }
 
-  register(model: RegisterUser): Observable<any> {
+  register(model: any): Observable<any> {
 
     return this.http.post(this.baseUrl + "account/register", model);
   }

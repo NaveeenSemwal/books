@@ -7,14 +7,14 @@ namespace Books.API.Models.Dto
     public class RegisterationRequestDto
     {
         [Required]
-        public string Name { get; set; }
+        public string Username { get; set; }
 
         // [Required]
         // public string Email { get; set; }
 
         [Required]
         public string Password { get; set; }
-        public string Role { get; set; }
+        public string Role { get; set; } ="User";
 
         [Required]
         public DateTime DateOfBirth { get; set; }
@@ -25,13 +25,10 @@ namespace Books.API.Models.Dto
         [Required]
         public string Gender { get; set; }
 
-        [Required]
         public string Introducation { get; set; }
 
-        [Required]
         public string LookingFor { get; set; }
 
-        [Required]
         public string Interests { get; set; }
         public string City { get; set; }
         public string Country { get; set; }

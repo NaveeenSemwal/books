@@ -5,6 +5,7 @@ import { RegisterUser } from '../_models/register';
 import { AccountService } from '../_services/account.service';
 import { passwordMatch } from '../_validators/passwordMatch';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +16,7 @@ export class RegisterComponent implements OnInit {
 
   model: any = {};
   actionBtn: string = "Register";
+  isAdmin : boolean = false;
 
   @Input() inputUsersFromHomeComponent: any;
 
@@ -23,7 +25,7 @@ export class RegisterComponent implements OnInit {
   maxDate : Date= new Date();
 
   // public means it can be accessed in Template also.
-  constructor(private accountService: AccountService,
+  constructor(private accountService: AccountService,private router: Router,
     private toastr: ToastrService, private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public editData: any,
     private dialogRef: MatDialogRef<RegisterComponent>) { }
@@ -58,14 +60,14 @@ export class RegisterComponent implements OnInit {
 
       console.log(this.editData);
 
-      this.registerForm.controls['gender'].setValue(this.editData.gender),
+        this.registerForm.controls['gender'].setValue(this.editData.gender),
         this.registerForm.controls['username'].setValue(this.editData.name),
         this.registerForm.controls['knownAs'].setValue(this.editData.knownAs),
         this.registerForm.controls['dateOfBirth'].setValue(this.editData.dateOfBirth),
         this.registerForm.controls['city'].setValue(this.editData.city),
         this.registerForm.controls['country'].setValue(this.editData.country),
         this.registerForm.controls['password'].setValue(this.editData.password)
-      this.registerForm.controls['confirmpassword'].setValue(this.editData.password)
+        this.registerForm.controls['confirmpassword'].setValue(this.editData.password)
 
       this.actionBtn = "Update";
 
@@ -76,15 +78,19 @@ export class RegisterComponent implements OnInit {
     console.log(this.registerForm.value);
 
     // Told the compiler that below properties will not be null as we are using strict mode of Angular14
-    const user: RegisterUser = {
+    // const user: RegisterUser = {
 
-      name: this.registerForm.value.username!,
-      password: this.registerForm.value.password!,
-      confirmpassword: this.registerForm.value.confirmpassword!,
-      role: 'Admin',
+    //   name: this.registerForm.value.username!,
+    //   password: this.registerForm.value.password!,
+    //   confirmpassword: this.registerForm.value.confirmpassword!,
+    //   role: 'Admin',
+    //   gender : this.registerForm.value.gender!,
+    //   knownas : this.registerForm.value.knownAs!,
+    //   dateofbirth : this.registerForm.value.dateOfBirth,
+
       
 
-    };
+    // };
 
     if (this.editData) {
 
@@ -92,12 +98,15 @@ export class RegisterComponent implements OnInit {
 
     } else {
 
-      this.accountService.register(user).subscribe({
+      this.accountService.register(this.registerForm.value).subscribe({
 
         next: response => {
           console.log(response);
           // this.cancel();
           this.dialogRef.close();
+
+          this.login();
+
         },
         error: error => this.toastr.error(error.error)
       });
@@ -110,5 +119,30 @@ export class RegisterComponent implements OnInit {
 
     this.dialogRef.close();
     // this.cancelRegisterUser.emit(false);
+  }
+
+  login() {
+
+    this.accountService.login(this.model).subscribe({
+
+      next: (user) => {
+
+        let loggedInuser = this.accountService.getUserByToken(user.token);
+
+        console.log(loggedInuser);
+
+        if (loggedInuser.role === 'Admin') {
+
+          this.isAdmin = true;
+          this.router.navigateByUrl('/admin/dashboard')
+
+        } else {
+          this.router.navigateByUrl('/members')
+        }
+      },
+      error: issue => {
+        this.toastr.error(issue.error.errorMessages[0])
+      }
+    });
   }
 }

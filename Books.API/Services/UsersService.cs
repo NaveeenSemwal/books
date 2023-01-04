@@ -87,7 +87,9 @@ namespace Books.API.Services
                     {
                         await _userManager.AddToRoleAsync(localUser, registerationRequestDto.Role);
 
-                        var userToReturn = await _unitOfWork.UserRepository.GetAsync(x => x.UserName.ToLower() == registerationRequestDto.Name.ToLower(), false);
+                        var userToReturn = await _unitOfWork.UserRepository.GetAsync(x => x.UserName.ToLower() == registerationRequestDto.Username.ToLower(), false);
+
+                        scope.Complete();
 
                         return _mapper.Map<RegisterationResponsetDto>(userToReturn);
                     }
@@ -97,16 +99,14 @@ namespace Books.API.Services
                         {
                             response.ErrorMessages.Add(item.Description);
                         }
-                    }
-
-                    scope.Complete();
+                    }  
                 }
                 catch (Exception)
                 {
 
                     scope.Dispose();
                     throw;
-                } 
+                }
             }
 
             return response;

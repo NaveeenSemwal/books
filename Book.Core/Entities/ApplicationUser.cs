@@ -15,8 +15,8 @@ namespace Books.API.Entities
             SecurityStamp = Guid.NewGuid().ToString();
         }
 
-        public string Name { get; set; }
-
+    
+        [Column(TypeName ="Date")]
         public DateTime DateOfBirth { get; set; }
 
         public string KnownAs { get; set; }
