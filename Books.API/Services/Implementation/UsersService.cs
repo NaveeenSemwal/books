@@ -3,6 +3,7 @@ using Books.API.Entities;
 using Books.API.Models.Dto;
 using Books.API.Services.Abstract;
 using Books.Core.Entities;
+using Books.Core.Extensions;
 using Books.Core.Helpers;
 using Books.Core.Repositories.Abstract;
 using Microsoft.AspNetCore.Http;
@@ -52,6 +53,10 @@ namespace Books.API.Services.Implementation
         public async Task<PagedList<MemberDto>> GetAll(SearchParams searchParams)
         {
             var users = await _unitOfWork.UserRepository.GetAllAsync(searchParams, includeProperties: "Photos");
+
+            // Sending Pagination in header in Response
+            _httpContextAccessor.HttpContext.Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize,
+                users.TotalPages, users.TotalCount));
 
             return _mapper.Map<PagedList<MemberDto>>(users);
         }

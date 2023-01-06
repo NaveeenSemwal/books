@@ -30,6 +30,11 @@ namespace Books.API.Controllers
             _aPIResponse = new APIResponse();
         }
 
+        /// <summary>
+        /// [FromQuery] to retrive parameters from query string
+        /// </summary>
+        /// <param name="searchParams"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<PagedList<MemberDto>> GetAll([FromQuery] SearchParams searchParams)
         {
