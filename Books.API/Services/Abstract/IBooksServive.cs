@@ -5,7 +5,7 @@ using Books.API.Models.Dto;
 using Books.Core.Helpers;
 using Microsoft.AspNetCore.JsonPatch;
 
-namespace Books.API.Services
+namespace Books.API.Services.Abstract
 {
     public interface IBooksServive
     {

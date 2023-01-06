@@ -17,7 +17,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Books.API.Services
+namespace Books.API.Services.Implementation
 {
     public class UsersService : IUsersService
     {
@@ -63,7 +63,7 @@ namespace Books.API.Services
 
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
-            var user = _mapper.Map<Entities.ApplicationUser>(loginRequestDto);
+            var user = _mapper.Map<ApplicationUser>(loginRequestDto);
 
             var localuser = await _unitOfWork.UserRepository.Login(user, loginRequestDto.Password);
 
@@ -98,7 +98,7 @@ namespace Books.API.Services
                         {
                             response.ErrorMessages.Add(item.Description);
                         }
-                    }  
+                    }
                 }
                 catch (Exception)
                 {

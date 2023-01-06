@@ -6,9 +6,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Books.API.Entities;
+using Books.API.Services.Abstract;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Books.API.Services
+namespace Books.API.Services.Implementation
 {
     public class TokenService : ITokenService
     {

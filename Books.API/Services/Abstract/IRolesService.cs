@@ -4,7 +4,7 @@ using System;
 using Books.Core.Entities;
 using Books.Core.Helpers;
 
-namespace Books.API.Services
+namespace Books.API.Services.Abstract
 {
     public interface IRolesService
     {

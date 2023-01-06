@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using static Dapper.SqlMapper;
 
-namespace Books.API.Services
+namespace Books.API.Services.Abstract
 {
     public interface IUsersService
     {

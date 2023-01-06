@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Books.API.Entities;
 
-namespace Books.API.Services
+namespace Books.API.Services.Abstract
 {
     public interface ITokenService
     {
-         string GenerateJwtToken(ApplicationUser user, IList<string> roles);
+        string GenerateJwtToken(ApplicationUser user, IList<string> roles);
     }
 }

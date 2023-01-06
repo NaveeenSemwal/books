@@ -1,5 +1,5 @@
 ﻿using Books.API.Models;
-using Books.API.Services;
+using Books.API.Services.Abstract;
 using Books.Core.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +13,7 @@ namespace Books.API.Controllers
     /// <summary>
     /// https://codewithmukesh.com/blog/permission-based-authorization-in-aspnet-core/
     /// </summary>
-    
+
     [Route("api/roles")]
     [Authorize(Roles = "SuperAdmin")]
     public class RolesController : BaseApiController
@@ -41,7 +41,7 @@ namespace Books.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<APIResponse>> AddRole(string roleName)
+        public Task<ActionResult<APIResponse>> AddRole(string roleName)
         {
             throw new NotImplementedException();
 

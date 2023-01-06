@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Books.API.Services.Abstract;
 using Books.Core.Entities;
 using Books.Core.Helpers;
 using Books.Core.Repositories.Abstract;
@@ -6,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Books.API.Services
+namespace Books.API.Services.Implementation
 {
     public class RolesService : IRolesService
     {
