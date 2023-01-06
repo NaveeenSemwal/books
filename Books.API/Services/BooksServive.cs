@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Books.API.Models.Dto;
+using Books.Core.Helpers;
 using Books.Core.Repositories.Abstract;
 using Microsoft.AspNetCore.JsonPatch;
 using System;
@@ -42,11 +43,11 @@ namespace Books.API.Services
             return _mapper.Map<Book>(bookEntity);
         }
 
-        public async Task<IEnumerable<Book>> GetBooksAsync()
+        public async Task<PagedList<Book>> GetBooksAsync(SearchParams searchParams)
         {
-            var booksEntity = await _unitOfWork.BooksRepository.GetAllAsync(includeProperties: "Author");
+            var booksEntity = await _unitOfWork.BooksRepository.GetAllAsync(searchParams, includeProperties: "Author");
 
-            return _mapper.Map<IEnumerable<Book>>(booksEntity);
+            return _mapper.Map<PagedList<Book>>(booksEntity);
         }
 
         public async Task UpdateBookPatchAsync(Guid bookId, JsonPatchDocument<BookForCreation> model)

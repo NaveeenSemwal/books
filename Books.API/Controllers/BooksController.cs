@@ -2,6 +2,7 @@
 using Books.API.Models.Dto;
 using Books.API.Services;
 using Books.Core;
+using Books.Core.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -44,9 +45,9 @@ namespace Books.API.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Book>))]
         //[RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes:Book.ReadAll")]
-        public async Task<ActionResult<APIResponse>> GetBooks()
+        public async Task<ActionResult<APIResponse>> GetBooks(SearchParams searchParams)
         {
-            var bookEntities = await _booksServive.GetBooksAsync();
+            var bookEntities = await _booksServive.GetBooksAsync(searchParams);
 
             _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
             _aPIResponse.Data = bookEntities;

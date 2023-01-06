@@ -1,5 +1,6 @@
 ﻿using Books.API.Contexts;
 using Books.API.Services;
+using Books.Core.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -82,9 +83,9 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return await query.SingleOrDefaultAsync();
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null, string includeProperties = null)
+        public virtual async Task<PagedList<TEntity>> GetAllAsync(SearchParams searchParams, Expression<Func<TEntity, bool>> filter = null, string includeProperties = null)
         {
-            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+            IQueryable<TEntity> query = _dbContext.Set<TEntity>().AsNoTracking();
 
             if (filter != null)
             {
@@ -99,7 +100,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
                 }
             }
 
-            return await query.ToListAsync();
+            return await PagedList<TEntity>.CreateAsync(query, searchParams.PageNumber, searchParams.PageSize);
         }
 
         public virtual void RemoveAsync(TEntity entity)

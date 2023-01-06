@@ -1,5 +1,6 @@
 ﻿using Books.API.Models;
 using Books.API.Services;
+using Books.Core.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -28,9 +29,9 @@ namespace Books.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<APIResponse>> Get()
+        public async Task<ActionResult<APIResponse>> Get(SearchParams searchParams)
         {
-            var roles = await _rolesService.GetRolesAsync();
+            var roles = await _rolesService.GetRolesAsync(searchParams);
 
             _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
             _aPIResponse.IsSuccess = true;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Books.Core.Entities;
+using Books.Core.Helpers;
 using Books.Core.Repositories.Abstract;
 using System;
 using System.Collections.Generic;
@@ -25,9 +26,9 @@ namespace Books.API.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ApplicationRole>> GetRolesAsync()
+        public Task<PagedList<ApplicationRole>> GetRolesAsync(SearchParams searchParams)
         {
-            return _unitOfWork.RolesRepository.GetAllAsync();
+            return _unitOfWork.RolesRepository.GetAllAsync(searchParams);
         }
     }
 }

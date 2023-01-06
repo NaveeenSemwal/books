@@ -1,5 +1,6 @@
 ﻿using Books.API.Entities;
 using Books.API.Models.Dto;
+using Books.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -16,7 +17,7 @@ namespace Books.API.Services
 
         Task<RegisterationResponsetDto> Register(RegisterationRequestDto registerationRequestDto);
 
-        Task<IEnumerable<MemberDto>> GetAll();
+        Task<PagedList<MemberDto>> GetAll(SearchParams searchParams);
 
         Task<MemberDto> Get(string username);
 

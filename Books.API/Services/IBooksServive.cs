@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Books.API.Models.Dto;
+using Books.Core.Helpers;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace Books.API.Services
 {
     public interface IBooksServive
     {
-        Task<IEnumerable<Book>> GetBooksAsync();
+        Task<PagedList<Book>> GetBooksAsync(SearchParams searchParams);
 
         Task<Book> GetBookAsync(Guid id);
 

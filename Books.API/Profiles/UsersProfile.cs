@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Books.API.Entities;
 using Books.API.Models.Dto;
+using Books.Core.Helpers;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Books.API.Profiles
@@ -25,6 +28,9 @@ namespace Books.API.Profiles
 
             CreateMap<ApplicationUser, MemberDto>()
                 .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain == true).Url));
+
+            // Automapper with inherited list
+            CreateMap(typeof(PagedList<>), typeof(PagedList<>)).ConvertUsing(typeof(CustomConverter<,>));
 
             CreateMap<MemberUpdateDto, ApplicationUser>();
         }

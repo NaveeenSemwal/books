@@ -3,6 +3,7 @@ using Books.API.Entities;
 using Books.API.Models.Dto;
 using Books.API.Services.Abstract;
 using Books.Core.Entities;
+using Books.Core.Helpers;
 using Books.Core.Repositories.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -48,13 +49,11 @@ namespace Books.API.Services
             return _mapper.Map<MemberDto>(user);
         }
 
-        public async Task<IEnumerable<MemberDto>> GetAll()
+        public async Task<PagedList<MemberDto>> GetAll(SearchParams searchParams)
         {
-            var users = await _unitOfWork.UserRepository.GetAllAsync(includeProperties: "Photos");
+            var users = await _unitOfWork.UserRepository.GetAllAsync(searchParams, includeProperties: "Photos");
 
-            var members = _mapper.Map<List<MemberDto>>(users);
-
-            return members;
+            return _mapper.Map<PagedList<MemberDto>>(users);
         }
 
         public bool IsUniqueUser(string userName)

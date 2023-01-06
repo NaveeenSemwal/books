@@ -2,12 +2,13 @@
 using System.Threading.Tasks;
 using System;
 using Books.Core.Entities;
+using Books.Core.Helpers;
 
 namespace Books.API.Services
 {
     public interface IRolesService
     {
-        Task<IEnumerable<ApplicationRole>> GetRolesAsync();
+        Task<PagedList<ApplicationRole>> GetRolesAsync(SearchParams searchParams);
 
         Task<Guid> AddRole(ApplicationRole role);
     }

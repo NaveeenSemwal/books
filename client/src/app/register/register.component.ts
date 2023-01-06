@@ -16,16 +16,16 @@ export class RegisterComponent implements OnInit {
 
   model: any = {};
   actionBtn: string = "Register";
-  isAdmin : boolean = false;
+  isAdmin: boolean = false;
 
   @Input() inputUsersFromHomeComponent: any;
 
   // @Output() cancelRegisterUser = new EventEmitter<false>();
 
-  maxDate : Date= new Date();
+  maxDate: Date = new Date();
 
   // public means it can be accessed in Template also.
-  constructor(private accountService: AccountService,private router: Router,
+  constructor(private accountService: AccountService, private router: Router,
     private toastr: ToastrService, private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public editData: any,
     private dialogRef: MatDialogRef<RegisterComponent>) { }
@@ -60,14 +60,14 @@ export class RegisterComponent implements OnInit {
 
       console.log(this.editData);
 
-        this.registerForm.controls['gender'].setValue(this.editData.gender),
+      this.registerForm.controls['gender'].setValue(this.editData.gender),
         this.registerForm.controls['username'].setValue(this.editData.name),
         this.registerForm.controls['knownAs'].setValue(this.editData.knownAs),
         this.registerForm.controls['dateOfBirth'].setValue(this.editData.dateOfBirth),
         this.registerForm.controls['city'].setValue(this.editData.city),
         this.registerForm.controls['country'].setValue(this.editData.country),
         this.registerForm.controls['password'].setValue(this.editData.password)
-        this.registerForm.controls['confirmpassword'].setValue(this.editData.password)
+      this.registerForm.controls['confirmpassword'].setValue(this.editData.password)
 
       this.actionBtn = "Update";
 
@@ -88,7 +88,7 @@ export class RegisterComponent implements OnInit {
     //   knownas : this.registerForm.value.knownAs!,
     //   dateofbirth : this.registerForm.value.dateOfBirth,
 
-      
+
 
     // };
 
@@ -101,11 +101,11 @@ export class RegisterComponent implements OnInit {
       this.accountService.register(this.registerForm.value).subscribe({
 
         next: response => {
-          console.log(response);
+         
           // this.cancel();
           this.dialogRef.close();
 
-          this.login();
+          this.login(this.registerForm.value);
 
         },
         error: error => this.toastr.error(error.error)
@@ -121,9 +121,11 @@ export class RegisterComponent implements OnInit {
     // this.cancelRegisterUser.emit(false);
   }
 
-  login() {
+  login(requestModel: any) {
 
-    this.accountService.login(this.model).subscribe({
+    let model = { "username": requestModel.username, "password":  requestModel.password}
+
+    this.accountService.login(model).subscribe({
 
       next: (user) => {
 
