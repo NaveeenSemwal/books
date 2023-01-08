@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <UserSecretsId>9dbe4da6-c382-4ff5-80bb-51e9ddab9904</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
