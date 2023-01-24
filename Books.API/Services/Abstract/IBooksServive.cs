@@ -9,7 +9,7 @@ namespace Books.API.Services.Abstract
 {
     public interface IBooksServive
     {
-        Task<PagedList<Book>> GetBooksAsync(SearchParams searchParams);
+        Task<PagedList<Book>> GetBooksAsync(QueryParams searchParams);
 
         Task<Book> GetBookAsync(Guid id);
 

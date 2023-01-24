@@ -27,7 +27,7 @@ namespace Books.API.Services.Implementation
             throw new NotImplementedException();
         }
 
-        public Task<PagedList<ApplicationRole>> GetRolesAsync(SearchParams searchParams)
+        public Task<PagedList<ApplicationRole>> GetRolesAsync(QueryParams searchParams)
         {
             return _unitOfWork.RolesRepository.GetAllAsync(searchParams);
         }

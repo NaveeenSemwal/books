@@ -12,4 +12,6 @@ export class ListsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  message: string = " This is list component";
+
 }

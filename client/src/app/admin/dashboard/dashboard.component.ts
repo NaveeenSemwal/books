@@ -30,16 +30,16 @@ export class DashboardComponent implements OnInit {
 
   loadMembers() {
 
-    this.membersService.getMembers().subscribe({
-      next: members => {
+    // this.membersService.getMembers().subscribe({
+    //   next: members => {
 
-        this.dataSource = new MatTableDataSource(members);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+    //     this.dataSource = new MatTableDataSource(members);
+    //     this.dataSource.paginator = this.paginator;
+    //     this.dataSource.sort = this.sort;
 
-      },
-      error: (error: any) => { console.log(error); }
-    })
+    //   },
+    //   error: (error: any) => { console.log(error); }
+    // })
   }
 
   editMember(row: any) {

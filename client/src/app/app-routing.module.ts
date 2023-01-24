@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
+import { DirectivedemoComponent } from './directivedemo/directivedemo.component';
+import { DynamiccomponentComponent } from './dynamiccomponent/dynamiccomponent.component';
+import { DynamiccomponentloaderComponent } from './dynamiccomponentloader/dynamiccomponentloader.component';
 import { HomeComponent } from './home/home.component';
 import { ListsComponent } from './lists/lists.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
@@ -13,6 +16,9 @@ import { PreventUnsavedChangesGuard } from './_gaurds/prevent-unsaved-changes.gu
 const routes: Routes = [
 
   { path: '', component: HomeComponent },
+  { path: 'directive-demo', component: DirectivedemoComponent },
+  { path: 'dynamic-component-ngif-demo', component: DynamiccomponentComponent },
+  { path: 'dynamic-component-loader-demo', component: DynamiccomponentloaderComponent },
   {
     path: '',
     runGuardsAndResolvers: 'always',

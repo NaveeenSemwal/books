@@ -1,0 +1,81 @@
+<div class="container">
+  <h2> Structural directive demo : ngClass , ngStyle </h2>
+  <button class="btn btn-primary" (click)="oddOnly = !oddOnly">Click to generate even odd number</button>
+
+  <div *appCustomNgIf="oddOnly">
+
+    <ul [ngClass]="{odd : even % 2== 0}" [ngStyle]="{'background-color':  even % 2== 0 ? 'yellow' : 'transparent' }"
+      *ngFor="let even of oddNumbers">
+      <li>
+        {{even}}
+      </li>
+    </ul>
+
+  </div>
+
+  <h3>* in structural directive gets converted to ng-template and using property binding it render template</h3>
+  <h3>ng-template will only render content if condition is TRUE</h3>
+  <ng-template [ngIf]="!oddOnly">
+    <div>
+      <ul [ngClass]="{odd : even % 2== 0}" [ngStyle]="{'background-color':  even % 2== 0 ? 'yellow' : 'transparent' }"
+        *ngFor="let even of evenNumbers">
+        <li>
+          {{even}}
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+
+
+
+  <table>
+    <tr>
+      <th style="align-content: center;" colspan="3">Ways to manupulate DOM elelemt..... Hover mouse over on second
+        column.</th>
+      <!-- <th>Contact</th>
+          <th>Country</th> -->
+    </tr>
+    <tr>
+      <td>ElementRef attribute directive.</td>
+      <td>
+        <p appElement>This is paragrah wit custom element directive</p>
+      </td>
+      <td>Good way</td>
+    </tr>
+    <tr>
+      <td>Element style using Renderer2. Better then ElementRef</td>
+      <td>
+        <p appRenderer2>This is paragrah wit custom Renderer2 service</p>
+      </td>
+      <td> Better way. @HostListener : Decorater the declare a DOM event and provide the event handler for it. The
+        Renderer2 class is an abstraction provided by Angular in the form of a service that
+        allows to manipulate elements of your app without having to touch the DOM directly</td>
+    </tr>
+    <tr>
+      <td>@HostBinding : Bind property of Hosting element like style.color using Input properties</td>
+      <td>
+        <p appHostBinding [defaultColor]="'blue'" [HighlightColor]="'red'">This is paragrah wit HostBinding service</p>
+      </td>
+      <td> <strong>Best Way to do DOM manupulation</strong> </td>
+    </tr>
+
+  </table>
+
+
+
+<br>
+
+  <button appDirectiveWithClass type="button">Click button to change CSS</button>
+</div>
+
+
+
+<div>
+
+
+  <ng-template appElement let-count let-naam="name" let-place="location">
+    <h1>Hello {{naam}}, you work in {{place}} , {{count}}</h1>
+  </ng-template>
+
+
+</div>

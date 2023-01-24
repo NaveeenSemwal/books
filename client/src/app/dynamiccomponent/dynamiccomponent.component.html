@@ -1,0 +1,28 @@
+
+<h1> Question - What are dynamic component</h1>
+
+<h2> Answer - Component can be loaded dynamically  by two options-</h2>
+<ul>
+    <li>
+        *ngIf
+    </li>
+    <li> Dynamic Component loader - It was used in past. Component creation, manage & add it to DOM need to do via code</li>
+</ul>
+
+<h3> Note - *ngIf is preffered approch to load component dynamically.</h3>
+<app-alert [message]="errorMessage" *ngIf="errorMessage" (close)="onHandleError()"></app-alert>
+
+
+<!-- ---------  *ngIf   approch. See the error in POPUP-------- -->
+<form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" *ngIf="!(accountService.currentUser$ | async)">
+
+    <input class="form-control me-2" name="username" [(ngModel)]="model.username" type="search" placeholder="Username"
+      aria-label="Search">
+
+    <input class="form-control me-2" name="password" [(ngModel)]="model.password" type="search" type="password" autocomplete="false"
+      placeholder="Password" aria-label="Search">
+
+    <button class="btn btn-success" type="submit">Login</button>
+  </form>
+
+  

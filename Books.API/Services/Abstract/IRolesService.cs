@@ -8,7 +8,7 @@ namespace Books.API.Services.Abstract
 {
     public interface IRolesService
     {
-        Task<PagedList<ApplicationRole>> GetRolesAsync(SearchParams searchParams);
+        Task<PagedList<ApplicationRole>> GetRolesAsync(QueryParams searchParams);
 
         Task<Guid> AddRole(ApplicationRole role);
     }

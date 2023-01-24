@@ -17,7 +17,7 @@ namespace Books.API.Services.Abstract
 
         Task<RegisterationResponsetDto> Register(RegisterationRequestDto registerationRequestDto);
 
-        Task<PagedList<MemberDto>> GetAll(SearchParams searchParams);
+        Task<PagedList<MemberDto>> GetAll(UserParams searchParams);
 
         Task<MemberDto> Get(string username);
 

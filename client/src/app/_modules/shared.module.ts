@@ -15,6 +15,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSortModule} from '@angular/material/sort';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+
 
 @NgModule({
   declarations: [],
@@ -36,6 +38,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     MatButtonModule,
     MatSortModule,
     BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot()
     
   ],
   exports: [
@@ -53,7 +56,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     MatIconModule,
     MatButtonModule,
     MatSortModule,
-    BsDatepickerModule
+    BsDatepickerModule,
+    PaginationModule
 
   ]
 })

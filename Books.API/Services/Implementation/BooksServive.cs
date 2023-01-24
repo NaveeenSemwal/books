@@ -44,7 +44,7 @@ namespace Books.API.Services.Implementation
             return _mapper.Map<Book>(bookEntity);
         }
 
-        public async Task<PagedList<Book>> GetBooksAsync(SearchParams searchParams)
+        public async Task<PagedList<Book>> GetBooksAsync(QueryParams searchParams)
         {
             var booksEntity = await _unitOfWork.BooksRepository.GetAllAsync(searchParams, includeProperties: "Author");
 

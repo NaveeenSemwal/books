@@ -8,7 +8,7 @@ namespace Books.API.Services
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        Task<PagedList<TEntity>> GetAllAsync(SearchParams searchParams, Expression<Func<TEntity, bool>> filter = null,string includeProperties = null);
+        Task<PagedList<TEntity>> GetAllAsync(QueryParams searchParams, Expression<Func<TEntity, bool>> filter = null,string includeProperties = null);
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter, bool traked, string includeProperties = null);
         void AddAsync(TEntity entity);
         void UpdateAsync(TEntity entity);

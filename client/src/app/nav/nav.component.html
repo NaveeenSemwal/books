@@ -9,6 +9,22 @@
         aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/directive-demo">Directive-demo</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/dynamic-component-ngif-demo">Dynamic-component-using-ngif</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/dynamic-component-loader-demo">Dynamic-component-loader-demo</a>
+          </li>
+        </ul>
+      </div>
+
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="(accountService.currentUser$ | async)">
           <li class=" nav-item" *ngIf="!isAdmin">
@@ -25,7 +41,8 @@
           </li>
         </ul>
         <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
-          <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome  {{user.name | titlecase}}</a>
+          <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome {{user.knownAs |
+            titlecase}}</a>
           <div class="dropdown-menu mt-3" *dropdownMenu>
             <a routerLink="/member/edit" class="dropdown-item">Edit Profile</a>
             <div class="dropdown-divider"></div>
@@ -40,8 +57,8 @@
       <input class="form-control me-2" name="username" [(ngModel)]="model.username" type="search" placeholder="Username"
         aria-label="Search">
 
-      <input class="form-control me-2" name="password" [(ngModel)]="model.password" type="search" type="password" autocomplete="false"
-        placeholder="Password" aria-label="Search">
+      <input class="form-control me-2" name="password" [(ngModel)]="model.password" type="search" type="password"
+        autocomplete="false" placeholder="Password" aria-label="Search">
 
       <button class="btn btn-success" type="submit">Login</button>
     </form>

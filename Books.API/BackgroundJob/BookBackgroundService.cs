@@ -36,7 +36,7 @@ namespace Books.API.BackgroundJob
                 {
                     var scopeService = scope.ServiceProvider.GetRequiredService<IBooksServive>();
 
-                    var result = await scopeService.GetBooksAsync(new Core.Helpers.SearchParams());
+                    var result = await scopeService.GetBooksAsync(new Core.Helpers.QueryParams());
 
                     _logger.LogInformation("BackgroundService executed data sucessfully --- " + result.Count());
 

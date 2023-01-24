@@ -29,7 +29,7 @@ namespace Books.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<APIResponse>> Get(SearchParams searchParams)
+        public async Task<ActionResult<APIResponse>> Get(QueryParams searchParams)
         {
             var roles = await _rolesService.GetRolesAsync(searchParams);
 

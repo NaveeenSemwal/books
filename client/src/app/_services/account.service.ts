@@ -29,10 +29,11 @@ export class AccountService {
           const userentity = res.data.user;
 
           var data: User = {
-            name: userentity.name,
+           
             userName: userentity.userName,
-            email: userentity.email,
-            emailConfirmed: userentity.emailConfirmed,
+            photoUrl: userentity.photoUrl,
+            knownAs: userentity.knownAs,
+            gender : userentity.gender,
             token: res.data.token
           }
 

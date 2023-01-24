@@ -83,7 +83,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return await query.SingleOrDefaultAsync();
         }
 
-        public virtual async Task<PagedList<TEntity>> GetAllAsync(SearchParams searchParams, Expression<Func<TEntity, bool>> filter = null, string includeProperties = null)
+        public virtual async Task<PagedList<TEntity>> GetAllAsync(QueryParams searchParams, Expression<Func<TEntity, bool>> filter = null, string includeProperties = null)
         {
             IQueryable<TEntity> query = _dbContext.Set<TEntity>().AsNoTracking();
 

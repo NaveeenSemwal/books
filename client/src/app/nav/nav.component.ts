@@ -30,8 +30,6 @@ export class NavComponent implements OnInit {
 
         let loggedInuser = this.accountService.getUserByToken(user.token);
 
-        console.log(loggedInuser);
-
         if (loggedInuser.role === 'Admin') {
 
           this.isAdmin = true;

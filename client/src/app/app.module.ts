@@ -24,6 +24,18 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { TextInputComponent } from './_customcontrols/text-input/text-input.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { DatePickerComponent } from './_customcontrols/date-picker/date-picker.component';
+import { ElementDirective } from './_customdirective/element.directive';
+import { ComponentDirective } from './_customdirective/component.directive';
+import { TemplateRefDirective } from './_customdirective/templateref.directive';
+import { ViewContainerRefDirective } from './_customdirective/viewcontainerref.directive';
+import { DirectivedemoComponent } from './directivedemo/directivedemo.component';
+import { ElementDirectiveByRenderer2 } from './_customdirective/renderer2.directive';
+import { ElementHostBinding } from './_customdirective/hostbinding.directive';
+import { CustomNgIfDirective } from './_customdirective/customngif.directive';
+import { DirectiveWithClass } from './_customdirective/directivewithclass.directive';
+import { AlertComponent } from './alert/alert.component';
+import { DynamiccomponentComponent } from './dynamiccomponent/dynamiccomponent.component';
+import { DynamiccomponentloaderComponent } from './dynamiccomponentloader/dynamiccomponentloader.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +51,19 @@ import { DatePickerComponent } from './_customcontrols/date-picker/date-picker.c
     MemberEditComponent,
     TextInputComponent,
     DashboardComponent,
-    DatePickerComponent
+    DatePickerComponent,
+    ElementDirective,
+    ComponentDirective,
+    TemplateRefDirective,
+    ViewContainerRefDirective,
+    DirectivedemoComponent,
+    ElementDirectiveByRenderer2,
+    ElementHostBinding,
+    CustomNgIfDirective,
+    DirectiveWithClass,
+    AlertComponent,
+    DynamiccomponentComponent,
+    DynamiccomponentloaderComponent
   ],
   imports: [
     BrowserModule,

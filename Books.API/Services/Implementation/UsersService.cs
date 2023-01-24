@@ -17,6 +17,7 @@ using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Transactions;
+using static Dapper.SqlMapper;
 
 namespace Books.API.Services.Implementation
 {
@@ -50,9 +51,19 @@ namespace Books.API.Services.Implementation
             return _mapper.Map<MemberDto>(user);
         }
 
-        public async Task<PagedList<MemberDto>> GetAll(SearchParams searchParams)
+        public async Task<PagedList<MemberDto>> GetAll(UserParams searchParams)
         {
-            var users = await _unitOfWork.UserRepository.GetAllAsync(searchParams, includeProperties: "Photos");
+            // 2023- 100 = 1923 : This is MAX DOB year
+            var minDob = DateTime.Today.AddYears(-searchParams.MaxAge);
+
+            // 2023 - 18 = 2005 : This is MIN DOB year
+            var maxDob = DateTime.Today.AddYears(-searchParams.MinAge);
+
+            // Excluding current user and gender from result set.
+            Expression<Func<ApplicationUser, bool>> filter = x => x.UserName != _httpContextAccessor.HttpContext.User.GetUserName()
+            && x.Gender != searchParams.Gender && x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob;
+
+            var users = await _unitOfWork.UserRepository.GetAllAsync(searchParams, filter, includeProperties: "Photos");
 
             // Sending Pagination in header in Response
             _httpContextAccessor.HttpContext.Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize,
@@ -118,7 +129,7 @@ namespace Books.API.Services.Implementation
 
         public async Task<bool> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
-            var userName = _httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+            var userName = _httpContextAccessor.HttpContext.User.GetUserName();
 
             var user = await _unitOfWork.UserRepository.GetAsync(x => x.UserName == userName, true);
 

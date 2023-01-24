@@ -36,8 +36,9 @@ namespace Books.API.Controllers
         /// <param name="searchParams"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PagedList<MemberDto>> GetAll([FromQuery] SearchParams searchParams)
+        public async Task<PagedList<MemberDto>> GetAll([FromQuery] UserParams searchParams)
         {
+          
             return await _usersService.GetAll(searchParams);
         }
 

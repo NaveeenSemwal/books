@@ -1,12 +1,12 @@
 ﻿namespace Books.Core.Helpers
 {
-    public class SearchParams
+    public class QueryParams
     {
-        private const int MaxPageSize = 50;
+        private int _pageSize = 2;
+
+        private const int MaxPageSize = 5;
 
         public int PageNumber { get; set; } = 1;
-
-        private int _pageSize = 5;
 
         public int PageSize
         {
@@ -14,7 +14,6 @@
 
             set => _pageSize = (value > MaxPageSize) ? MaxPageSize : value;
         }
-
     }
 }
 
