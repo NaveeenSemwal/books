@@ -11,6 +11,7 @@ export class UserParams {
 
     constructor(user: User) {
 
-        this.gender = user.gender;
+        // This is just to match the both values for Gender DDL default selection
+        this.gender = user.gender.toLowerCase();
     }
 }

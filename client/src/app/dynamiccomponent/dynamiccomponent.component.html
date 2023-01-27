@@ -9,12 +9,12 @@
     <li> Dynamic Component loader - It was used in past. Component creation, manage & add it to DOM need to do via code</li>
 </ul>
 
-<h3> Note - *ngIf is preffered approch to load component dynamically.</h3>
+<h3 style="color:red"> Note - *ngIf is preffered approch to load component dynamically. Run the API part and enter invalid cred to see popup</h3>
 <app-alert [message]="errorMessage" *ngIf="errorMessage" (close)="onHandleError()"></app-alert>
 
 
 <!-- ---------  *ngIf   approch. See the error in POPUP-------- -->
-<form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()" *ngIf="!(accountService.currentUser$ | async)">
+<form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()">
 
     <input class="form-control me-2" name="username" [(ngModel)]="model.username" type="search" placeholder="Username"
       aria-label="Search">

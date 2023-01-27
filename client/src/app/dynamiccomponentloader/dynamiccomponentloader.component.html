@@ -1,1 +1,36 @@
-<p>dynamiccomponentloader works!</p>
+<div style="padding-top: 10%;">
+
+
+  <h1>Here we need to load the AlertComponent manually using dynamic component loader to see error popup </h1>
+
+  <!-- <app-alert [message]="errorMessage" *ngIf="errorMessage" (close)="onHandleError()"></app-alert> -->
+
+
+
+  <ng-template appPlaceHolder>
+
+  </ng-template>
+
+  <form #loginForm="ngForm" class="d-flex" (ngSubmit)="login()">
+
+    <input class="form-control me-2" name="username" [(ngModel)]="model.username" type="search" placeholder="Username"
+      aria-label="Search">
+
+    <input class="form-control me-2" name="password" [(ngModel)]="model.password" type="search" type="password"
+      autocomplete="false" placeholder="Password" aria-label="Search">
+
+    <button class="btn btn-success" type="submit">Login</button>
+  </form>
+
+</div>
+
+<div>
+  <app-dynamicform [fields]="regConfig" (submit)="submit($event)">
+
+  </app-dynamicform>
+</div>
+
+
+<div>
+  <app-select-input></app-select-input>
+</div>

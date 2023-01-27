@@ -36,6 +36,13 @@ import { DirectiveWithClass } from './_customdirective/directivewithclass.direct
 import { AlertComponent } from './alert/alert.component';
 import { DynamiccomponentComponent } from './dynamiccomponent/dynamiccomponent.component';
 import { DynamiccomponentloaderComponent } from './dynamiccomponentloader/dynamiccomponentloader.component';
+import { PlaceHolderDirective } from './_customdirective/placeholder.directive';
+import { DynamicFormComponent } from './dynamicform/dynamicform.component';
+import { DynamicFieldDirective } from './dynamicform/dynamic-field.directive';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { InputComponent } from './_customcontrols/input/input.component';
+import { SelectInputComponent } from './_customcontrols/select-input/select-input.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +70,14 @@ import { DynamiccomponentloaderComponent } from './dynamiccomponentloader/dynami
     DirectiveWithClass,
     AlertComponent,
     DynamiccomponentComponent,
-    DynamiccomponentloaderComponent
+    DynamiccomponentloaderComponent,
+
+    PlaceHolderDirective,
+    DynamicFormComponent,
+    DynamicFieldDirective,
+    InputComponent,
+    SelectInputComponent,
+
   ],
   imports: [
     BrowserModule,
