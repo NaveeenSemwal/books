@@ -83,7 +83,8 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return await query.SingleOrDefaultAsync();
         }
 
-        public virtual async Task<PagedList<TEntity>> GetAllAsync(QueryParams searchParams, Expression<Func<TEntity, bool>> filter = null, string includeProperties = null)
+        public virtual async Task<PagedList<TEntity>> GetAllAsync(QueryParams searchParams, Expression<Func<TEntity, bool>> filter = null,
+            string includeProperties = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null)
         {
             IQueryable<TEntity> query = _dbContext.Set<TEntity>().AsNoTracking();
 
@@ -98,6 +99,11 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
                 {
                     query = query.Include(includeProperty);
                 }
+            }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
             }
 
             return await PagedList<TEntity>.CreateAsync(query, searchParams.PageNumber, searchParams.PageSize);
@@ -128,6 +134,9 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
             return await _dbContext.Set<TEntity>().FromSqlRaw(query, parameters).ToListAsync();
         }
 
-
+        public virtual async Task<TEntity> GetAsync(object id)
+        {
+            return await _dbContext.Set<TEntity>().FindAsync(id);
+        }
     }
 }

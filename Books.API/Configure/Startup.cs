@@ -1,4 +1,5 @@
-﻿using Books.API.Contexts;
+﻿using Books.API.ActionFilters;
+using Books.API.Contexts;
 using Books.API.Services.Abstract;
 using Books.API.Services.Implementation;
 using Books.Core.Repositories.Implementation.Dapper;
@@ -30,6 +31,8 @@ namespace Books.API.Configure
             services.AddScoped<IRolesService, RolesService>();
 
             services.AddScoped<ITokenService, TokenService>();
+
+            services.AddScoped<LogUserActivity>();
 
         }
 

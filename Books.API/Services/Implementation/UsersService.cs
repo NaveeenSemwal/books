@@ -51,6 +51,13 @@ namespace Books.API.Services.Implementation
             return _mapper.Map<MemberDto>(user);
         }
 
+        public async Task<MemberDto> Get(object id)
+        {
+            var user = await _unitOfWork.UserRepository.GetAsync(id);
+
+            return _mapper.Map<MemberDto>(user);
+        }
+
         public async Task<PagedList<MemberDto>> GetAll(UserParams searchParams)
         {
             // 2023- 100 = 1923 : This is MAX DOB year
@@ -61,9 +68,16 @@ namespace Books.API.Services.Implementation
 
             // Excluding current user and gender from result set.
             Expression<Func<ApplicationUser, bool>> filter = x => x.UserName != _httpContextAccessor.HttpContext.User.GetUserName()
-            && x.Gender != searchParams.Gender && x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob;
+            && x.Gender == searchParams.Gender && x.DateOfBirth >= minDob && x.DateOfBirth <= maxDob;
 
-            var users = await _unitOfWork.UserRepository.GetAllAsync(searchParams, filter, includeProperties: "Photos");
+            // Sorting users based on OrderBy param
+            Func<IQueryable<ApplicationUser>, IOrderedQueryable<ApplicationUser>> orderBy = x => searchParams.OrderBy switch
+            {
+                "created" => x.OrderByDescending(u => u.Created),
+                _ => x.OrderByDescending(u => u.LastActive)
+            };
+
+            var users = await _unitOfWork.UserRepository.GetAllAsync(searchParams, filter, includeProperties: "Photos", orderBy);
 
             // Sending Pagination in header in Response
             _httpContextAccessor.HttpContext.Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize,

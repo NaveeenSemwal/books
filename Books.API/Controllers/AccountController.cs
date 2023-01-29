@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Books.API.Controllers
 {
     [Route("api/account")]
-    public class AccountController : BaseApiController
+    public class AccountController : ControllerBase
     {
         private readonly IUsersService _usersService;
         private readonly ILogger<UsersController> _logger;

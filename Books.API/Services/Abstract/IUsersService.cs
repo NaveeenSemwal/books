@@ -21,6 +21,8 @@ namespace Books.API.Services.Abstract
 
         Task<MemberDto> Get(string username);
 
+        Task<MemberDto> Get(object id);
+
         Task<bool> UpdateUser(MemberUpdateDto memberUpdateDto);
     }
 }

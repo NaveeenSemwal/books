@@ -16,5 +16,12 @@ namespace Books.Core.Extensions
 
             return userName;
         }
+
+        public static string GetUserId(this ClaimsPrincipal claimsPrincipal)
+        {
+            var userId = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            return userId;
+        }
     }
 }
