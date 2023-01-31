@@ -27,7 +27,8 @@ namespace Books.API.Profiles
             CreateMap<ApplicationUser, RegisterationResponsetDto>();
 
             CreateMap<ApplicationUser, MemberDto>()
-                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain == true).Url));
+                .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src => src.Photos.FirstOrDefault(x => x.IsMain == true).Url))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.UserName));
 
             // Automapper with inherited list
             CreateMap(typeof(PagedList<>), typeof(PagedList<>)).ConvertUsing(typeof(CustomConverter<,>));

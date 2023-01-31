@@ -20,26 +20,15 @@ export class MemberListComponent implements OnInit {
   members: Member[] | undefined;
   result: Observable<PaginatedResult<Member[]>> | undefined;
   pagination: Pagination | undefined;
-  userParams: UserParams | undefined;
 
-  user: User | undefined;
+  userParams: UserParams | undefined;
 
   genderList: Selector[] = [{ value: "male", display: "Male" }, { value: "female", display: "Female" }]
 
 
-  constructor(private membersService: MembersService, private accountService: AccountService) {
+  constructor(private membersService: MembersService) {
 
-    // take(1) : It is from rxjs. Any Http call we subscribe,  we need to unsubscribe also. But using take(1) we are completeing this call. 
-    // So no need of unsubscribe
-    this.accountService.currentUser$.pipe(take(1)).subscribe({
-
-      next: user => {
-        if (user) {
-          this.userParams = new UserParams(user);
-          this.user = user;
-        }
-      }
-    });
+    this.userParams = this.membersService.getUserParams();
 
   }
 
@@ -53,35 +42,36 @@ export class MemberListComponent implements OnInit {
     if (this.userParams && this.userParams?.pageNumber !== event.page) {
       this.userParams.pageNumber = event.page;
 
+      this.membersService.setUserParams(this.userParams);
+
       this.loadmembers();
     }
   }
 
   loadmembers() {
-     
-    console.log(this.userParams);
 
-    if (!this.userParams) return;
+    if (this.userParams) {
 
-    this.membersService.getMembers(this.userParams).subscribe({
+      this.membersService.setUserParams(this.userParams);
 
-      next: response => {
-        if (response.result && response.pagination) {
+      this.membersService.getMembers(this.userParams).subscribe({
 
-          this.members = response.result;
-          this.pagination = response.pagination;
+        next: response => {
+          if (response.result && response.pagination) {
+
+            this.members = response.result;
+            this.pagination = response.pagination;
+          }
         }
-      }
-    });
+      });
+    }
+
   }
 
   resetFilters() {
 
-    if (this.user) {
-      this.userParams = new UserParams(this.user);
+      this.userParams = this.membersService.resetUserParams();
       this.loadmembers();
-    }
-
   }
 }
 

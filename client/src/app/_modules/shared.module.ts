@@ -16,6 +16,9 @@ import {MatSortModule} from '@angular/material/sort';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+
+import { TimeagoModule } from 'ngx-timeago';
 
 
 
@@ -39,7 +42,9 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     MatButtonModule,
     MatSortModule,
     BsDatepickerModule.forRoot(),
-    PaginationModule.forRoot()
+    PaginationModule.forRoot(),
+    ButtonsModule.forRoot(),
+    TimeagoModule.forRoot()
     
   ],
   exports: [
@@ -58,7 +63,10 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     MatButtonModule,
     MatSortModule,
     BsDatepickerModule,
-    PaginationModule
+    PaginationModule,
+    ButtonsModule,
+    TimeagoModule
+
 
   ]
 })

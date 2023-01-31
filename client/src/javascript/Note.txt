@@ -1,0 +1,7 @@
+------------ How to run the JS file in visual studio---------------------------
+
+Navigate to location in terminal - D:\books\client\src\javascript> node map-filter-reduce.js
+Press enter and you will see the output
+
+
+https://blog.greenroots.info/5-ways-to-merge-arrays-in-javascript-and-their-differences

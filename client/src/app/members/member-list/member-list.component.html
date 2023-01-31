@@ -36,6 +36,18 @@
         <button class="btn btn-primary ms-1" type="submit">Apply filters</button>
         <button (click)="resetFilters()" class="btn btn-info ms-1" type="submit">Reset filters</button>
 
+        <!-- https://valor-software.com/ngx-bootstrap/#/components/buttons?tab=overview#checkbox -->
+        <div class="col">
+            <div class="btn-group float-end">
+                <label class="btn btn-primary" [(ngModel)]="userParams.orderBy" name="orderBy" btnRadio="lastActive"
+                    tabindex="0" role="button" (click)="loadmembers()">Last Active</label>
+                <label class="btn btn-primary" [(ngModel)]="userParams.orderBy" name="orderBy" btnRadio="created"
+                    tabindex="0" role="button" (click)="loadmembers()">Newest Created</label>
+
+            </div>
+        </div>
+
+
     </form>
 </div>
 
