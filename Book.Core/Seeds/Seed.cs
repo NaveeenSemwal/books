@@ -1,5 +1,6 @@
 ﻿using Books.API.Contexts;
 using Books.API.Entities;
+using Books.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,9 +35,9 @@ namespace Books.Core.Seeds
         }
 
 
-        public static async Task SeedUsers(BookContext context, UserManager<ApplicationUser> userManager)
+        public static async Task SeedUsers(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
-            if (!await context.ApplicationUsers.AnyAsync())
+            if (!await userManager.Users.AnyAsync())
             {
                 var userData = await File.ReadAllTextAsync("Configure/UserSeedData.json");
 
@@ -46,11 +47,19 @@ namespace Books.Core.Seeds
 
                 foreach (var user in users)
                 {
-                    user.PasswordHash = userManager.PasswordHasher.HashPassword(user, user.PasswordHash);
-                    context.ApplicationUsers.Add(user);
-                }
+                    user.UserName = user.UserName.ToLower();
 
-                await context.SaveChangesAsync();
+                    await userManager.CreateAsync(user, "Dotvik@987");
+
+                    if (user.UserName != "admin")
+                    {
+                        await userManager.AddToRoleAsync(user, "Member");
+                    }
+                    else
+                    {
+                        await userManager.AddToRolesAsync(user, new[] { "Admin", "Moderator" });
+                    }
+                }
             }
         }
     }

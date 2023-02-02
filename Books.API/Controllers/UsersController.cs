@@ -13,7 +13,7 @@ namespace Books.API.Controllers
 {
     [Route("api/v{version:apiVersion}/users")]
     [ApiVersion("1.0")]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly IUsersService _usersService;
@@ -35,6 +35,7 @@ namespace Books.API.Controllers
         /// </summary>
         /// <param name="searchParams"></param>
         /// <returns></returns>
+
         [HttpGet]
         public async Task<PagedList<MemberDto>> GetAll([FromQuery] UserParams searchParams)
         {
@@ -47,6 +48,7 @@ namespace Books.API.Controllers
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
+
         [HttpGet]
         [Route("{username}")]
         public async Task<MemberDto> GetbyUserName(string username)

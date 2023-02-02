@@ -24,7 +24,6 @@ namespace Books.API
         /// <param name="args"></param>
         public async static Task Main(string[] args)
         {
-
             //Read Configuration from appSettings    
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             //Initialize Logger    
@@ -42,19 +41,17 @@ namespace Books.API
                     await bookContext.Database.MigrateAsync(); // Apply pending migration or create DB.
                     await Seed.SeedBooks(bookContext);
 
-                
-
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-
+                    
                     var roleManager = services.GetRequiredService<RoleManager<ApplicationRole>>();
 
-                    await Seed.SeedUsers(bookContext,userManager);
+                    await DefaultRoles.SeedAsync(roleManager);
 
-                    await DefaultRoles.SeedAsync(userManager, roleManager);
-                    
+                    await Seed.SeedUsers(userManager, roleManager);
+
                 }
 
-                    Log.Information("Application Starting.");
+                Log.Information("Application Starting.");
 
                 host.Run();
             }

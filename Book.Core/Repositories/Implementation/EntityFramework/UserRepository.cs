@@ -19,77 +19,8 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
 {
     public class UserRepository : Repository<ApplicationUser>, IUserRepository
     {
-        private BookContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly string secretkey;
-
-        public UserRepository(BookContext context, ILoggerFactory logger, IConfiguration configuration, UserManager<ApplicationUser> userManager) : base(context, logger)
+        public UserRepository(BookContext dbContext, ILoggerFactory logger) : base(dbContext, logger)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _userManager = userManager;
-            secretkey = configuration.GetSection("ApiSettings:Secret").ToString();
-        }
-
-        public bool IsUniqueUser(string userName)
-        {
-            var user = _context.ApplicationUsers.FirstOrDefault(x => x.UserName.Equals(userName));
-
-            if (user == null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public async Task<(ApplicationUser LocalUser, string Token)> Login(ApplicationUser loginRequestDto, string password)
-        {
-            var user = await _context.ApplicationUsers.FirstOrDefaultAsync(x => x.UserName.ToLower() == loginRequestDto.UserName.ToLower());
-
-            bool isValidPassword = await _userManager.CheckPasswordAsync(user, password);
-
-            if (user == null || isValidPassword == false)
-            {
-                return (new ApplicationUser(), string.Empty);
-            }
-
-            var roles = await _userManager.GetRolesAsync(user);
-
-            return (user, GenerateJwtToken(user, roles));
-        }
-
-        private string GenerateJwtToken(ApplicationUser user, IList<string> roles)
-        {
-
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("[SECRET USED TO SIGN AND VERIFY JWT TOKENS, IT CAN BE ANY STRING]");
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = GetClaimsIdentity(user, roles),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
-        }
-
-        private ClaimsIdentity GetClaimsIdentity(ApplicationUser user, IList<string> roles)
-        {
-            var claims = new ClaimsIdentity();
-
-            claims.AddClaim(new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()));
-            claims.AddClaim(new Claim(JwtRegisteredClaimNames.UniqueName, user.NormalizedUserName));
-
-            foreach (var item in roles)
-            {
-                claims.AddClaim(new Claim(ClaimTypes.Role, item));
-            }
-
-            return new ClaimsIdentity(claims);
         }
     }
 }

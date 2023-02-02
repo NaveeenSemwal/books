@@ -1,10 +1,13 @@
 ﻿using Books.API.ActionFilters;
 using Books.API.Contexts;
+using Books.API.Entities;
 using Books.API.Services.Abstract;
 using Books.API.Services.Implementation;
+using Books.Core.Entities;
 using Books.Core.Repositories.Implementation.Dapper;
 using Books.Core.Repositories.Implementation.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +42,22 @@ namespace Books.API.Configure
 
         public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
+            // Order or sequence is important
+
+            // Adding Identity
+
+            /* Note : This line should always be above of -- services.AddAuthentication() otherwise JwtBearerDefaults.AuthenticationScheme will be ignored.
+             *        AddIdentity() uses cookie based Authentication as default scheme. Otherwise your web-api-core-returns-404-when-adding-authorize-attribute.
+             *        
+             *        For validating JWT,JwtBearerDefaults.AuthenticationScheme is required.
+             *        https://stackoverflow.com/questions/52038054/web-api-core-returns-404-when-adding-authorize-attribute
+             */
+            //services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.User.RequireUniqueEmail = true).AddEntityFrameworkStores<BookContext>();
+
+            services.AddIdentityCore<ApplicationUser>(opt => opt.User.RequireUniqueEmail = true).AddRoles<ApplicationRole>()
+                .AddRoleManager<RoleManager<ApplicationRole>>()
+                .AddEntityFrameworkStores<BookContext>();
+
             services.AddAuthentication(cfg =>
             {
                 cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,6 +81,15 @@ namespace Books.API.Configure
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+
+            });
+
 
         }
 

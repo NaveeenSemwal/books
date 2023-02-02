@@ -11,7 +11,10 @@ using System.Threading.Tasks;
 
 namespace Books.API.Controllers
 {
-    [Route("api/account")]
+
+    [Route("api/v{version:apiVersion}/account")]
+    [ApiVersion("1.0")]
+    [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly IUsersService _usersService;

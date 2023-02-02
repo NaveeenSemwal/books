@@ -1,16 +1,15 @@
 [
   {
-    "UserName": "SuperAdmin",
-    "NormalizedUserName": "SuperAdmin",
-    "Email": "superadmin@gmail.com",
-    "NormalizedEmail": "superadmin@gmail.com",
+    "UserName": "Member",
+    "NormalizedUserName": "Member",
+    "Email": "member@gmail.com",
+    "NormalizedEmail": "member@gmail.com",
     "EmailConfirmed": true,
-    "PasswordHash": "Dotvik@987",
     "PhoneNumber": "87878667",
     "phoneNumberConfirmed": true,
-    "Name": "SuperAdmin",
+    "Name": "Member",
     "DateOfBirth": "1989-12-02",
-    "KnownAs": "Portal Admin",
+    "KnownAs": "Member",
     "Gender": "Male",
     "Introducation": "This is super admin",
     "LookingFor": "Female",
@@ -19,7 +18,7 @@
     "Country": "India",
     "Photos": [
       {
-        "Url": "https://randomuser.me/api/portraits/women/31.jpg",
+        "Url": "https://randomuser.me/api/portraits/men/31.jpg",
         "IsMain": true
       }
     ]
@@ -31,12 +30,11 @@
     "Email": "admin@gmail.com",
     "NormalizedEmail": "admin@gmail.com",
     "EmailConfirmed": true,
-    "PasswordHash": "Dotvik@987",
     "PhoneNumber": "87878667",
     "phoneNumberConfirmed": true,
     "Name": "Admin",
     "DateOfBirth": "1989-12-02",
-    "KnownAs": "Portal Admin",
+    "KnownAs": "Admin",
     "Gender": "Male",
     "Introducation": "This is admin",
     "LookingFor": "Female",
@@ -45,24 +43,23 @@
     "Country": "India",
     "Photos": [
       {
-        "Url": "https://randomuser.me/api/portraits/women/30.jpg",
+        "Url": "https://randomuser.me/api/portraits/men/30.jpg",
         "IsMain": true
       }
     ]
   },
 
   {
-    "UserName": "User",
-    "NormalizedUserName": "User",
-    "Email": "user@gmail.com",
-    "NormalizedEmail": "user@gmail.com",
+    "UserName": "Moderator",
+    "NormalizedUserName": "Moderator",
+    "Email": "moderator@gmail.com",
+    "NormalizedEmail": "moderator@gmail.com",
     "EmailConfirmed": true,
-    "PasswordHash": "Dotvik@987",
     "PhoneNumber": "87878667",
     "phoneNumberConfirmed": true,
-    "Name": "User",
+    "Name": "Moderator",
     "DateOfBirth": "1989-12-02",
-    "KnownAs": "Portal Admin",
+    "KnownAs": "Moderator",
     "Gender": "Male",
     "Introducation": "This is user",
     "LookingFor": "Female",
@@ -71,7 +68,7 @@
     "Country": "India",
     "Photos": [
       {
-        "Url": "https://randomuser.me/api/portraits/women/31.jpg",
+        "Url": "https://randomuser.me/api/portraits/men/31.jpg",
         "IsMain": true
       }
     ]

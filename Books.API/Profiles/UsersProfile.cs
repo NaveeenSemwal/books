@@ -12,7 +12,6 @@ namespace Books.API.Profiles
     {
         public UsersProfile()
         {
-            CreateMap<LoginRequestDto, LocalUser>();
 
             CreateMap<(ApplicationUser LocalUser, string Token), LoginResponseDto>()
                   .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.LocalUser))

@@ -9,6 +9,7 @@ using Books.Core.Repositories.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -31,9 +32,10 @@ namespace Books.API.Services.Implementation
         /// Get the user from HTTpContext
         /// </summary>
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ITokenService _tokenService;
 
         public UsersService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager, IHttpContextAccessor httpContextAccessor)
+            RoleManager<ApplicationRole> roleManager, IHttpContextAccessor httpContextAccessor, ITokenService tokenService)
         {
             _unitOfWork = unitOfWork;
 
@@ -42,6 +44,7 @@ namespace Books.API.Services.Implementation
             _userManager = userManager;
             _roleManager = roleManager;
             _httpContextAccessor = httpContextAccessor;
+            _tokenService = tokenService;
         }
 
         public async Task<MemberDto> Get(string username)
@@ -86,25 +89,39 @@ namespace Books.API.Services.Implementation
             return _mapper.Map<PagedList<MemberDto>>(users);
         }
 
-        public bool IsUniqueUser(string userName)
-        {
-            return _unitOfWork.UserRepository.IsUniqueUser(userName);
-        }
-
         public async Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto)
         {
-            var user = _mapper.Map<ApplicationUser>(loginRequestDto);
+            var user = await _userManager.Users.Include(p => p.Photos).SingleOrDefaultAsync(x => x.UserName.ToLower() == loginRequestDto.UserName.ToLower());
 
-            var localuser = await _unitOfWork.UserRepository.Login(user, loginRequestDto.Password);
+            if (user == null) return new LoginResponseDto() { Error = "Invalid Username" };
 
-            return _mapper.Map<LoginResponseDto>(localuser);
+            var result = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+
+            if (!result) return new LoginResponseDto() { Error = "Invalid Password" };
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var response = new LoginResponseDto
+            {
+                User = _mapper.Map<MemberDto>(user),
+                Token = _tokenService.GenerateJwtToken(user, roles)
+            };
+
+            return response;
         }
 
         public async Task<RegisterationResponsetDto> Register(RegisterationRequestDto registerationRequestDto)
         {
-            ApplicationUser localUser = _mapper.Map<ApplicationUser>(registerationRequestDto);
-
             var response = new RegisterationResponsetDto();
+
+            if (await UserExists(registerationRequestDto))
+            {
+                response.ErrorMessages.Add("Username is taken");
+
+                return response;
+            }
+
+            ApplicationUser localUser = _mapper.Map<ApplicationUser>(registerationRequestDto);
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -114,9 +131,9 @@ namespace Books.API.Services.Implementation
 
                     if (result.Succeeded)
                     {
-                        await _userManager.AddToRoleAsync(localUser, registerationRequestDto.Role);
+                        await _userManager.AddToRoleAsync(localUser, "Member");
 
-                        var userToReturn = await _unitOfWork.UserRepository.GetAsync(x => x.UserName.ToLower() == registerationRequestDto.Username.ToLower(), false);
+                        var userToReturn = await _userManager.Users.Include(p => p.Photos).SingleOrDefaultAsync(x => x.UserName.ToLower() == registerationRequestDto.Username.ToLower());
 
                         scope.Complete();
 
@@ -139,6 +156,11 @@ namespace Books.API.Services.Implementation
             }
 
             return response;
+        }
+
+        private async Task<bool> UserExists(RegisterationRequestDto registerationRequestDto)
+        {
+            return await _userManager.Users.AnyAsync(x => x.UserName == registerationRequestDto.Username.ToLower());
         }
 
         public async Task<bool> UpdateUser(MemberUpdateDto memberUpdateDto)

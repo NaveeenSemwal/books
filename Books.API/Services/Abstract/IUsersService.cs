@@ -11,8 +11,6 @@ namespace Books.API.Services.Abstract
 {
     public interface IUsersService
     {
-        bool IsUniqueUser(string userName);
-
         Task<LoginResponseDto> Login(LoginRequestDto loginRequestDto);
 
         Task<RegisterationResponsetDto> Register(RegisterationRequestDto registerationRequestDto);

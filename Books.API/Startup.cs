@@ -39,16 +39,6 @@ namespace Books.API
 
             services.ConfigureAppServices(Configuration);
 
-            // Adding Identity
-
-            /* Note : This line should always be above of -- services.AddAuthentication() otherwise JwtBearerDefaults.AuthenticationScheme will be ignored.
-             *        AddIdentity() uses cookie based Authentication as default scheme. Otherwise your web-api-core-returns-404-when-adding-authorize-attribute.
-             *        
-             *        For validating JWT,JwtBearerDefaults.AuthenticationScheme is required.
-             *        https://stackoverflow.com/questions/52038054/web-api-core-returns-404-when-adding-authorize-attribute
-             */
-            services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.User.RequireUniqueEmail = true).AddEntityFrameworkStores<BookContext>();
-
             services.ConfigureJwtAuthentication(Configuration);
 
             services.AddHttpContextAccessor();

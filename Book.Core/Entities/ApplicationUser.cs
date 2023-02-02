@@ -1,4 +1,5 @@
-﻿using Books.Core.Extensions;
+﻿using Books.Core.Entities;
+using Books.Core.Extensions;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -7,14 +8,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Books.API.Entities
 {
     [Table("ApplicationUser")]
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser<int>
     {
-        public ApplicationUser()
-        {
-            Id = Guid.NewGuid().ToString();
-            SecurityStamp = Guid.NewGuid().ToString();
-        }
-
     
         [Column(TypeName ="Date")]
         public DateTime DateOfBirth { get; set; }
@@ -38,6 +33,9 @@ namespace Books.API.Entities
         public string Country { get; set; }
 
         public List<Photo> Photos { get; set; } = new();
+
+        // Navigation property
+        public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
 
         public int GetAge()
         {

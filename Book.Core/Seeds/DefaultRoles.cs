@@ -11,26 +11,26 @@ namespace Books.Core.Seeds
 {
     public enum Roles
     {
-        SuperAdmin,
+        Member,
         Admin,
-        User
+        Moderator
     }
 
     public static class DefaultRoles
     {
-        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public static async Task SeedAsync(RoleManager<ApplicationRole> roleManager)
         {
-            if (!await roleManager.RoleExistsAsync(Roles.SuperAdmin.ToString()))
+            if (!await roleManager.RoleExistsAsync(Roles.Member.ToString()))
             {
-                await roleManager.CreateAsync(new ApplicationRole { Id = Guid.NewGuid().ToString(), Name = Roles.SuperAdmin.ToString() });
+                await roleManager.CreateAsync(new ApplicationRole { Name = Roles.Member.ToString() });
             }
             if (!await roleManager.RoleExistsAsync(Roles.Admin.ToString()))
             {
-                await roleManager.CreateAsync(new ApplicationRole { Id = Guid.NewGuid().ToString(), Name = Roles.Admin.ToString() });
+                await roleManager.CreateAsync(new ApplicationRole { Name = Roles.Admin.ToString() });
             }
-            if (!await roleManager.RoleExistsAsync(Roles.User.ToString()))
+            if (!await roleManager.RoleExistsAsync(Roles.Moderator.ToString()))
             {
-                await roleManager.CreateAsync(new ApplicationRole { Id = Guid.NewGuid().ToString(), Name = Roles.User.ToString() });
+                await roleManager.CreateAsync(new ApplicationRole { Name = Roles.Moderator.ToString() });
             } 
         }
     }

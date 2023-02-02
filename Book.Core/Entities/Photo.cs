@@ -12,7 +12,6 @@ namespace Books.API.Entities
         public string Url { get; set; }
         public bool IsMain { get; set; }
         public string PublicId { get; set; }
-        public string ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
     }

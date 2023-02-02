@@ -7,7 +7,9 @@ using System.Text;
 namespace Books.Core.Entities
 {
     [Table("ApplicationRole")]
-    public class ApplicationRole : IdentityRole
+    public class ApplicationRole : IdentityRole<int>
     {
+        // Navigation property
+        public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
     }
 }

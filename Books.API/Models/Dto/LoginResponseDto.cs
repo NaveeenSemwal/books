@@ -4,7 +4,8 @@ namespace Books.API.Models.Dto
 {
     public class LoginResponseDto
     {
-        public ApplicationUser User { get; set; }
+        public MemberDto User { get; set; }
         public string Token { get; set; }
+        public string Error { get; set; }
     }
 }
