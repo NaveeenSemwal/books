@@ -32,7 +32,7 @@ namespace Books.Core.Repositories.Implementation.EntityFramework
 
         public IRolesRepository RolesRepository => new RolesRepository(_dbContext, _logger);
 
-        public IUserRepository UserRepository => new UserRepository(_dbContext, _logger, _configuration, _userManager);
+        public IUserRepository UserRepository => new UserRepository(_dbContext, _logger);
 
         public async Task<bool> Complete()
         {
