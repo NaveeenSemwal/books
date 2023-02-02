@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
+using Books.API.Entities;
 using Books.API.Models.Dto;
 using Books.API.Services.Abstract;
 using Books.Core.Extensions;
 using Books.Core.Repositories.Abstract;
 using Books.Core.Repositories.Implementation.EntityFramework;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,13 +20,14 @@ namespace Books.API.ActionFilters
 {
     public class LogUserActivity : IAsyncActionFilter
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public LogUserActivity(IMapper mapper, IUnitOfWork unitOfWork)
+
+        public LogUserActivity(UserManager<ApplicationUser> userManager)
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
+
+            _userManager = userManager;
+
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -33,15 +38,27 @@ namespace Books.API.ActionFilters
 
             if (!resultContext.HttpContext.User.Identity.IsAuthenticated) return;
 
-            object userId = resultContext.HttpContext.User.GetUserId();
+            int userId = Convert.ToInt32(resultContext.HttpContext.User.GetUserId());
 
-            //var service = resultContext.HttpContext.RequestServices.GetRequiredService<IUsersService>();
+            if (userId != 0)
+            {
+                var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
-            var user = await _unitOfWork.UserRepository.GetAsync(userId);
+                if (user == null)
+                {
+                    context.Result = new NotFoundResult();
+                    return;
+                }
 
-            user.LastActive = DateTime.UtcNow;
+                user.LastActive = DateTime.UtcNow;
 
-            await _unitOfWork.Complete();
+                await _userManager.UpdateAsync(user);
+            }
+            else
+            {
+                context.Result = new BadRequestObjectResult("Error occured while fetching user from Httpcontext");
+                return;
+            }
         }
     }
 }

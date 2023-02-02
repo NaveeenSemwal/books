@@ -43,6 +43,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { InputComponent } from './_customcontrols/input/input.component';
 import { SelectInputComponent } from './_customcontrols/select-input/select-input.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { SelectInputComponent } from './_customcontrols/select-input/select-inpu
     DynamicFieldDirective,
     InputComponent,
     SelectInputComponent,
+    AdminPanelComponent,
 
   ],
   imports: [

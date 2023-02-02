@@ -13,7 +13,7 @@ import { AccountService } from '../_services/account.service';
 export class NavComponent implements OnInit {
 
   model: any = {};
-  isAdmin : boolean = false;
+  isAdmin: boolean = false;
 
   // public means it can be accessed in Template also.
   constructor(public accountService: AccountService, private router: Router, private toastr: ToastrService) { }
@@ -28,18 +28,12 @@ export class NavComponent implements OnInit {
 
       next: (user) => {
 
-        let loggedInuser = this.accountService.getUserByToken(user.token);
+        this.router.navigateByUrl('/members');
 
-        if (loggedInuser.role === 'Admin') {
-
-          this.isAdmin = true;
-          this.router.navigateByUrl('/admin/dashboard')
-
-        } else {
-          this.router.navigateByUrl('/members')
-        }
       },
       error: issue => {
+        
+        console.log(issue);
         this.toastr.error(issue.error.errorMessages[0])
       }
     });

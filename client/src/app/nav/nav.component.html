@@ -39,6 +39,9 @@
           <li class="nav-item" *ngIf="isAdmin">
             <a class="nav-link" routerLinkActive="active" routerLink="/admin/dashboard">Members</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/admin">Admin</a>
+          </li>
         </ul>
         <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
           <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>Welcome {{user.knownAs |

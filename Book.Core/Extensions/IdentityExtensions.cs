@@ -19,7 +19,7 @@ namespace Books.Core.Extensions
 
         public static string GetUserId(this ClaimsPrincipal claimsPrincipal)
         {
-            var userId = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userId = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "id")?.Value;
 
             return userId;
         }

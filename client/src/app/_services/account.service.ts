@@ -10,50 +10,81 @@ import { User } from '../_models/user';
 })
 export class AccountService {
 
-  baseUrl = environment.baseUrl;
-     
+  baseUrl = environment.baseUrl + "v1/";
+
   private currentUserSource = new BehaviorSubject<User | null>(null);
 
   currentUser$ = this.currentUserSource.asObservable();
 
-  tokenResponse : any;
+  tokenResponse: any;
 
   constructor(private http: HttpClient) { }
 
   login(model: any): Observable<User> {
 
-    return this.http.post(this.baseUrl + "account/login", model)
-      .pipe(
-        map((res: any) => {
+    return this.http.post(this.baseUrl + "account/login", model).pipe(
+      map((response: any) => {
 
-          const userentity = res.data.user;
+        const loginResponse = response.data;
 
-          var data: User = {
-           
-            userName: userentity.userName,
-            photoUrl: userentity.photoUrl,
-            knownAs: userentity.knownAs,
-            gender : userentity.gender,
-            token: res.data.token
-          }
+        const user: User = {
 
-          localStorage.setItem("token", JSON.stringify(data.token));
+          userName: loginResponse.user.name,
+          token: loginResponse.token,
+          gender: loginResponse.user.gender,
+          knownAs: loginResponse.user.knownAs,
+          photoUrl: loginResponse.user.photoUrl,
+          roles: new Array<string>(),
 
-          this.currentUserSource.next(data);
+        };
 
-          return data;
-        })
-      )
+        if (user) {
+
+          this.setCurrentUser(user);
+        }
+
+        return user;
+      }));
+
+
   }
 
   register(model: any): Observable<any> {
 
-    return this.http.post(this.baseUrl + "account/register", model);
+    return this.http.post(this.baseUrl + "account/register", model).pipe(
+      map((response: any) => {
+
+        const loginResponse = response.data;
+
+        const user: User = {
+
+          userName: loginResponse.user.name,
+          token: loginResponse.token,
+          gender: loginResponse.user.gender,
+          knownAs: loginResponse.user.knownAs,
+          photoUrl: loginResponse.user.photoUrl,
+          roles: new Array<string>(),
+
+        };
+
+        if (user) {
+
+          this.setCurrentUser(user);
+        }
+
+      }))
   }
 
-  setCurrentUser(res: any) {
-    this.currentUserSource.next(res);
-  }    
+  setCurrentUser(user: User) {
+
+    const roles = this.getDecodedToken(user.token).role;
+
+    Array.isArray(roles) ? user.roles = roles : user.roles.push(roles);
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    this.currentUserSource.next(user);
+  }
 
 
   logout() {
@@ -61,12 +92,10 @@ export class AccountService {
     this.currentUserSource.next(null!);
   }
 
-  getUserByToken(token: any) {
-      
-    let _token = token.split('.')[1];
+  getDecodedToken(token: any) {
 
-     this.tokenResponse = JSON.parse(atob(_token));
-     return this.tokenResponse;
+    let _token = token.split('.')[1]; // This is the middle part of token
+    return JSON.parse(atob(_token));
 
   }
 

@@ -129,7 +129,7 @@ export class RegisterComponent implements OnInit {
 
       next: (user) => {
 
-        let loggedInuser = this.accountService.getUserByToken(user.token);
+        let loggedInuser = this.accountService.getDecodedToken(user.token);
 
         console.log(loggedInuser);
 

@@ -32,5 +32,6 @@ namespace Books.API.Models.Dto
         public string Country { get; set; }
 
         public List<PhotoDto> Photos { get; set; } = new();
+        public List<string> Roles { get; set; } = new();
     }
 }
