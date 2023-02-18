@@ -9,6 +9,7 @@ import { AccountService } from '../_services/account.service';
 })
 export class AdminGuard implements CanActivate {
 
+  //  Note : RouteGuards automatically subscribe and unsubscribe On our behalf. No need to do that.
   constructor(private accountService: AccountService, private toastrService: ToastrService) {
 
 

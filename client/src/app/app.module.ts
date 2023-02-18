@@ -44,6 +44,10 @@ import { MatInputModule } from '@angular/material/input';
 import { InputComponent } from './_customcontrols/input/input.component';
 import { SelectInputComponent } from './_customcontrols/select-input/select-input.component';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { HasRoleDirective } from './_customdirective/has-role.directive';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +83,10 @@ import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
     InputComponent,
     SelectInputComponent,
     AdminPanelComponent,
+    HasRoleDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    RolesModalComponent,
 
   ],
   imports: [

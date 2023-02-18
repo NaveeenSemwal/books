@@ -36,7 +36,7 @@ namespace Books.API.Controllers
 
 
         [Authorize(Policy = "RequireAdminRole")]
-        [HttpGet("edit-roles/{username}")]
+        [HttpPost("edit-roles/{username}")]
         public async Task<ActionResult> EditRoles(string username, [FromQuery] string roles)
         {
             if (string.IsNullOrEmpty(roles)) return BadRequest("You must select atleast one role");

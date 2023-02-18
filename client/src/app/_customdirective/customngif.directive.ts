@@ -10,6 +10,7 @@ export class CustomNgIfDirective {
     // Like ElementRef give reference of Element, 
     // TemplateRef gives access of Template like ng-template
     // ViewContainerRef specifies where we need to render that template
+    // * in structural directive gets converted to ng-template and using property binding it render template
     constructor(private template: TemplateRef<any>, private container: ViewContainerRef) {
 
     }

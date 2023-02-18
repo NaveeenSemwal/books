@@ -11,36 +11,30 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="/directive-demo">Directive-demo</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="/dynamic-component-ngif-demo">Dynamic-component-using-ngif</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="/dynamic-component-loader-demo">Dynamic-component-loader-demo</a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="(accountService.currentUser$ | async)">
-          <li class=" nav-item" *ngIf="!isAdmin">
+          <li class=" nav-item">
             <a class="nav-link" aria-current="page" routerLinkActive="active" routerLink="/members">Matches</a>
           </li>
-          <li class="nav-item" *ngIf="!isAdmin">
+          <li class="nav-item">
             <a class="nav-link" routerLinkActive="active" routerLink="/lists">Lists</a>
           </li>
-          <li class="nav-item" *ngIf="!isAdmin">
+          <li class="nav-item">
             <a class="nav-link" routerLinkActive="active" routerLink="/messages">Messages</a>
           </li>
-          <li class="nav-item" *ngIf="isAdmin">
-            <a class="nav-link" routerLinkActive="active" routerLink="/admin/dashboard">Members</a>
+          <li class="nav-item" *appHasRole="['Admin','Moderator']">
+            <a class="nav-link" routerLinkActive="active" routerLink="/admin/dashboard">Dashboard</a>
           </li>
-          <li class="nav-item">
+          <li *appHasRole="['Admin','Moderator']" class="nav-item">
             <a class="nav-link" routerLinkActive="active" routerLink="/admin">Admin</a>
+          </li>
+          <li *appHasRole="['Admin','Moderator']" class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/directive-demo">Directive-demo</a>
+          </li>
+          <li *appHasRole="['Admin','Moderator']" class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/dynamic-component-ngif-demo">Dynamic-component-using-ngif</a>
+          </li>
+          <li *appHasRole="['Admin','Moderator']" class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/dynamic-component-loader-demo">Dynamic-component-loader-demo</a>
           </li>
         </ul>
         <div class="dropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
