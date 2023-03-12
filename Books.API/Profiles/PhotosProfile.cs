@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Books.API.Entities;
-using Books.API.Models.Dto;
+using Books.Business.Model;
+using Books.Data.Model;
 
 namespace Books.API.Profiles
 {

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -44,6 +44,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Book.Core\Books.Core.csproj" />
+    <ProjectReference Include="..\Books.Business.Interfaces\Books.Business.Interfaces.csproj" />
+    <ProjectReference Include="..\Books.Business.Model\Books.Business.Model.csproj" />
+    <ProjectReference Include="..\Books.Business\Books.Business.csproj" />
+    <ProjectReference Include="..\Books.Data\Books.Data.csproj" />
   </ItemGroup>
 
 

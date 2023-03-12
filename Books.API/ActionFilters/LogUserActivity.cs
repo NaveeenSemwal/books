@@ -1,19 +1,10 @@
-﻿using AutoMapper;
-using Books.API.Entities;
-using Books.API.Models.Dto;
-using Books.API.Services.Abstract;
-using Books.Core.Extensions;
-using Books.Core.Repositories.Abstract;
-using Books.Core.Repositories.Implementation.EntityFramework;
+﻿using Books.Core.Extensions;
+using Books.Data.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Books.API.ActionFilters
@@ -22,12 +13,9 @@ namespace Books.API.ActionFilters
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
-
         public LogUserActivity(UserManager<ApplicationUser> userManager)
         {
-
             _userManager = userManager;
-
         }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)

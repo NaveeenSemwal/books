@@ -1,45 +1,14 @@
-﻿using Books.API.ActionFilters;
-using Books.API.Contexts;
-using Books.API.Entities;
-using Books.API.Services.Abstract;
-using Books.API.Services.Implementation;
-using Books.Core.Entities;
-using Books.Core.Repositories.Implementation.Dapper;
-using Books.Core.Repositories.Implementation.EntityFramework;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Books.API.Configure
 {
     public static class Startup
     {
-
-        /// <summary>Configure App Services</summary>
-        /// <param name="services">Service collection</param>
-        /// <param name="configuration">Application configuration</param>
-        public static void ConfigureAppServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            // http request should be AddScoped
-
-            services.AddScoped<IBooksServive, BooksServive>();
-            services.AddScoped<IUsersService, UsersService>();
-
-            services.AddScoped<IRolesService, RolesService>();
-
-            services.AddScoped<ITokenService, TokenService>();
-
-            services.AddScoped<LogUserActivity>();
-
-        }
-
-
         public static void ConfigureJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             // Order or sequence is important
@@ -54,9 +23,12 @@ namespace Books.API.Configure
              */
             //services.AddIdentity<ApplicationUser, ApplicationRole>(o => o.User.RequireUniqueEmail = true).AddEntityFrameworkStores<BookContext>();
 
-            services.AddIdentityCore<ApplicationUser>(opt => opt.User.RequireUniqueEmail = true).AddRoles<ApplicationRole>()
-                .AddRoleManager<RoleManager<ApplicationRole>>()
-                .AddEntityFrameworkStores<BookContext>();
+            //services.AddIdentityCore<ApplicationUser>(opt => opt.User.RequireUniqueEmail = true).AddRoles<ApplicationRole>()
+            //    .AddRoleManager<RoleManager<ApplicationRole>>()
+            //    .AddEntityFrameworkStores<BookContext>();
+
+            // Note : This is already covered in -- public static void ConfigureIdentityCore(this IServiceCollection services, IConfiguration configuration)
+
 
             services.AddAuthentication(cfg =>
             {

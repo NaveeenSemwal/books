@@ -1,18 +1,14 @@
+using Books.API.ActionFilters;
 using Books.API.BackgroundJob;
 using Books.API.Configure;
-using Books.API.Contexts;
-using Books.API.Entities;
 using Books.API.Middlewares;
-using Books.Core.Configure;
-using Books.Core.Entities;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+using Books.Business;
+using Books.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Serilog;
 using System;
 
@@ -37,7 +33,11 @@ namespace Books.API
 
             services.ConfigureAppRepositories(Configuration);
 
+            services.ConfigureIdentityCore(Configuration);
+
             services.ConfigureAppServices(Configuration);
+
+            services.AddScoped<LogUserActivity>();
 
             services.ConfigureJwtAuthentication(Configuration);
 

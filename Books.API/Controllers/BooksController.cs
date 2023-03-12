@@ -1,6 +1,6 @@
-﻿using Books.API.Models;
-using Books.API.Models.Dto;
-using Books.API.Services.Abstract;
+﻿using Books.Business.Interfaces;
+using Books.Business.Model;
+using Books.Business.Model.Request;
 using Books.Core;
 using Books.Core.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -152,7 +152,7 @@ namespace Books.API.Controllers
                 return BadRequest();
             }
 
-            _booksServive.UpdateBookPatchAsync(id, bookForUpdate);
+          //  _booksServive.UpdateBookPatchAsync(id, bookForUpdate);
 
             return NoContent();
         }

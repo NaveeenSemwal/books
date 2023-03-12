@@ -1,12 +1,11 @@
-﻿using Books.API.Models;
-using Books.API.Models.Dto;
-using Books.API.Services.Abstract;
+﻿using Books.Business.Interfaces;
+using Books.Business.Model;
+using Books.Business.Model.Request;
 using Books.Core.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Books.API.Controllers
@@ -39,7 +38,6 @@ namespace Books.API.Controllers
         [HttpGet]
         public async Task<PagedList<MemberDto>> GetAll([FromQuery] UserParams searchParams)
         {
-          
             return await _usersService.GetAll(searchParams);
         }
 

@@ -1,7 +1,5 @@
-﻿using Books.API.Models;
-using Books.API.Models.Dto;
-using Books.API.Services.Abstract;
-using Microsoft.AspNetCore.Http;
+﻿using Books.Business.Interfaces;
+using Books.Business.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;

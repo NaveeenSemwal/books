@@ -1,7 +1,6 @@
-using Books.API.Contexts;
-using Books.API.Entities;
-using Books.Core.Entities;
 using Books.Core.Seeds;
+using Books.Data.EntityFramework.Contexts;
+using Books.Data.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -47,7 +46,7 @@ namespace Books.API
 
                     await DefaultRoles.SeedAsync(roleManager);
 
-                    await Seed.SeedUsers(userManager, roleManager);
+                    await DefaultUsers.SeedUsers(userManager, roleManager);
 
                 }
 

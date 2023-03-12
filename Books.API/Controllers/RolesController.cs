@@ -1,9 +1,7 @@
-﻿using Books.API.Models;
-using Books.API.Services.Abstract;
+﻿using Books.Business.Interfaces;
+using Books.Business.Model;
 using Books.Core.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
