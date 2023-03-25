@@ -48,6 +48,7 @@ import { HasRoleDirective } from './_customdirective/has-role.directive';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { RolesModalComponent } from './modals/roles-modal/roles-modal.component';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
     UserManagementComponent,
     PhotoManagementComponent,
     RolesModalComponent,
+    PhotoEditorComponent,
 
   ],
   imports: [

@@ -2,6 +2,7 @@
 using Books.Business.Model.Request;
 using Books.Business.Model.Response;
 using Books.Core.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace Books.Business.Interfaces
 {
@@ -20,5 +21,7 @@ namespace Books.Business.Interfaces
         Task<bool> UpdateUser(MemberUpdateDto memberUpdateDto);
 
         Task<MemberDto> GetUsersWithRoles();
+
+        Task<PhotoDto> AddPhoto(IFormFile file);
     }
 }

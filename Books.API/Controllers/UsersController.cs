@@ -1,8 +1,12 @@
 ﻿using Books.Business.Interfaces;
 using Books.Business.Model;
 using Books.Business.Model.Request;
+using Books.Core;
+using Books.Core.Extensions;
 using Books.Core.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,8 +14,7 @@ using System.Threading.Tasks;
 
 namespace Books.API.Controllers
 {
-    [Route("api/v{version:apiVersion}/users")]
-    [ApiVersion("1.0")]
+  
     [Authorize]
     public class UsersController : BaseApiController
     {
@@ -68,6 +71,23 @@ namespace Books.API.Controllers
             _aPIResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
 
             return Ok(_aPIResponse);
+        }
+
+        [HttpPost("add-photo")]
+        public async Task<ActionResult<APIResponse>> AddPhoto(IFormFile file)
+        {
+            var photoDto = await _usersService.AddPhoto(file);
+
+            if (photoDto != null)
+            {
+               return CreatedAtAction(nameof(GetbyUserName), new { username = "member" },photoDto );
+            }
+
+            _aPIResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
+
+            return Ok(_aPIResponse);
+
+
         }
     }
 }

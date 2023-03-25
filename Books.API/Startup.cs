@@ -3,6 +3,7 @@ using Books.API.BackgroundJob;
 using Books.API.Configure;
 using Books.API.Middlewares;
 using Books.Business;
+using Books.Business.Model.Configuration;
 using Books.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

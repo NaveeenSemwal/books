@@ -1,5 +1,6 @@
 ﻿using Books.Business.Interfaces;
 using Books.Business.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,8 +8,7 @@ using System.Threading.Tasks;
 
 namespace Books.API.Controllers
 {
-    [Route("api/v{version:apiVersion}/users")]
-    [ApiController]
+    [Authorize]
     [ApiVersion("2.0")]
     public class UsersV2Controller : BaseApiController
     {

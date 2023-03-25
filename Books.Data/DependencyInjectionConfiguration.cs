@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Books.Data
 {
-    public static class Startup
+    public static class DependencyInjectionConfiguration
     {
         /// <summary>Configure App repositories</summary>
         /// <param name="services">Service collection</param>
@@ -19,7 +19,7 @@ namespace Books.Data
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            var connectionString = configuration["ConnectionStrings:BooksDBConnectionString"];
+            var connectionString = configuration["BooksDatabaseConfiguration:ConnectionString"];
             services.AddDbContext<BookContext>(o => o.UseSqlServer(connectionString));
 
             services.AddSingleton<DapperContext>();

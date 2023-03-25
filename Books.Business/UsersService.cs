@@ -27,9 +27,10 @@ namespace Books.Business
         /// </summary>
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ITokenService _tokenService;
+        private readonly IPhotoService _photoService;
 
         public UsersService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager, IHttpContextAccessor httpContextAccessor, ITokenService tokenService)
+            RoleManager<ApplicationRole> roleManager, IHttpContextAccessor httpContextAccessor, ITokenService tokenService, IPhotoService photoService)
         {
             _unitOfWork = unitOfWork;
 
@@ -39,6 +40,7 @@ namespace Books.Business
             _roleManager = roleManager;
             _httpContextAccessor = httpContextAccessor;
             _tokenService = tokenService;
+            _photoService = photoService;
         }
 
         public async Task<MemberDto> Get(string username)
@@ -183,6 +185,32 @@ namespace Books.Business
             //}).ToListAsync();
 
             throw new NotImplementedException();
+        }
+
+        public async Task<PhotoDto?> AddPhoto(IFormFile file)
+        {
+          var userName = _httpContextAccessor.HttpContext.User.GetUserName();
+
+            var user = await _unitOfWork.UserRepository.GetAsync(x => x.UserName == "member", true);
+
+            if (user == null) return null;
+
+            var result = await _photoService.AddPhotoAsync(file);
+            if (result.Error != null) return null;
+            var photo = new Photo
+            {
+                Url = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+            if (user.Photos.Count == 0) photo.IsMain = true;
+
+            user.Photos.Add(photo);
+
+            if (await _unitOfWork.Complete())
+                return _mapper.Map<PhotoDto>(photo);
+
+            return null;
+            
         }
     }
 }

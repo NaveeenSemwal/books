@@ -24,7 +24,6 @@ namespace Books.API.Controllers
     /// https://www.youtube.com/watch?v=xEvSFyXBX58&list=PLUGuCqrhcwZzht4r2sbByidApmrvEjL9m
     /// </summary>
 
-    [Route("api/books")]
     [Authorize(Roles = "Admin")]
     public class BooksController : BaseApiController
     {

@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 namespace Books.API.Controllers
 {
 
-    [Route("api/v{version:apiVersion}/account")]
-    [ApiVersion("1.0")]
     [ApiController]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
+    [Produces("application/json", new string[] { })]
     public class AccountController : ControllerBase
     {
         private readonly IUsersService _usersService;
@@ -59,7 +60,6 @@ namespace Books.API.Controllers
             {
                 _aPIResponse.IsSuccess = true;
                 _aPIResponse.StatusCode = System.Net.HttpStatusCode.OK;
-
             }
             else
             {
