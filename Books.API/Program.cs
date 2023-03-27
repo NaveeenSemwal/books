@@ -33,7 +33,10 @@ namespace Books.API
             IConfigurationRoot configuration = Configuration.BuildConfiguration(Assembly.GetExecutingAssembly(), args);
 
             //Initialize Logger    
-            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration).CreateLogger();
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(configuration)
+                .Enrich.FromLogContext()
+                .Enrich.WithMachineName()
+                .CreateLogger();
 
             try
             {
